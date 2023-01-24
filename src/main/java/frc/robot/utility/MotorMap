@@ -1,0 +1,17 @@
+Motor Controller: CAN ID,  
+
+Back Right Drive: 2
+Back Right Angle: 3
+Front Right Drive: 4
+Front Right Angle: 5
+Front Left Angle: 6
+Front Left Drive: 7
+Intake: 8
+Arm: 9
+Turret: 10
+Back Left Angle: 11
+Back Left Drive: 12
+Loader: 13
+Shooter: 14
+Climber Angle Left: 15 # Left Facing Front (Intake side)
+Climber Angle Right: 16 # Right Facing Front (Intake side)

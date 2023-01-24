@@ -51,6 +51,10 @@ public class RobotContainer {
     }
     void configureSwerve() {
         swerveCommand = new SwerveCommand(m_swerve, driveStick, info);
+        m_swerve.setDefaultCommand(swerveCommand);
+
+        Shuffleboard.getTab("Swerve").add("Swerve", m_swerve);
+        Shuffleboard.getTab("Swerve").add("Swerve Command", swerveCommand);
     }
 
     public Command getAutonomousCommand() {

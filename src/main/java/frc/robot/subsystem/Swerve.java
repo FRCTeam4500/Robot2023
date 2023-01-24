@@ -13,6 +13,7 @@ import frc.robot.component.AngularVelocityComponent;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import frc.robot.component.GyroComponent;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -456,7 +457,7 @@ public class Swerve {
                 DRIVE_RATIO);
     }
 
-    public class SwerveCommand extends CommandBase {
+    public static class SwerveCommand extends CommandBase {
         private OdometricSwerve swerve;
         private Joystick joystick;
         private ControllerInfo info;

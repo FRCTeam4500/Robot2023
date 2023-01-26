@@ -13,7 +13,6 @@ import frc.robot.component.AngularVelocityComponent;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import frc.robot.component.GyroComponent;
-import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -28,7 +27,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.utility.ControllerInfo;
 import edu.wpi.first.math.controller.PIDController;
 
-
+/**
+ * Swerve Drive {Make sure to change Constants and add docs}
+ */
 public class Swerve {
 
     /* Constants for Factory, Change in Constants File */
@@ -48,9 +49,9 @@ public class Swerve {
 
     private static final double WHEEL_DIAMETER = SwerveConstants.WHEEL_DIAMETER; //Wheel diameter, in meters
     private static final double DRIVE_X_TRANSLATION = SwerveConstants.DRIVE_X_TRANSLATION; //lwft right translation of wheels
-    private static final double DRIVE_Y_TRANSLATION = SwerveConstants.DRIVE_Y_TRANSLATION; //front back translation of 
     private static double DRIVE_Y_FRONT_TRANSLATION = SwerveConstants.DRIVE_Y_FRONT_TRANSLATION;
     private static double DRIVE_Y_BACK_TRANSLATION = SwerveConstants.DRIVE_Y_BACK_TRANSLATION;
+
 
     /* Wheel Modules */
     /* Application to Kinematic */

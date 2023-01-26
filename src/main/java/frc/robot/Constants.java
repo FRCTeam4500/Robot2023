@@ -7,8 +7,8 @@ public class Constants {
         public final static double MAX_ROTATIONAL_SPEED = Math.PI * 2 * 1.5;
         public final static double MAX_ROTATIONAL_ACCELERATION = Math.PI * 2 * 1.5;
 
-        public static final double DRIVE_RATIO = 1/4.3329; //drive rotations per motor rotation
-        public static final double ANGLE_RATIO = 1/12.34567901234; //angle rotations per motor rotation
+        public static final double DRIVE_RATIO = 1/4.3329; // drive rotations per motor rotation
+        public static final double ANGLE_RATIO = 1/12.34567901234; // angle rotations per motor rotation
         public static final double MAX_SPEED = SwerveConstants.MAX_LINEAR_SPEED; //max surface speed, meters per second
 
         public static final int DBRPORT = 2; //drive back right port
@@ -22,17 +22,22 @@ public class Constants {
 
 
         public static final double WHEEL_DIAMETER = 0.0762; //Wheel diameter, in meters
-        public static final double DRIVE_X_TRANSLATION = 0.2921; //lwft right translation of wheels
-        public static final double DRIVE_Y_TRANSLATION = 0.2794; //front back translation of 
-        public static double DRIVE_Y_FRONT_TRANSLATION = 0.2032;
-        public static double DRIVE_Y_BACK_TRANSLATION = 0.4064;
+        public static final double DRIVE_X_TRANSLATION = 0.2921; //left right translation of wheels, 11.5 inches
+        public static final double DRIVE_Y_TRANSLATION = 0.2794; //front back translation of wheels
+        public static double DRIVE_Y_FRONT_TRANSLATION = 0.2032; // 8 inches
+        public static double DRIVE_Y_BACK_TRANSLATION = 0.4064; // 16 inches
     }
 
     public static class ArmConstants { // Arm Contstants
         public static final double ARM_DOWN_SENSOR_LIMIT = 1240; //TODO: fix all of these lol
         public static final double ARM_UP_SENSOR_LIMIT = 300;
-        public static final double ARM_DOWN_ANGLE = 1.8;
-        public static final double ARM_UP_ANGLE = 0.3;
+        public static final double ARM_GROUND_ANGLE = 0.0;
+        public static final double ARM_MID_ANGLE = 0.0;
+        public static final double ARM_TOP_ANGLE = 0.0;
+        public static final double ARM_RETRACTED_ENCODER_COUNTS = 0.0;
+        public static final double ARM_BOT_ENCODER_COUNTS = 0.0;
+        public static final double ARM_MID_ENCODER_COUNTS = 0.0;
+        public static final double ARM_TOP_ENCODER_COUNTS = 0.0;
     }
 
     public static class IntakeConstants { // Intake Constants

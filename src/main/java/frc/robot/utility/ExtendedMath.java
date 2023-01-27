@@ -46,6 +46,11 @@ public class ExtendedMath {
             return dot(a,b)/norm;
         }
     }
+    /**
+     * Returns a normalized vector
+     * @param a
+     * @return
+     */
     public static Translation2d normalize(Translation2d a){
         return a.div(a.getNorm());
     }

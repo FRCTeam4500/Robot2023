@@ -401,7 +401,7 @@ public class Swerve {
         }
     
     }
-    public static OdometricSwerve makeSwerve(){
+    public static OdometricSwerve makeSwerve() {
         OdometricWheelModule fl = makeWheelModule(AFLPORT, DFLPORT, new Translation2d(DRIVE_Y_FRONT_TRANSLATION, DRIVE_X_TRANSLATION), true, true,true, .4, .75);
         OdometricWheelModule fr = makeWheelModule(AFRPORT, DFRPORT, new Translation2d(DRIVE_Y_FRONT_TRANSLATION, -DRIVE_X_TRANSLATION), true, true,false, .75, .75);
         OdometricWheelModule bl = makeWheelModule(ABLPORT, DBLPORT, new Translation2d(-DRIVE_Y_BACK_TRANSLATION, DRIVE_X_TRANSLATION), false, true,true, .9, .8);

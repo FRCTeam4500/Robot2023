@@ -11,6 +11,8 @@ import frc.robot.dashboard.DashboardMessageDisplay;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.subsystem.Swerve.SwerveCommand.ControlMode;
 
 
 public class RobotContainer {
@@ -37,6 +39,7 @@ public class RobotContainer {
     public RobotContainer() {
         configureControls();
         configureSwerve();
+        configureArmAndIntake();
     }
 
     void configureControls() {
@@ -53,8 +56,32 @@ public class RobotContainer {
         swerveCommand = new SwerveCommand(m_swerve, driveStick, info);
         m_swerve.setDefaultCommand(swerveCommand);
 
+        lockSwerveRotationButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.lockRotation = true;}));
+        lockSwerveRotationButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.lockRotation = false;}));
+
+        switchDriveModeRobotCentric.toggleOnTrue(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.RobotCentric;}));
+        switchDriveModeRobotCentric.toggleOnFalse(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.FieldCentric;}));
+
+        /* Slow Side to Side movement */
+        noForwardButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.RobotCentric; swerveCommand.noForward = true;}));
+        noForwardButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.FieldCentric; swerveCommand.noForward = false;}));
+
+        alignSwerveToAngle.toggleOnTrue(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.AlignToAngle; swerveCommand.targetAngle = 0;}));
+        alignSwerveToAngle.toggleOnFalse(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.FieldCentric;}));
+
+        alignSwerveReverse.toggleOnTrue(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.AlignToAngle; swerveCommand.targetAngle = Math.PI;}));
+        alignSwerveReverse.toggleOnFalse(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.FieldCentric;}));
+
+        limitSwerveSpeed.toggleOnTrue(new InstantCommand(() -> {swerveCommand.limitSpeed = true;}));
+        limitSwerveSpeed.toggleOnFalse(new InstantCommand(() -> {swerveCommand.limitSpeed = false;}));
+
+        resetGyro.toggleOnTrue(new InstantCommand(() -> {m_swerve.resetRobotAngle();}));
+
         Shuffleboard.getTab("Swerve").add("Swerve", m_swerve);
         Shuffleboard.getTab("Swerve").add("Swerve Command", swerveCommand);
+    }
+    void configureArmAndIntake() {
+
     }
 
     public Command getAutonomousCommand() {

@@ -10,7 +10,7 @@ import frc.robot.subsystem.Arm.Position;
 public class SubsystemSequencer {
     
     public ParallelCommandGroup ArmIntakeCommand(Position position, Arm arm, Intake intake) {
-        switch (position) {
+        switch (position) { // Sick Silly Suburban Small Sleepy Sal Sometimes Sleeps Super Soundly
             case Bottom:
                 return new ParallelCommandGroup(
                     new Arm.ArmSetTiltAngleCommand(arm, ArmConstants.ARM_BOTTOM_TILT_ANGLE)

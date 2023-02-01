@@ -36,21 +36,20 @@ public class Constants {
         public static final double ARM_DOWN_SENSOR_LIMIT = 1240; //TODO: fix all of these lol
         public static final double ARM_UP_SENSOR_LIMIT = 300;
 
-        /* Positions */
-        public static final double ARM_GROUND_TILT_ANGLE = 0.0;
-        public static final double ARM_GROUND_WINCH_OUTPUT = 0.0;
-        
-        public static final double ARM_BOTTOM_TILT_ANGLE = 0.0;
-        public static final double ARM_BOTTOM_WINCH_OUTPUT = 0.0;
+        public static final double ARM_PLACE_ANGLE = 0; // TODO: change value later
 
-        public static final double ARM_MIDDLE_TILT_ANGLE = 0.0;
-        public static final double ARM_MIDDLE_WINCH_OUTPUT = 0.0;
+        public static final double ARM_PICKUP_ANGLE = 0; // TODO: change value later
 
-        public static final double ARM_TOP_TILT_ANGLE = 0.0;
-        public static final double ARM_TOP_WINCH_OUTPUT = 0.0;
+        public static final double ARM_ZERO_ANGLE = 0; // TODO: change value later
 
-        public static final double ARM_RETRACTED_TILT_ANGLE = 0.0;
-        public static final double ARM_RETRACTED_WINCH_OUTPUT = 0.0;
+        public static final double ARM_PLACE_TOP = 0; // TODO: change value later
+
+        public static final double ARM_PLACE_MID = 0; // TODO: change value later
+
+        public static final double ARM_PLACE_LOW = 0; // TODO: change value later
+
+        public static final double ARM_RETRACT = 0; // TODO: change value later
+
     }
 
     public static class IntakeConstants { // Intake Constants
@@ -62,11 +61,11 @@ public class Constants {
         public static final int INTAKE_ANGLE_MOTOR_ID = 0; //TODO: fix
         public static final MotorType ANGLE_MOTOR_TYPE = MotorType.kBrushless;
 
-        public static final double INTAKE_ANGLE_BOTTOM = 0.0; //TODO: fix
-        public static final double INTAKE_TOP_ANGLE = 0.0;
-        public static final double INTAKE_MIDDLE_ANGLE = 0.0;
-        public static final double INTAKE_RETRACTED_ANGLE = 0.0;
-        public static final double INTAKE_GROUND_ANGLE = 0.0;
+        public static final double INTAKE_BOTTOM_PICKUP = 0; // TODO: Fix value
+
+        public static final double INTAKE_TRAY_PICKUP = 0; // TODO: Fix value
+
+        public static final double INTAKE_SIDEWAYS_CONE_PLACE = 0; // TODO: Fix value
     }
 
     public static class VisionConstants { // Vision Constants

@@ -4,6 +4,8 @@ import frc.robot.Constants.ArmConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 public class Arm extends SubsystemBase {
     private SparkMaxComponent tiltMotor;
@@ -40,8 +42,8 @@ public class Arm extends SubsystemBase {
     }
 
     /**
-     * Sets the output of the winch motor
-     * @param output
+     * Sets the position of the winch motor. "Output" is not speed, it is angle
+     * @param output is the angle that it has to turn
      */
     public void setWinch(double output) {
         targetWinchOutput = output;
@@ -51,11 +53,11 @@ public class Arm extends SubsystemBase {
     /**
      * Command for setting the position of the tilt motor
      */
-    public class ArmSetTiltAngleCommand extends InstantCommand {
+    public static class ArmSetTiltAngleCommand extends InstantCommand {
         private Arm arm;
-        private int position;
+        private double position;
 
-        public ArmSetTiltAngleCommand(Arm arm, int position) {
+        public ArmSetTiltAngleCommand(Arm arm, double position) {
             this.arm = arm;
             this.position = position;
             addRequirements(arm);
@@ -66,7 +68,7 @@ public class Arm extends SubsystemBase {
         }
     }
 
-    public class ArmSetWinchOutputCommand extends InstantCommand {
+    public static class ArmSetWinchOutputCommand extends InstantCommand {
         private Arm arm;
         private double output;
 
@@ -92,28 +94,31 @@ public class Arm extends SubsystemBase {
         Bottom,
         Middle,
         Top,
-        Retracted
+        Retracted,
+        Ground
+    }
+
+    /**
+     * Command for setting the position of the arm
+     * @param position
+     */
+
+    public class ArmCommand extends SequentialCommandGroup {
+        public ArmCommand (Arm arm, double tilt, double winch) {
+            super(
+                new ArmSetTiltAngleCommand(arm, tilt),
+                new ArmSetWinchOutputCommand(arm, winch)
+            );
+        }
+    }
+
+    public Position getPosition() {
+        return position;
     }
 
     @Override
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("Target tilt position", () -> targetTiltAngle, (value) -> {setTilt((double) value);});
-        builder.addDoubleProperty("Target winch output", () -> targetWinchOutput, (value) ->{setWinch((double) value);});
-
-        builder.addStringProperty("Position", () -> {
-            switch (position) {
-                case Bottom:
-                    return "Bottom";
-            
-                case Middle:
-                    return "Middle";
-
-                case Top:
-                    return "Top";
-                case Retracted:
-                    return "Retracted";
-            }
-            return "";
-        }, null);
+        builder.addDoubleProperty("Target winch output", () -> targetWinchOutput, (value) -> {setWinch((double) value);});
     }
 }

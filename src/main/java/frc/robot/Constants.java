@@ -26,25 +26,47 @@ public class Constants {
     }
 
     public static class ArmConstants { // Arm Contstants
+        /* Init */
         public static final int TILT_MOTOR_ID = 0; //TODO: fix
         public static final MotorType TILT_MOTOR_TYPE = MotorType.kBrushless; 
         public static final int WINCH_MOTOR_ID = 0; //TODO: fix
         public static final MotorType WINCH_MOTOR_TYPE = MotorType.kBrushless; 
 
+        /* Force Limit */
         public static final double ARM_DOWN_SENSOR_LIMIT = 1240; //TODO: fix all of these lol
         public static final double ARM_UP_SENSOR_LIMIT = 300;
-        public static final double BOTTOM_TILT_ANGLE = 0.0;
-        public static final double MIDDLE_TILT_ANGLE = 0.0;
-        public static final double TOP_TILT_ANGLE = 0.0;
-        public static final double RETRACTED_TILT_ANGLE = 0.0;
-        public static final double BOTTOM_WINCH_OUTPUT = 0.0;
-        public static final double MIDDLE_WINCH_OUTPUT = 0.0;
-        public static final double TOP_WINCH_OUTPUT = 0.0;
-        public static final double RETRACTED_WINCH_OUTPUT = 0.0;
+
+        /* Positions */
+        public static final double ARM_GROUND_TILT_ANGLE = 0.0;
+        public static final double ARM_GROUND_WINCH_OUTPUT = 0.0;
+        
+        public static final double ARM_BOTTOM_TILT_ANGLE = 0.0;
+        public static final double ARM_BOTTOM_WINCH_OUTPUT = 0.0;
+
+        public static final double ARM_MIDDLE_TILT_ANGLE = 0.0;
+        public static final double ARM_MIDDLE_WINCH_OUTPUT = 0.0;
+
+        public static final double ARM_TOP_TILT_ANGLE = 0.0;
+        public static final double ARM_TOP_WINCH_OUTPUT = 0.0;
+
+        public static final double ARM_RETRACTED_TILT_ANGLE = 0.0;
+        public static final double ARM_RETRACTED_WINCH_OUTPUT = 0.0;
     }
 
     public static class IntakeConstants { // Intake Constants
-        public static final double intakeRunSpeed = -0.55; //TODO: fix
+        public static final double INTAKE_CUBE_SPEED = 0.55; //TODO: fix
+        public static final double INTAKE_CONE_SPEED = -0.55;
+
+        public static final int INTAKE_MOTOR_ID = 0; //TODO: fix
+        public static final MotorType INTAKE_MOTOR_TYPE = MotorType.kBrushless;
+        public static final int INTAKE_ANGLE_MOTOR_ID = 0; //TODO: fix
+        public static final MotorType ANGLE_MOTOR_TYPE = MotorType.kBrushless;
+
+        public static final double INTAKE_ANGLE_BOTTOM = 0.0; //TODO: fix
+        public static final double INTAKE_TOP_ANGLE = 0.0;
+        public static final double INTAKE_MIDDLE_ANGLE = 0.0;
+        public static final double INTAKE_RETRACTED_ANGLE = 0.0;
+        public static final double INTAKE_GROUND_ANGLE = 0.0;
     }
 
     public static class VisionConstants { // Vision Constants
@@ -52,7 +74,6 @@ public class Constants {
         public static final int width = 300;//TODO: fix
         public static final int height = 200;
 
-        
         
     }
 

@@ -5,6 +5,7 @@ import frc.robot.subsystem.Swerve.SwerveCommand;
 import frc.robot.utility.ControllerInfo;
 
 import static frc.robot.subsystem.Swerve.makeSwerve;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.dashboard.DashboardMessageDisplay;
@@ -31,6 +32,12 @@ public class RobotContainer {
     private JoystickButton limitSwerveSpeed = new JoystickButton(driveStick, 2);
     private JoystickButton noForwardButton = new JoystickButton(driveStick, 9);
 
+    private JoystickButton PlacerBottomButton = new JoystickButton(controlStick, 5); // Rest intake on floor
+    private JoystickButton PlacerGroundButton = new JoystickButton(controlStick, 6); // Ground Placing
+    private JoystickButton PlacerMiddleButton = new JoystickButton(controlStick, 7);
+    private JoystickButton PlacerTopButton = new JoystickButton(controlStick, 8);
+    private JoystickButton PlacerRetractedButton = new JoystickButton(controlStick, 9);
+
     private DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
     private SwerveCommand swerveCommand;
 
@@ -39,7 +46,7 @@ public class RobotContainer {
     public RobotContainer() {
         configureControls();
         configureSwerve();
-        configureArmAndIntake();
+        configureSequencer();
     }
 
     void configureControls() {
@@ -79,8 +86,11 @@ public class RobotContainer {
 
         Shuffleboard.getTab("Swerve").add("Swerve", m_swerve);
         Shuffleboard.getTab("Swerve").add("Swerve Command", swerveCommand);
+
+        Shuffleboard.getTab("Swerve").add("swervefield", m_swerve).withWidget("Field");
     }
-    void configureArmAndIntake() {
+    void configureSequencer() {
+        /* ARM */
 
     }
 

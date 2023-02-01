@@ -1,0 +1,43 @@
+{
+  "HALProvider": {
+    "Timing": {
+      "window": {
+        "visible": false
+      }
+    }
+  },
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/LiveWindow/Ungrouped/navX-Sensor[1]": "Gyro"
+    }
+  },
+  "NetworkTables": {
+    "transitory": {
+      "Shuffleboard": {
+        "Driver Controls": {
+          "Driver Controls": {
+            "open": true
+          },
+          "open": true
+        }
+      }
+    }
+  },
+  "NetworkTables Info": {
+    "shuffleboard": {
+      "open": true
+    }
+  },
+  "Plot": {
+    "Plot <0>": {
+      "plots": [
+        {
+          "height": 338
+        }
+      ]
+    }
+  }
+}

@@ -2,6 +2,8 @@ package frc.robot;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;;
 
 public class Constants {
+    public static class JoystickConstants 
+
     public static class SwerveConstants { // Swerve Constants
         public final static double MAX_LINEAR_SPEED = 5.088432798984; // Change this!
 

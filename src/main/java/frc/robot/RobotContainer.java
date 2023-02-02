@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystem.Swerve.SwerveCommand.ControlMode;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import frc.robot.subsystem.Arm.Position;
 
 import frc.robot.subsystem.Arm;
 import frc.robot.subsystem.Intake;
@@ -37,19 +38,29 @@ public class RobotContainer {
     private JoystickButton resetGyro = new JoystickButton(driveStick, 10);
     private JoystickButton limitSwerveSpeed = new JoystickButton(driveStick, 2);
     private JoystickButton noForwardButton = new JoystickButton(driveStick, 9);
+    //private JoystickButton funButton = new JoystickButton(driveStick, #);
 
-    private JoystickButton coneButton = new JoystickButton(controlStick, 6);
-    private JoystickButton cubeButton = new JoystickButton(controlStick, 7);
+    private JoystickButton coneButton = new JoystickButton(controlStick, 11);
+    private JoystickButton cubeButton = new JoystickButton(controlStick, 12);
 
-    private JoystickButton armGroundButton = new JoystickButton(controlStick, 4);
-    private JoystickButton armBottomButton = new JoystickButton(controlStick, 1);
-    private JoystickButton armMiddleButton = new JoystickButton(controlStick, 2);
-    private JoystickButton armTopButton = new JoystickButton(controlStick, 3);
-    private JoystickButton armRetractedButton = new JoystickButton(controlStick, 4);
+    // change buttonNumbers later
+    private JoystickButton placerGroundButton = new JoystickButton(controlStick, 4);
+    private JoystickButton placerBottomButton = new JoystickButton(controlStick, 1);
+    private JoystickButton placerMiddleButton = new JoystickButton(controlStick, 2);
+    private JoystickButton placerTopButton = new JoystickButton(controlStick, 3);
+    private JoystickButton placerRetractedButton = new JoystickButton(controlStick, 4);
+    
     private JoystickButton intakeButton = new JoystickButton(controlStick, 5);
+    private JoystickButton bottomConeOrientation = new JoystickButton(controlStick, 5);
+    private JoystickButton topConeOrientation = new JoystickButton(controlStick, 6);
+    
     
     private DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
     private SwerveCommand swerveCommand;
+    private boolean isCone;
+    private boolean isBottomConeOrientation;
+    private Position position;
+    
 
     private SendableChooser<Command> autonChooser = new SendableChooser<Command>();
 
@@ -105,13 +116,14 @@ public class RobotContainer {
     }
 
     void configureArmAndIntake() {
-        armBottomButton.toggleOnTrue(new ParallelCommandGroup(
-            new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE)
-                .andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_BOT)),
-            new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_BOTTOM_CONE_PLACE)
-        ));
+        coneButton.toggleOnTrue();
+        coneButton.toggleOnFalse();
 
-        
+        // armBottomButton.toggleOnTrue(new ParallelCommandGroup(
+        //     new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE)
+        //         .andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_BOT)),
+        //     new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_BOTTOM_CONE_PLACE)
+        // ));
     }
 
     public Command getAutonomousCommand() {

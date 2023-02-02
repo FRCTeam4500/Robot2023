@@ -46,9 +46,11 @@ public class Constants {
 
         public static final double ARM_PLACE_MID = 0; // TODO: change value later
 
-        public static final double ARM_PLACE_LOW = 0; // TODO: change value later
+        public static final double ARM_PLACE_BOT = 0; // TODO: change value later
 
         public static final double ARM_RETRACT = 0; // TODO: change value later
+
+        public static final double ARM_BOTTOM_CONE_INTAKE_ADDITION = 0; // TODO: change value later
 
     }
 
@@ -63,9 +65,9 @@ public class Constants {
 
         public static final double INTAKE_BOTTOM_PICKUP = 0; // TODO: Fix value
 
-        public static final double INTAKE_TRAY_PICKUP = 0; // TODO: Fix value
+        public static final double INTAKE_TRAY_PICKUP = 0; // TODO: Fix value | also will place top cone
 
-        public static final double INTAKE_SIDEWAYS_CONE_PLACE = 0; // TODO: Fix value
+        public static final double INTAKE_BOTTOM_CONE_PLACE = 0; // TODO: Fix value
     }
 
     public static class VisionConstants { // Vision Constants

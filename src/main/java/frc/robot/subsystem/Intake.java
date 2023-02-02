@@ -65,6 +65,10 @@ public class Intake extends SubsystemBase {
         }
     }
 
+    public static Intake makeIntake() {
+        return new Intake();
+    }
+
     @Override
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("Target Intake Tilt position", () -> targetTiltAngle, (value) -> {setAngle((double) value);});

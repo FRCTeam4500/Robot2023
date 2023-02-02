@@ -18,3 +18,4 @@ Since the arm is meant to go to 5 places and be synchronized with the intake, th
 - Top: For the top :/
 - Retracted, Stay in robot frame
 
+Executive decision made: The Intake+Arm Combo is now called **The Placer**

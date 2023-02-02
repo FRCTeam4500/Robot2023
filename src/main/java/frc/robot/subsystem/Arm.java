@@ -116,6 +116,10 @@ public class Arm extends SubsystemBase {
         return position;
     }
 
+    public static Arm makeArm() {
+        return new Arm();
+    }
+
     @Override
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("Target tilt position", () -> targetTiltAngle, (value) -> {setTilt((double) value);});

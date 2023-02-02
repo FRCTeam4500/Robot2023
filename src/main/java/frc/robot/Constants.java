@@ -2,7 +2,29 @@ package frc.robot;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;;
 
 public class Constants {
-    public static class JoystickConstants 
+    public static class JoystickConstants {
+        // Drive stick map
+        public final static int LOCK_SWERVE_ROTATION = 1;
+        public final static int SWITCH_DRIVE_MODE_ROBOT_CENTRIC = 4;
+        public final static int ALIGN_SWERVE_TO_ANGLE = 8;
+        public final static int ALIGN_SWERVE_REVERSE = 7;
+        public final static int RESET_GYRO = 10;
+        public final static int LIMIT_SWERVE_SPEED = 2;
+        public final static int NO_FORWARD = 9;
+
+        // Control stick map
+        public final static int CONE_INTAKE = 0; // Also places cubes
+        public final static int CUBE_INTAKE = 0; // Also places cones 
+         public final static int RUN_INTAKE = 0;
+        public final static int INTAKE_GROUND = 0;
+        public final static int READY_BOTTOM = 0;
+        public final static int READY_MIDDLE = 0;
+        public final static int READY_TOP = 0;
+        public final static int RETRACT = 0;
+        public final static int UPRIGHT_CONE = 0;
+        public final static int SIDEWAYS_CONE = 0;
+
+    }
 
     public static class SwerveConstants { // Swerve Constants
         public final static double MAX_LINEAR_SPEED = 5.088432798984; // Change this!

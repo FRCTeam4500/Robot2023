@@ -5,6 +5,8 @@ import frc.robot.subsystem.Swerve.SwerveCommand;
 import frc.robot.utility.ControllerInfo;
 
 import static frc.robot.subsystem.Swerve.makeSwerve;
+import static frc.robot.subsystem.Arm.makeArm;
+import static frc.robot.subsystem.Intake.makeIntake;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -14,11 +16,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystem.Swerve.SwerveCommand.ControlMode;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 
+import frc.robot.subsystem.Arm;
+import frc.robot.subsystem.Intake;
+
+import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.IntakeConstants;
 
 public class RobotContainer {
-    private final OdometricSwerve m_swerve = makeSwerve();
-
     /* Setting Joystick Buttons */
     private Joystick driveStick = new Joystick(0);
     private Joystick controlStick = new Joystick(1);
@@ -32,21 +38,29 @@ public class RobotContainer {
     private JoystickButton limitSwerveSpeed = new JoystickButton(driveStick, 2);
     private JoystickButton noForwardButton = new JoystickButton(driveStick, 9);
 
-    private JoystickButton PlacerBottomButton = new JoystickButton(controlStick, 5); // Rest intake on floor
-    private JoystickButton PlacerGroundButton = new JoystickButton(controlStick, 6); // Ground Placing
-    private JoystickButton PlacerMiddleButton = new JoystickButton(controlStick, 7);
-    private JoystickButton PlacerTopButton = new JoystickButton(controlStick, 8);
-    private JoystickButton PlacerRetractedButton = new JoystickButton(controlStick, 9);
+    private JoystickButton coneButton = new JoystickButton(controlStick, 6);
+    private JoystickButton cubeButton = new JoystickButton(controlStick, 7);
 
+    private JoystickButton armGroundButton = new JoystickButton(controlStick, 4);
+    private JoystickButton armBottomButton = new JoystickButton(controlStick, 1);
+    private JoystickButton armMiddleButton = new JoystickButton(controlStick, 2);
+    private JoystickButton armTopButton = new JoystickButton(controlStick, 3);
+    private JoystickButton armRetractedButton = new JoystickButton(controlStick, 4);
+    private JoystickButton intakeButton = new JoystickButton(controlStick, 5);
+    
     private DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
     private SwerveCommand swerveCommand;
 
     private SendableChooser<Command> autonChooser = new SendableChooser<Command>();
 
+    private final OdometricSwerve m_swerve = makeSwerve();
+    private final Arm m_arm = makeArm();
+    private final Intake m_intake = makeIntake();
+
     public RobotContainer() {
         configureControls();
         configureSwerve();
-        configureSequencer();
+        configureArmAndIntake();
     }
 
     void configureControls() {
@@ -89,9 +103,15 @@ public class RobotContainer {
 
         Shuffleboard.getTab("Swerve").add("swervefield", m_swerve).withWidget("Field");
     }
-    void configureSequencer() {
-        /* ARM */
 
+    void configureArmAndIntake() {
+        armBottomButton.toggleOnTrue(new ParallelCommandGroup(
+            new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE)
+                .andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_BOT)),
+            new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_BOTTOM_CONE_PLACE)
+        ));
+
+        
     }
 
     public Command getAutonomousCommand() {

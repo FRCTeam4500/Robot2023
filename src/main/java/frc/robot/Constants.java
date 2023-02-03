@@ -15,8 +15,8 @@ public class Constants {
         // Control stick map
         public final static int CONE_INTAKE = 0; // Also places cubes
         public final static int CUBE_INTAKE = 0; // Also places cones 
-         public final static int RUN_INTAKE = 0;
-        public final static int INTAKE_GROUND = 0;
+        public final static int PLACE = 0;
+        public final static int READY_GROUND = 0;
         public final static int READY_BOTTOM = 0;
         public final static int READY_MIDDLE = 0;
         public final static int READY_TOP = 0;
@@ -79,6 +79,11 @@ public class Constants {
     }
 
     public static class IntakeConstants { // Intake Constants
+<<<<<<< HEAD
+        public static final double intakeRunSpeed = -0.55; //TODO: fix
+        public static final double intakeDownAngle = 0.0;
+        public static final double intakeUpAngle = 0.0;
+=======
         public static final double INTAKE_CUBE_SPEED = 0.55; //TODO: fix
         public static final double INTAKE_CONE_SPEED = -0.55;
 
@@ -92,6 +97,7 @@ public class Constants {
         public static final double INTAKE_TRAY_PICKUP = 0; // TODO: Fix value | also will place top cone
 
         public static final double INTAKE_BOTTOM_CONE_PLACE = 0; // TODO: Fix value
+>>>>>>> b1f9934e201d2910da6900d712b6fe1a9882736d
     }
 
     public static class VisionConstants { // Vision Constants

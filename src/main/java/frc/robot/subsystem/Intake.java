@@ -75,3 +75,4 @@ public class Intake extends SubsystemBase {
         builder.addDoubleProperty("Target Intake Wheel output", () -> targetIntakeOutput, (value) -> {setIntake((double) value);});
     }
 }
+>>>>>>> b1f9934e201d2910da6900d712b6fe1a9882736d

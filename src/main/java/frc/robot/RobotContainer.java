@@ -88,6 +88,7 @@ public class RobotContainer {
         swerveCommand = new SwerveCommand(m_swerve, driveStick, info);
         m_swerve.setDefaultCommand(swerveCommand);
 
+        // lambdas to define what happens for each joystick button for configuring swerve
         lockSwerveRotationButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.lockRotation = true;}));
         lockSwerveRotationButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.lockRotation = false;}));
 
@@ -109,6 +110,8 @@ public class RobotContainer {
 
         resetGyro.toggleOnTrue(new InstantCommand(() -> {m_swerve.resetRobotAngle();}));
 
+
+
         Shuffleboard.getTab("Swerve").add("Swerve", m_swerve);
         Shuffleboard.getTab("Swerve").add("Swerve Command", swerveCommand);
 
@@ -116,14 +119,16 @@ public class RobotContainer {
     }
 
     void configureArmAndIntake() {
-        coneButton.toggleOnTrue();
+        // Method where we will define lambdas for joystick buttons to control Arm and Intake
+        coneButton.toggleOnTrue(new InstantCommand(() -> {m_intake}));
         coneButton.toggleOnFalse();
 
-        // armBottomButton.toggleOnTrue(new ParallelCommandGroup(
+        // placerBottomButton.toggleOnTrue(new ParallelCommandGroup(
         //     new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE)
         //         .andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_BOT)),
         //     new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_BOTTOM_CONE_PLACE)
         // ));
+
     }
 
     public Command getAutonomousCommand() {

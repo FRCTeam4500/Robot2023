@@ -45,8 +45,8 @@ public class RobotContainer {
     private JoystickButton cubeButton = new JoystickButton(controlStick, JoystickConstants.CUBE_INTAKE);
     private JoystickButton placeButton = new JoystickButton(controlStick, JoystickConstants.PLACE);
     private JoystickButton readyTopButton = new JoystickButton(controlStick, JoystickConstants.READY_TOP);
-    private JoystickButton readyMidButton = new JoystickButton(controlStick, JoystickConstants.READY_MID);
-    private JoystickButton readyBotButton = new JoystickButton(controlStick, JoystickConstants.READY_BOT);
+    private JoystickButton readyMidButton = new JoystickButton(controlStick, JoystickConstants.READY_MIDDLE);
+    private JoystickButton readyBotButton = new JoystickButton(controlStick, JoystickConstants.READY_BOTTOM);
     private JoystickButton readyGroundButton = new JoystickButton(controlStick, JoystickConstants.READY_GROUND);
     private JoystickButton retractButton = new JoystickButton(controlStick, JoystickConstants.RETRACT);
     private JoystickButton uprightConeButton = new JoystickButton(controlStick, JoystickConstants.UPRIGHT_CONE);

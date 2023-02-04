@@ -1,9 +1,9 @@
 # Hello
-Nice to see you!
+Nice to see you! Bababoy
 
 # Important things to note
-This code is built for the 2023 game: Charged Up, and thus, the code is meant to be built on the 2023 Release of WPILib and GradleRIO
-
+This code is built for the 2023 game: Charged Up, and thus, the code is meant to be built on the 2023 Release of WPILib and GradleRIO.
+ 
 # Physical Explanations
 
 # Program Explanations

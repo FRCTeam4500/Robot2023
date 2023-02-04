@@ -50,7 +50,7 @@ public class Intake extends SubsystemBase {
         }
     }
 
-    public class IntakeSetOutputCommand extends InstantCommand {
+    public static class IntakeSetOutputCommand extends InstantCommand {
         private Intake intake;
         private double output;
 

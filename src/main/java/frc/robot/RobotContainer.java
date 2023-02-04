@@ -123,26 +123,45 @@ public class RobotContainer {
         sidewaysConeButton.toggleOnTrue(new InstantCommand(() -> {isBottomConeOrientation = true;}));
         sidewaysConeButton.toggleOnFalse(new InstantCommand());
 
-        placeButton.toggleOnTrue();
-        placeButton.toggleOnFalse(new InstantCommand());
+        placeButton.toggleOnTrue(
+                new Intake.IntakeSetOutputCommand(
+                        m_intake, isCone ? IntakeConstants.INTAKE_CUBE_SPEED : IntakeConstants.INTAKE_CONE_SPEED
+                )
+        );
+        placeButton.toggleOnFalse(
+                new Intake.IntakeSetOutputCommand(
+                        m_intake, 0
+                )
+        );
 
+        /*  */
         readyTopButton.toggleOnTrue(new ParallelCommandGroup(
-            new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_TOP).
-            // .andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_TOP)),
-            new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_TRAY_PICKUP)
-        ));
+                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE)
+                        .andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_TOP),
+                new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_TRAY_PICKUP)
+        )));
         readyTopButton.toggleOnFalse(new InstantCommand());
 
-        
+        readyMidButton.toggleOnTrue(new ParallelCommandGroup(
+                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE)
+                        .andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_MID)),
+                new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_TRAY_ANGLE)
+        ));
+        readyMidButton.toggleOnFalse(new InstantCommand());
 
+        readyBotButton.toggleOnTrue(new ParallelCommandGroup(
+                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_BOT)
+                        .andThen(new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PICKUP_ANGLE)),
+                new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_BOTTOM_ANGLE)
+        ));
+        readyBotButton.toggleOnFalse(new InstantCommand());
 
-        
-
-        // armBottomButton.toggleOnTrue(new ParallelCommandGroup(
-        //     new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE)
-        //         .andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_BOT)),
-        //     new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_BOTTOM_CONE_PLACE)
-        // ));
+        retractButton.toggleOnTrue(new ParallelCommandGroup(
+                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE)
+                        .andThen(new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_RETRACT)),
+                new Intake.IntakeSetOutputCommand(m_intake, IntakeConstants.INTAKE_RETRACTED_ANGLE)
+        ));
+        retractButton.toggleOnFalse(new InstantCommand());
     }
 
     public Command getAutonomousCommand() {

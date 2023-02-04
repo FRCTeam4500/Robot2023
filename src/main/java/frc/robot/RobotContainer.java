@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystem.Swerve.SwerveCommand.ControlMode;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystem.Arm.Position;
 
 import frc.robot.subsystem.Arm;
@@ -39,7 +40,6 @@ public class RobotContainer {
     private JoystickButton resetGyroButton = new JoystickButton(driveStick, JoystickConstants.RESET_GYRO);
     private JoystickButton limitSwerveSpeedButton = new JoystickButton(driveStick, JoystickConstants.LIMIT_SWERVE_SPEED);
     private JoystickButton noForwardButton = new JoystickButton(driveStick, JoystickConstants.NO_FORWARD);
-    //private JoystickButton funButton = new JoystickButton(driveStick, #);
 
     private JoystickButton coneButton = new JoystickButton(controlStick, JoystickConstants.CONE_INTAKE);
     private JoystickButton cubeButton = new JoystickButton(controlStick, JoystickConstants.CUBE_INTAKE);
@@ -47,16 +47,14 @@ public class RobotContainer {
     private JoystickButton readyTopButton = new JoystickButton(controlStick, JoystickConstants.READY_TOP);
     private JoystickButton readyMidButton = new JoystickButton(controlStick, JoystickConstants.READY_MIDDLE);
     private JoystickButton readyBotButton = new JoystickButton(controlStick, JoystickConstants.READY_BOTTOM);
-    private JoystickButton readyGroundButton = new JoystickButton(controlStick, JoystickConstants.READY_GROUND);
     private JoystickButton retractButton = new JoystickButton(controlStick, JoystickConstants.RETRACT);
     private JoystickButton uprightConeButton = new JoystickButton(controlStick, JoystickConstants.UPRIGHT_CONE);
     private JoystickButton sidewaysConeButton = new JoystickButton(controlStick, JoystickConstants.SIDEWAYS_CONE);
 
     private DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
     private SwerveCommand swerveCommand;
-    private boolean isCone;
-    private boolean isBottomConeOrientation;
-    private Position position;
+    private boolean isCone; // Changes with coneButton/cubeButton
+    private boolean isBottomConeOrientation; // Changes with Orientation buttons
     
 
     private SendableChooser<Command> autonChooser = new SendableChooser<Command>();
@@ -113,8 +111,32 @@ public class RobotContainer {
     }
 
     void configureArmAndIntake() {
-        // coneButton.toggleOnTrue();
-        // coneButton.toggleOnFalse();
+        coneButton.toggleOnTrue(new InstantCommand(() -> {isCone = true;})); //0.55 is the past intake speed
+        coneButton.toggleOnFalse(new InstantCommand());
+
+        cubeButton.toggleOnTrue(new InstantCommand(() -> {isCone = false;}));
+        cubeButton.toggleOnFalse(new InstantCommand());
+
+        uprightConeButton.toggleOnTrue(new InstantCommand(() -> {isBottomConeOrientation = false;}));
+        uprightConeButton.toggleOnFalse(new InstantCommand());
+
+        sidewaysConeButton.toggleOnTrue(new InstantCommand(() -> {isBottomConeOrientation = true;}));
+        sidewaysConeButton.toggleOnFalse(new InstantCommand());
+
+        placeButton.toggleOnTrue();
+        placeButton.toggleOnFalse(new InstantCommand());
+
+        readyTopButton.toggleOnTrue(new ParallelCommandGroup(
+            new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_TOP).
+            // .andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_TOP)),
+            new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_TRAY_PICKUP)
+        ));
+        readyTopButton.toggleOnFalse(new InstantCommand());
+
+        
+
+
+        
 
         // armBottomButton.toggleOnTrue(new ParallelCommandGroup(
         //     new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE)

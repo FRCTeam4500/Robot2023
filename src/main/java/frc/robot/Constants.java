@@ -15,8 +15,8 @@ public class Constants {
         // Control stick map
         public final static int CONE_INTAKE = 0; // Also places cubes
         public final static int CUBE_INTAKE = 0; // Also places cones 
-         public final static int RUN_INTAKE = 0;
-        public final static int INTAKE_GROUND = 0;
+        public final static int PLACE = 0;
+        public final static int READY_GROUND = 0;
         public final static int READY_BOTTOM = 0;
         public final static int READY_MIDDLE = 0;
         public final static int READY_TOP = 0;

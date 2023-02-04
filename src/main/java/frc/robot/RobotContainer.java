@@ -24,6 +24,7 @@ import frc.robot.subsystem.Intake;
 
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.Constants.JoystickConstants;
 
 public class RobotContainer {
     /* Setting Joystick Buttons */
@@ -31,30 +32,26 @@ public class RobotContainer {
     private Joystick controlStick = new Joystick(1);
     private ControllerInfo info = new ControllerInfo();
 
-    private JoystickButton lockSwerveRotationButton = new JoystickButton(driveStick, 1);
-    private JoystickButton switchDriveModeRobotCentric = new JoystickButton(driveStick, 4);
-    private JoystickButton alignSwerveToAngle = new JoystickButton(driveStick, 8);
-    private JoystickButton alignSwerveReverse = new JoystickButton(driveStick, 7);
-    private JoystickButton resetGyro = new JoystickButton(driveStick, 10);
-    private JoystickButton limitSwerveSpeed = new JoystickButton(driveStick, 2);
-    private JoystickButton noForwardButton = new JoystickButton(driveStick, 9);
+    private JoystickButton lockSwerveRotationButton = new JoystickButton(driveStick, JoystickConstants.LOCK_SWERVE_ROTATION);
+    private JoystickButton switchDriveModeRobotCentricButton = new JoystickButton(driveStick, JoystickConstants.SWITCH_DRIVE_MODE_ROBOT_CENTRIC);
+    private JoystickButton alignSwerveToAngleButton = new JoystickButton(driveStick, JoystickConstants.ALIGN_SWERVE_TO_ANGLE);
+    private JoystickButton alignSwerveReverseButton = new JoystickButton(driveStick, JoystickConstants.ALIGN_SWERVE_REVERSE);
+    private JoystickButton resetGyroButton = new JoystickButton(driveStick, JoystickConstants.RESET_GYRO);
+    private JoystickButton limitSwerveSpeedButton = new JoystickButton(driveStick, JoystickConstants.LIMIT_SWERVE_SPEED);
+    private JoystickButton noForwardButton = new JoystickButton(driveStick, JoystickConstants.NO_FORWARD);
     //private JoystickButton funButton = new JoystickButton(driveStick, #);
 
-    private JoystickButton coneButton = new JoystickButton(controlStick, 11);
-    private JoystickButton cubeButton = new JoystickButton(controlStick, 12);
+    private JoystickButton coneButton = new JoystickButton(controlStick, JoystickConstants.CONE_INTAKE);
+    private JoystickButton cubeButton = new JoystickButton(controlStick, JoystickConstants.CUBE_INTAKE);
+    private JoystickButton placeButton = new JoystickButton(controlStick, JoystickConstants.PLACE);
+    private JoystickButton readyTopButton = new JoystickButton(controlStick, JoystickConstants.READY_TOP);
+    private JoystickButton readyMidButton = new JoystickButton(controlStick, JoystickConstants.READY_MIDDLE);
+    private JoystickButton readyBotButton = new JoystickButton(controlStick, JoystickConstants.READY_BOTTOM);
+    private JoystickButton readyGroundButton = new JoystickButton(controlStick, JoystickConstants.READY_GROUND);
+    private JoystickButton retractButton = new JoystickButton(controlStick, JoystickConstants.RETRACT);
+    private JoystickButton uprightConeButton = new JoystickButton(controlStick, JoystickConstants.UPRIGHT_CONE);
+    private JoystickButton sidewaysConeButton = new JoystickButton(controlStick, JoystickConstants.SIDEWAYS_CONE);
 
-    // change buttonNumbers later
-    private JoystickButton placerGroundButton = new JoystickButton(controlStick, 4);
-    private JoystickButton placerBottomButton = new JoystickButton(controlStick, 1);
-    private JoystickButton placerMiddleButton = new JoystickButton(controlStick, 2);
-    private JoystickButton placerTopButton = new JoystickButton(controlStick, 3);
-    private JoystickButton placerRetractedButton = new JoystickButton(controlStick, 4);
-    
-    private JoystickButton intakeButton = new JoystickButton(controlStick, 5);
-    private JoystickButton bottomConeOrientation = new JoystickButton(controlStick, 5);
-    private JoystickButton topConeOrientation = new JoystickButton(controlStick, 6);
-    
-    
     private DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
     private SwerveCommand swerveCommand;
     private boolean isCone;
@@ -91,23 +88,23 @@ public class RobotContainer {
         lockSwerveRotationButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.lockRotation = true;}));
         lockSwerveRotationButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.lockRotation = false;}));
 
-        switchDriveModeRobotCentric.toggleOnTrue(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.RobotCentric;}));
-        switchDriveModeRobotCentric.toggleOnFalse(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.FieldCentric;}));
+        switchDriveModeRobotCentricButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.RobotCentric;}));
+        switchDriveModeRobotCentricButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.FieldCentric;}));
 
         /* Slow Side to Side movement */
         noForwardButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.RobotCentric; swerveCommand.noForward = true;}));
         noForwardButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.FieldCentric; swerveCommand.noForward = false;}));
 
-        alignSwerveToAngle.toggleOnTrue(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.AlignToAngle; swerveCommand.targetAngle = 0;}));
-        alignSwerveToAngle.toggleOnFalse(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.FieldCentric;}));
+        alignSwerveToAngleButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.AlignToAngle; swerveCommand.targetAngle = 0;}));
+        alignSwerveToAngleButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.FieldCentric;}));
 
-        alignSwerveReverse.toggleOnTrue(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.AlignToAngle; swerveCommand.targetAngle = Math.PI;}));
-        alignSwerveReverse.toggleOnFalse(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.FieldCentric;}));
+        alignSwerveReverseButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.AlignToAngle; swerveCommand.targetAngle = Math.PI;}));
+        alignSwerveReverseButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.FieldCentric;}));
 
-        limitSwerveSpeed.toggleOnTrue(new InstantCommand(() -> {swerveCommand.limitSpeed = true;}));
-        limitSwerveSpeed.toggleOnFalse(new InstantCommand(() -> {swerveCommand.limitSpeed = false;}));
+        limitSwerveSpeedButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.limitSpeed = true;}));
+        limitSwerveSpeedButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.limitSpeed = false;}));
 
-        resetGyro.toggleOnTrue(new InstantCommand(() -> {m_swerve.resetRobotAngle();}));
+        resetGyroButton.toggleOnTrue(new InstantCommand(() -> {m_swerve.resetRobotAngle();}));
 
         Shuffleboard.getTab("Swerve").add("Swerve", m_swerve);
         Shuffleboard.getTab("Swerve").add("Swerve Command", swerveCommand);
@@ -116,8 +113,8 @@ public class RobotContainer {
     }
 
     void configureArmAndIntake() {
-        coneButton.toggleOnTrue();
-        coneButton.toggleOnFalse();
+        // coneButton.toggleOnTrue();
+        // coneButton.toggleOnFalse();
 
         // armBottomButton.toggleOnTrue(new ParallelCommandGroup(
         //     new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE)

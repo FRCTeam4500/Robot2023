@@ -13,10 +13,10 @@ public class Constants {
         public final static int NO_FORWARD = 9;
 
         // Control stick map
-        public final static int CONE_INTAKE = 0; // Also places cubes
-        public final static int CUBE_INTAKE = 0; // Also places cones 
-        public final static int PLACE = 0;
-        public final static int READY_GROUND = 0;
+        public final static int CONE_INTAKE = 11; // Also places cubes
+        public final static int CUBE_INTAKE = 12; // Also places cones 
+        public final static int PLACE = 1;
+        public final static int READY_GROUND = 10;
         public final static int READY_BOTTOM = 0;
         public final static int READY_MIDDLE = 0;
         public final static int READY_TOP = 0;
@@ -60,9 +60,9 @@ public class Constants {
         public static final double ARM_DOWN_SENSOR_LIMIT = 1240; //TODO: fix all of these lol
         public static final double ARM_UP_SENSOR_LIMIT = 300;
 
-        public static final double ARM_PLACE_ANGLE = 0; // TODO: change value later
+        public static final double ARM_PLACE_ANGLE = 0; // ARM_PLACE_ANGLE is the angle for all heights TODO: change value later
 
-        public static final double ARM_PICKUP_ANGLE = 0; // TODO: change value later
+        public static final double ARM_PICKUP_ANGLE = 0; // ARM_PICKUP_ANGLE is the angle to pickup from ground TODO: change value later
 
         public static final double ARM_ZERO_ANGLE = 0; // TODO: change value later
 
@@ -87,11 +87,10 @@ public class Constants {
         public static final int INTAKE_ANGLE_MOTOR_ID = 0; //TODO: fix
         public static final MotorType ANGLE_MOTOR_TYPE = MotorType.kBrushless;
 
-        public static final double INTAKE_BOTTOM_PICKUP = 0; // TODO: Fix value
+        public static final double INTAKE_BOTTOM_ANGLE = 0; // Angle that the Intake should be at the bottom when picking up TODO: Fix value
 
-        public static final double INTAKE_TRAY_PICKUP = 0; // TODO: Fix value | also will place top cone
-
-        public static final double INTAKE_BOTTOM_CONE_PLACE = 0; // TODO: Fix value
+        public static final double INTAKE_TRAY_ANGLE = 0; // INTAKE_TRAY_ANGLE is the angle for placing TODO: Fix value | also will place top cone
+        public static final double INTAKE_RETRACTED_ANGLE = 0; // TRUE retracted
     }
 
     public static class VisionConstants { // Vision Constants

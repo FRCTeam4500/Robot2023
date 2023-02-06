@@ -6,6 +6,15 @@ This code is built for the 2023 game: Charged Up, and thus, the code is meant to
  
 # Physical Explanations
 
+Arm
+Intake
+
+Camera/Limelight
+
+Swerve
+
+Balancer -> Gyro
+
 # Program Explanations
 
 ## Constants

@@ -85,10 +85,6 @@ public class Arm extends SubsystemBase {
 
     /** 
      * Positions for the Arm (Synchronize tilt and winch)
-     * @param Bottom
-     * @param Middle
-     * @param Top
-     * @param Retracted
     */
     public enum Position {
         Bottom,
@@ -96,20 +92,6 @@ public class Arm extends SubsystemBase {
         Top,
         Retracted,
         Ground
-    }
-
-    /**
-     * Command for setting the position of the arm
-     * @param position
-     */
-
-    public class ArmCommand extends SequentialCommandGroup {
-        public ArmCommand (Arm arm, double tilt, double winch) {
-            super(
-                new ArmSetTiltAngleCommand(arm, tilt),
-                new ArmSetWinchOutputCommand(arm, winch)
-            );
-        }
     }
 
     public Position getPosition() {

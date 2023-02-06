@@ -29,35 +29,35 @@ import frc.robot.Constants.JoystickConstants;
 
 public class RobotContainer {
     /* Setting Joystick Buttons */
-    private Joystick driveStick = new Joystick(0);
-    private Joystick controlStick = new Joystick(1);
-    private ControllerInfo info = new ControllerInfo();
+    private final Joystick driveStick = new Joystick(0);
+    private final Joystick controlStick = new Joystick(1);
+    private final ControllerInfo info = new ControllerInfo();
 
-    private JoystickButton lockSwerveRotationButton = new JoystickButton(driveStick, JoystickConstants.LOCK_SWERVE_ROTATION);
-    private JoystickButton switchDriveModeRobotCentricButton = new JoystickButton(driveStick, JoystickConstants.SWITCH_DRIVE_MODE_ROBOT_CENTRIC);
-    private JoystickButton alignSwerveToAngleButton = new JoystickButton(driveStick, JoystickConstants.ALIGN_SWERVE_TO_ANGLE);
-    private JoystickButton alignSwerveReverseButton = new JoystickButton(driveStick, JoystickConstants.ALIGN_SWERVE_REVERSE);
-    private JoystickButton resetGyroButton = new JoystickButton(driveStick, JoystickConstants.RESET_GYRO);
-    private JoystickButton limitSwerveSpeedButton = new JoystickButton(driveStick, JoystickConstants.LIMIT_SWERVE_SPEED);
-    private JoystickButton noForwardButton = new JoystickButton(driveStick, JoystickConstants.NO_FORWARD);
+    private final JoystickButton lockSwerveRotationButton = new JoystickButton(driveStick, JoystickConstants.LOCK_SWERVE_ROTATION);
+    private final JoystickButton switchDriveModeRobotCentricButton = new JoystickButton(driveStick, JoystickConstants.SWITCH_DRIVE_MODE_ROBOT_CENTRIC);
+    private final JoystickButton alignSwerveToAngleButton = new JoystickButton(driveStick, JoystickConstants.ALIGN_SWERVE_TO_ANGLE);
+    private final JoystickButton alignSwerveReverseButton = new JoystickButton(driveStick, JoystickConstants.ALIGN_SWERVE_REVERSE);
+    private final JoystickButton resetGyroButton = new JoystickButton(driveStick, JoystickConstants.RESET_GYRO);
+    private final JoystickButton limitSwerveSpeedButton = new JoystickButton(driveStick, JoystickConstants.LIMIT_SWERVE_SPEED);
+    private final JoystickButton noForwardButton = new JoystickButton(driveStick, JoystickConstants.NO_FORWARD);
 
-    private JoystickButton coneButton = new JoystickButton(controlStick, JoystickConstants.CONE_INTAKE);
-    private JoystickButton cubeButton = new JoystickButton(controlStick, JoystickConstants.CUBE_INTAKE);
-    private JoystickButton placeButton = new JoystickButton(controlStick, JoystickConstants.PLACE);
-    private JoystickButton readyTopButton = new JoystickButton(controlStick, JoystickConstants.READY_TOP);
-    private JoystickButton readyMidButton = new JoystickButton(controlStick, JoystickConstants.READY_MIDDLE);
-    private JoystickButton readyBotButton = new JoystickButton(controlStick, JoystickConstants.READY_BOTTOM);
-    private JoystickButton retractButton = new JoystickButton(controlStick, JoystickConstants.RETRACT);
-    private JoystickButton uprightConeButton = new JoystickButton(controlStick, JoystickConstants.UPRIGHT_CONE);
-    private JoystickButton sidewaysConeButton = new JoystickButton(controlStick, JoystickConstants.SIDEWAYS_CONE);
+    private final JoystickButton coneButton = new JoystickButton(controlStick, JoystickConstants.CONE_INTAKE);
+    private final JoystickButton cubeButton = new JoystickButton(controlStick, JoystickConstants.CUBE_INTAKE);
+    private final JoystickButton placeButton = new JoystickButton(controlStick, JoystickConstants.PLACE);
+    private final JoystickButton readyTopButton = new JoystickButton(controlStick, JoystickConstants.READY_TOP);
+    private final JoystickButton readyMidButton = new JoystickButton(controlStick, JoystickConstants.READY_MIDDLE);
+    private final JoystickButton readyBotButton = new JoystickButton(controlStick, JoystickConstants.READY_BOTTOM);
+    private final JoystickButton retractButton = new JoystickButton(controlStick, JoystickConstants.RETRACT);
+    private final JoystickButton uprightConeButton = new JoystickButton(controlStick, JoystickConstants.UPRIGHT_CONE);
+    private final JoystickButton sidewaysConeButton = new JoystickButton(controlStick, JoystickConstants.SIDEWAYS_CONE);
 
-    private DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
+    private final DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
     private SwerveCommand swerveCommand;
     private boolean isCone; // Changes with coneButton/cubeButton
     private boolean isBottomConeOrientation; // Changes with Orientation buttons
     
 
-    private SendableChooser<Command> autonChooser = new SendableChooser<Command>();
+    private final SendableChooser<Command> autonChooser = new SendableChooser<Command>();
 
     private final OdometricSwerve m_swerve = makeSwerve();
     private final Arm m_arm = makeArm();

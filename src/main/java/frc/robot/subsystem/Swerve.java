@@ -570,8 +570,9 @@ public class Swerve {
 
             public void execute() {
                 while (Math.abs(gyro.getPitch()) > Math.toRadians(2)){ //getPitch() returns the angle in radians, not degrees
-                    swerveCommand.moveRobotCentric((Math.toDegrees(gyro.getPitch()))/10,0.0,0.0);
+                    swerveCommand.moveRobotCentric((Math.toDegrees(gyro.getPitch())-2)/10,0.0,0.0);
                 }
+                swerveCommand.moveRobotCentric(0,0,0);
             }
         }
     

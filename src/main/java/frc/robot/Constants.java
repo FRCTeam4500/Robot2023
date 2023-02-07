@@ -11,6 +11,7 @@ public class Constants {
         public final static int RESET_GYRO = 10;
         public final static int LIMIT_SWERVE_SPEED = 2;
         public final static int NO_FORWARD = 9;
+        public final static int BALANCE = 11;
 
         // Control stick map
         public final static int CONE_INTAKE = 11; // Also places cubes

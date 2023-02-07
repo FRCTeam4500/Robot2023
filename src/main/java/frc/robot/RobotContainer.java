@@ -3,6 +3,7 @@ package frc.robot;
 import frc.robot.subsystem.Swerve.OdometricSwerve;
 import frc.robot.subsystem.Swerve.SwerveCommand;
 import frc.robot.utility.ControllerInfo;
+import frc.robot.subsystem.Swerve.SwerveCommand.BalanceCommmand;
 
 import static frc.robot.subsystem.Swerve.makeSwerve;
 import static frc.robot.subsystem.Arm.makeArm;
@@ -40,6 +41,7 @@ public class RobotContainer {
     private final JoystickButton resetGyroButton = new JoystickButton(driveStick, JoystickConstants.RESET_GYRO);
     private final JoystickButton limitSwerveSpeedButton = new JoystickButton(driveStick, JoystickConstants.LIMIT_SWERVE_SPEED);
     private final JoystickButton noForwardButton = new JoystickButton(driveStick, JoystickConstants.NO_FORWARD);
+    private final JoystickButton balanceButton = new JoystickButton(driveStick, JoystickConstants.BALANCE);
 
     private final JoystickButton coneButton = new JoystickButton(controlStick, JoystickConstants.CONE_INTAKE);
     private final JoystickButton cubeButton = new JoystickButton(controlStick, JoystickConstants.CUBE_INTAKE);
@@ -66,7 +68,7 @@ public class RobotContainer {
     public RobotContainer() {
         configureControls();
         configureSwerve();
-        configureArmAndIntake();
+        // configureArmAndIntake();
     }
 
     void configureControls() {
@@ -82,6 +84,8 @@ public class RobotContainer {
     void configureSwerve() {
         swerveCommand = new SwerveCommand(m_swerve, driveStick, info);
         m_swerve.setDefaultCommand(swerveCommand);
+
+        balanceButton.toggleOnTrue(new BalanceCommmand(m_swerve, swerveCommand));
 
         lockSwerveRotationButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.lockRotation = true;}));
         lockSwerveRotationButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.lockRotation = false;}));
@@ -112,16 +116,12 @@ public class RobotContainer {
 
     void configureArmAndIntake() {
         coneButton.toggleOnTrue(new InstantCommand(() -> {isCone = true;})); //0.55 is the past intake speed
-        coneButton.toggleOnFalse(new InstantCommand());
 
         cubeButton.toggleOnTrue(new InstantCommand(() -> {isCone = false;}));
-        cubeButton.toggleOnFalse(new InstantCommand());
 
         uprightConeButton.toggleOnTrue(new InstantCommand(() -> {isBottomConeOrientation = false;}));
-        uprightConeButton.toggleOnFalse(new InstantCommand());
 
         sidewaysConeButton.toggleOnTrue(new InstantCommand(() -> {isBottomConeOrientation = true;}));
-        sidewaysConeButton.toggleOnFalse(new InstantCommand());
 
         placeButton.toggleOnTrue(
                 new Intake.IntakeSetOutputCommand(
@@ -134,34 +134,30 @@ public class RobotContainer {
                 )
         );
 
-        /*  */
+        /* Sync Arm and Intake */
         readyTopButton.toggleOnTrue(new ParallelCommandGroup(
                 new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE)
                         .andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_TOP),
-                new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_TRAY_PICKUP)
+                new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_TRAY_ANGLE)
         )));
-        readyTopButton.toggleOnFalse(new InstantCommand());
 
         readyMidButton.toggleOnTrue(new ParallelCommandGroup(
-                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE)
+                 new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE)
                         .andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_MID)),
                 new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_TRAY_ANGLE)
         ));
-        readyMidButton.toggleOnFalse(new InstantCommand());
 
         readyBotButton.toggleOnTrue(new ParallelCommandGroup(
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_BOT)
                         .andThen(new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PICKUP_ANGLE)),
                 new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_BOTTOM_ANGLE)
         ));
-        readyBotButton.toggleOnFalse(new InstantCommand());
 
         retractButton.toggleOnTrue(new ParallelCommandGroup(
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE)
                         .andThen(new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_RETRACT)),
                 new Intake.IntakeSetOutputCommand(m_intake, IntakeConstants.INTAKE_RETRACTED_ANGLE)
         ));
-        retractButton.toggleOnFalse(new InstantCommand());
     }
 
     public Command getAutonomousCommand() {

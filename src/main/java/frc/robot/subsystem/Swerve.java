@@ -338,8 +338,10 @@ public class Swerve {
             odometry.update(new Rotation2d(gyro.getAngle()), getSwerveModulePositions());
         }
 
-        /* Currently Out of Use, using getSwerveModulePositions() instead :) */
-        private SwerveModuleState[] getSwerveModuleStates(){
+        /**
+        * Currently Out of Use, using getSwerveModulePositions() instead :) 
+        */
+        private SwerveModuleState[] getSwerveModuleStates() {
             var states = new SwerveModuleState[wheelModules.length];
             for(int i = 0;i<states.length;i++){
                 states[i] = odometricWheelModules[i].getState();
@@ -391,6 +393,10 @@ public class Swerve {
                 module.coast();
             }
         }
+
+        public void balance() {
+            
+        }
     
         @Override
         public void initSendable(SendableBuilder builder) {
@@ -401,21 +407,7 @@ public class Swerve {
         }
     
     }
-    public static OdometricSwerve makeSwerve() {
-        OdometricWheelModule fl = makeWheelModule(AFLPORT, DFLPORT, new Translation2d(DRIVE_Y_FRONT_TRANSLATION, DRIVE_X_TRANSLATION), true, true,true, .4, .75);
-        OdometricWheelModule fr = makeWheelModule(AFRPORT, DFRPORT, new Translation2d(DRIVE_Y_FRONT_TRANSLATION, -DRIVE_X_TRANSLATION), true, true,false, .75, .75);
-        OdometricWheelModule bl = makeWheelModule(ABLPORT, DBLPORT, new Translation2d(-DRIVE_Y_BACK_TRANSLATION, DRIVE_X_TRANSLATION), false, true,true, .9, .8);
-        OdometricWheelModule br = makeWheelModule(ABRPORT, DBRPORT, new Translation2d(-DRIVE_Y_BACK_TRANSLATION, -DRIVE_X_TRANSLATION ), true, true,false, 1, .8);
-
-        return new OdometricSwerve(
-                new AHRSAngleGetterComponent(I2C.Port.kMXP),
-                fl,
-                fr,
-                bl,
-                br
-        );
-    }
-
+    
     /**
      * 
      * @param angleId
@@ -456,6 +448,21 @@ public class Swerve {
                 WHEEL_DIAMETER,
                 ANGLE_RATIO,
                 DRIVE_RATIO);
+    }
+
+    public static OdometricSwerve makeSwerve() {
+        OdometricWheelModule fl = makeWheelModule(AFLPORT, DFLPORT, new Translation2d(DRIVE_Y_FRONT_TRANSLATION, DRIVE_X_TRANSLATION), true, true,true, .4, .75);
+        OdometricWheelModule fr = makeWheelModule(AFRPORT, DFRPORT, new Translation2d(DRIVE_Y_FRONT_TRANSLATION, -DRIVE_X_TRANSLATION), true, true,false, .75, .75);
+        OdometricWheelModule bl = makeWheelModule(ABLPORT, DBLPORT, new Translation2d(-DRIVE_Y_BACK_TRANSLATION, DRIVE_X_TRANSLATION), false, true,true, .9, .8);
+        OdometricWheelModule br = makeWheelModule(ABRPORT, DBRPORT, new Translation2d(-DRIVE_Y_BACK_TRANSLATION, -DRIVE_X_TRANSLATION ), true, true,false, 1, .8);
+
+        return new OdometricSwerve(
+                new AHRSAngleGetterComponent(I2C.Port.kMXP),
+                fl,
+                fr,
+                bl,
+                br
+        );
     }
 
     public static class SwerveCommand extends CommandBase {
@@ -514,10 +521,10 @@ public class Swerve {
             }
         }
     
-        private void moveFieldCentric(double x, double y, double w){
+        private void moveFieldCentric(double x, double y, double w) {
             swerve.moveFieldCentric(y,x,w);
         }
-        private void moveRobotCentric(double x, double y, double w){
+        private void moveRobotCentric(double x, double y, double w) {
             swerve.moveRobotCentric(y,x,w);
         }
         private void moveAlign(double r, double t, double w) {
@@ -543,6 +550,29 @@ public class Swerve {
                 return maximum * Math.signum(value);
             }
             return value;
+        }
+
+        /* Balancing */
+
+        public static class BalanceCommmand extends CommandBase {
+
+            private OdometricSwerve swerve;
+            private SwerveCommand swerveCommand;
+            private AHRSAngleGetterComponent gyro = new AHRSAngleGetterComponent(I2C.Port.kMXP);
+
+            public BalanceCommmand(OdometricSwerve swerve, SwerveCommand swerveCommand) {
+                this.swerve = swerve;
+                this.swerveCommand = swerveCommand;
+                swerveCommand.controlMode = ControlMode.AlignToAngle; 
+                swerveCommand.targetAngle = 0;
+                addRequirements(swerve);
+            }
+
+            public void execute() {
+                while (Math.abs(gyro.getPitch()) > Math.toRadians(2)){ //getPitch() returns the angle in radians, not degrees
+                    swerveCommand.moveRobotCentric((Math.toDegrees(gyro.getPitch()))/10,0.0,0.0);
+                }
+            }
         }
     
         public void initSendable(SendableBuilder builder){

@@ -55,6 +55,7 @@ public class RobotContainer {
 
     private final DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
     private SwerveCommand swerveCommand;
+    private BalanceCommmand balanceCommmand;
     private boolean isCone; // Changes with coneButton/cubeButton
     private boolean isBottomConeOrientation; // Changes with Orientation buttons
     
@@ -110,6 +111,7 @@ public class RobotContainer {
 
         Shuffleboard.getTab("Swerve").add("Swerve", m_swerve);
         Shuffleboard.getTab("Swerve").add("Swerve Command", swerveCommand);
+        Shuffleboard.getTab("Swerve").add("Balance Command", balanceCommand);
 
         Shuffleboard.getTab("Swerve").add("swervefield", m_swerve).withWidget("Field");
     }

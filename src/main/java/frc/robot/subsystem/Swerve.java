@@ -574,6 +574,9 @@ public class Swerve {
                 }
                 swerveCommand.moveRobotCentric(0,0,0);
             }
+            public void initSendable(SendableBuilder builder){
+                builder.addDoubleProperty("Robot Pitch", gyro::getPitch,null);
+            }
         }
     
         public void initSendable(SendableBuilder builder){

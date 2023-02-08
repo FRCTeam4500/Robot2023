@@ -3,7 +3,7 @@ package frc.robot;
 import frc.robot.subsystem.Swerve.OdometricSwerve;
 import frc.robot.subsystem.Swerve.SwerveCommand;
 import frc.robot.utility.ControllerInfo;
-import frc.robot.subsystem.Swerve.SwerveCommand.BalanceCommmand;
+import frc.robot.subsystem.Swerve.SwerveCommand.BalanceCommand; // thank you vimal for knwoing how to spell commmand
 
 import static frc.robot.subsystem.Swerve.makeSwerve;
 import static frc.robot.subsystem.Arm.makeArm;
@@ -55,7 +55,7 @@ public class RobotContainer {
 
     private final DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
     private SwerveCommand swerveCommand;
-    private BalanceCommmand balanceCommmand;
+    private BalanceCommand balanceCommand;
     private boolean isCone; // Changes with coneButton/cubeButton
     private boolean isBottomConeOrientation; // Changes with Orientation buttons
     
@@ -84,9 +84,10 @@ public class RobotContainer {
     }
     void configureSwerve() {
         swerveCommand = new SwerveCommand(m_swerve, driveStick, info);
+        balanceCommand = new BalanceCommand(m_swerve, swerveCommand);
         m_swerve.setDefaultCommand(swerveCommand);
 
-        balanceButton.toggleOnTrue(new BalanceCommmand(m_swerve, swerveCommand));
+        balanceButton.toggleOnTrue(new BalanceCommand(m_swerve, swerveCommand));
 
         lockSwerveRotationButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.lockRotation = true;}));
         lockSwerveRotationButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.lockRotation = false;}));

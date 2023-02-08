@@ -554,13 +554,13 @@ public class Swerve {
 
         /* Balancing */
 
-        public static class BalanceCommmand extends CommandBase {
+        public static class BalanceCommand extends CommandBase {
 
             private OdometricSwerve swerve;
             private SwerveCommand swerveCommand;
             private AHRSAngleGetterComponent gyro = new AHRSAngleGetterComponent(I2C.Port.kMXP);
 
-            public BalanceCommmand(OdometricSwerve swerve, SwerveCommand swerveCommand) {
+            public BalanceCommand(OdometricSwerve swerve, SwerveCommand swerveCommand) {
                 this.swerve = swerve;
                 this.swerveCommand = swerveCommand;
                 swerveCommand.controlMode = ControlMode.AlignToAngle; 
@@ -569,8 +569,9 @@ public class Swerve {
             }
 
             public void execute() {
-                while (Math.abs(gyro.getPitch()) > Math.toRadians(2)){ //getPitch() returns the angle in radians, not degrees
-                    swerveCommand.moveRobotCentric((Math.toDegrees(gyro.getPitch())-2)/10,0.0,0.0);
+                while (Math.abs(gyro.getPitch()) > 2){ //getPitch() returns the angle in degrees, not radians of gyro
+                    swerveCommand.moveRobotCentric((Math.toRadians(gyro.getPitch())-2)/10,0.0,0.0);
+                    // Should this have a delay built in?
                 }
                 swerveCommand.moveRobotCentric(0,0,0);
             }

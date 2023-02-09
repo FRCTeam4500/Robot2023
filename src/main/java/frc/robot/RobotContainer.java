@@ -1,11 +1,7 @@
 package frc.robot;
 
-import frc.robot.subsystem.Swerve.OdometricSwerve;
-import frc.robot.subsystem.Swerve.SwerveCommand;
-import frc.robot.utility.ControllerInfo;
-import frc.robot.subsystem.Swerve.SwerveCommand.BalanceCommand; // thank you vimal for knwoing how to spell commmand
+import frc.robot.utility.ControllerInfo; // thank you vimal for knwoing how to spell commmand
 
-import static frc.robot.subsystem.Swerve.makeSwerve;
 import static frc.robot.subsystem.Arm.makeArm;
 import static frc.robot.subsystem.Intake.makeIntake;
 
@@ -16,7 +12,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.subsystem.Swerve.SwerveCommand.ControlMode;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystem.Arm.Position;
@@ -27,6 +22,13 @@ import frc.robot.subsystem.Intake;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.JoystickConstants;
+
+import frc.robot.subsystem.swerve.command.TriModeSwerveCommand;
+import frc.robot.subsystem.swerve.pathfollowingswerve.HardwareSwerveFactory;
+import frc.robot.subsystem.swerve.pathfollowingswerve.OdometricSwerve;
+import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
+import frc.robot.subsystem.swerve.command.TriModeSwerveCommand.ControlMode;
+
 
 public class RobotContainer {
     /* Setting Joystick Buttons */
@@ -54,15 +56,14 @@ public class RobotContainer {
     private final JoystickButton sidewaysConeButton = new JoystickButton(controlStick, JoystickConstants.SIDEWAYS_CONE);
 
     private final DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
-    private SwerveCommand swerveCommand;
-    private BalanceCommand balanceCommand;
+    private TriModeSwerveCommand swerveCommand;
     private boolean isCone; // Changes with coneButton/cubeButton
     private boolean isBottomConeOrientation; // Changes with Orientation buttons
     
 
     private final SendableChooser<Command> autonChooser = new SendableChooser<Command>();
 
-    private final OdometricSwerve m_swerve = makeSwerve();
+    private final PathFollowingSwerve m_swerve = HardwareSwerveFactory.makeSwerve();
     private final Arm m_arm = makeArm();
     private final Intake m_intake = makeIntake();
 
@@ -83,11 +84,8 @@ public class RobotContainer {
         Shuffleboard.getTab("Driver Controls").add("Messages", messages);
     }
     void configureSwerve() {
-        swerveCommand = new SwerveCommand(m_swerve, driveStick, info);
-        balanceCommand = new BalanceCommand(m_swerve, swerveCommand);
+        swerveCommand = new TriModeSwerveCommand(m_swerve, driveStick, info, messages);
         m_swerve.setDefaultCommand(swerveCommand);
-
-        balanceButton.toggleOnTrue(new BalanceCommand(m_swerve, swerveCommand));
 
         lockSwerveRotationButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.lockRotation = true;}));
         lockSwerveRotationButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.lockRotation = false;}));
@@ -112,9 +110,6 @@ public class RobotContainer {
 
         Shuffleboard.getTab("Swerve").add("Swerve", m_swerve);
         Shuffleboard.getTab("Swerve").add("Swerve Command", swerveCommand);
-        Shuffleboard.getTab("Swerve").add("Balance Command", balanceCommand);
-
-        Shuffleboard.getTab("Swerve").add("swervefield", m_swerve).withWidget("Field");
     }
 
     void configureArmAndIntake() {

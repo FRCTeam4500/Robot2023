@@ -1,0 +1,33 @@
+Description of the swerve system
+
+KinematicSwerve is essentially a normal swerve made mostly with code provided by wpilib
+It knows how fast the robot is moving and the robot's direction and can move the robot relative to
+itself, an angle, or the field.
+
+OdometricSwerve knows where it is on the field relative to a starting point, and thus is able to follow
+trajectories in order to do autonomous routines
+
+
+The following is Robert's descrtiption of how the path following commands FollowTrajectoryCommand, FollowStatesCommand,
+and FollowDottedTrajectoryCommand work
+
+    so follow trajectory is supposed to be a base path following command,
+    the most important function is applyState which just moves the robot towards a given target and logs some data
+
+    by default followTrajectory just uses a timer and calls applyState over and over so it's pretty basic
+
+    followStates is my first attempt at making the robot prioritize following the path accurately over speed,
+    so it extends followTrajectory and calls applyState . Basically, followStates uses a "ghost robot"
+    which the real robot tries to mimick, and the "ghost robot" slows down if the real robot
+    moves too far away from it so that it can catch up
+
+    this didn't work very well because sometimes the real robot would be ahead of the ghost robot,
+    and it would just kinda break
+
+    followDottedTrajectory is similar to followStates in that it has a ghost robot,
+    but this time the command keeps track of whether the real robot is ahead or behind the ghost robot.
+    that way, if the ghost robot is behind the real robot, the command moves the ghost robot forward, and vice versa
+
+    followDottedTrajectory is the most accurate one, so you just need to use that
+
+    also it's called followDottedTrajectory because it uses the dot product and i am bad at names

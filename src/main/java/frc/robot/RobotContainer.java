@@ -14,14 +14,16 @@ import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
 import frc.robot.utility.ControllerInfo;
 import frc.robot.subsystem.Arm;
 import frc.robot.subsystem.Intake;
-import frc.robot.subsystem.Vision;
+import frc.robot.subsystem.vision.HardwareVisionFactory;
+import frc.robot.subsystem.vision.Vision;
 import frc.robot.subsystem.Arm.ArmSetTiltAngleCommand;
+import frc.robot.subsystem.vision.util.VisionDistanceCalculator;
 
 public class RobotContainer {
 
     //Initialize subsystems
     private PathFollowingSwerve swerve = HardwareSwerveFactory.makeSwerve();
-    private Vision vision = Vision.makeVision();
+    private Vision vision = HardwareVisionFactory.makeVision();
     private Arm arm = new Arm();
     private Intake intake = new Intake();
 
@@ -105,7 +107,7 @@ public class RobotContainer {
     }
 
     void configureVision() {
-        Shuffleboard.getTab("Driving").add("Distance", new DashboardNumberDisplay("Distance", () -> Vision.VisionDistanceCalculator.calculateDistance(vision)));
+        Shuffleboard.getTab("Driving").add("Distance", new DashboardNumberDisplay("Distance", () -> VisionDistanceCalculator.calculateDistance(vision)));
     }
 
     public Command getAutonomousCommand() {

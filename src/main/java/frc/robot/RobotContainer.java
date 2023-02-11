@@ -1,5 +1,6 @@
 package frc.robot;
 
+import frc.robot.subsystem.Swerve;
 import frc.robot.utility.ControllerInfo; // thank you vimal for knwoing how to spell commmand
 
 import static frc.robot.subsystem.Arm.makeArm;
@@ -105,6 +106,9 @@ public class RobotContainer {
 
         limitSwerveSpeedButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.limitSpeed = true;}));
         limitSwerveSpeedButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.limitSpeed = false;}));
+
+        balanceButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.balance = true;}));
+        balanceButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.balance = false; swerveCommand.controlMode = ControlMode.FieldCentric;}));
 
         resetGyroButton.toggleOnTrue(new InstantCommand(() -> {m_swerve.resetRobotAngle();}));
 

@@ -4,8 +4,11 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.component.hardware.AHRSAngleGetterComponent;
 import frc.robot.dashboard.DashboardMessageDisplay;
 import frc.robot.subsystem.swerve.Swerve;
 import frc.robot.utility.ControllerInfo;
@@ -26,7 +29,8 @@ import edu.wpi.first.util.sendable.Sendable;
  *
  * AlignToAngle
  * Aligns to a target angle
- * TODO: make this automatically align the robot rotationally with the goal, to avoid the goal going out of view of the vision
+ * TODO: make this automatically align the robot rotationally with the goal,
+ * to avoid the goal going out of view of the vision
  */
 public class TriModeSwerveCommand extends CommandBase {
     private Swerve swerve;
@@ -41,6 +45,7 @@ public class TriModeSwerveCommand extends CommandBase {
     public boolean limitSpeed = false;
     public double targetAngle = 0;
     public boolean noForward = false;
+    public boolean balance = false;
 
     private double limitedSpeed = .75;
 
@@ -72,7 +77,10 @@ public class TriModeSwerveCommand extends CommandBase {
             ySpeed = 0;
             zSpeed = 0;
             xSpeed = ceiling(xSpeed, limitedSpeed);
-        }    
+        }
+        if (balance) {
+            balance();
+        }
         switch (controlMode){
             case FieldCentric:
                 moveFieldCentric(xSpeed, ySpeed, zSpeed);
@@ -96,6 +104,30 @@ public class TriModeSwerveCommand extends CommandBase {
         double wSpeed = 4 * angleAdjustmentController.calculate(swerve.getRobotAngle(), targetAngle);
         moveFieldCentric(r, t, wSpeed);
     }
+    private void balance() {
+        AHRSAngleGetterComponent gyro = new AHRSAngleGetterComponent(I2C.Port.kMXP);
+        boolean go = true;
+        double angle;
+        int timesEqual = 0;
+
+        while (go) {
+            angle = Math.toDegrees(gyro.getPitch());
+
+            if (Math.toDegrees(angle) > 2) {
+                moveFieldCentric((angle-2)/10,0,0);
+            } else if (Math.toDegrees(-2) < 2) {
+                moveFieldCentric(-((angle-2)/10),0,0);
+            } else {
+                timesEqual++;
+            }
+
+            if (timesEqual > 10) { // 10 is a placeholder
+                go = false;
+            }
+
+            new WaitCommand(.05);
+        }
+    } //(((gyro.getPitch()*gyro)+(gyro.getRoll()*anglepitch))/2)*(gyro.getX()*gyro.getX()
     //deadzones the input
     private double withDeadzone(double value, double deadzone){
         if(Math.abs(value) < deadzone)

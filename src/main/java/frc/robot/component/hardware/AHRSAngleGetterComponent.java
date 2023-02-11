@@ -36,5 +36,10 @@ public class AHRSAngleGetterComponent extends AHRS implements GyroComponent {
         return (float) Math.toRadians(super.getPitch());
     }
 
+    @Override
+    public float getRoll() {
+        return (float) Math.toRadians(super.getRoll());
+    }
+
     public void reset() {}
 }

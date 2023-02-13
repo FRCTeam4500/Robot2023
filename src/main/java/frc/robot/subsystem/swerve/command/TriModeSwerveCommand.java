@@ -106,34 +106,43 @@ public class TriModeSwerveCommand extends CommandBase {
     }
     private void balance() {
         AHRSAngleGetterComponent gyro = new AHRSAngleGetterComponent(I2C.Port.kMXP);
-        boolean go = true;
         double anglePitch;
         double angleRoll;
-        int timesEqual = 0;
+        int timesEqualRoll = 0;
+        int timesEqualPitch = 0;
 
-        while (go) {
+        while (timesEqualRoll < 10 || timesEqualPitch < 10) {
             anglePitch = Math.toDegrees(gyro.getPitch());
             angleRoll = Math.toDegrees(gyro.getRoll());
+            if (false) { // Nate code
+                if (-2 < anglePitch && anglePitch < 2) {
+                    timesEqualPitch++;
+                }
+                if (-2 < angleRoll && angleRoll < 2) {
+                    timesEqualRoll++;
+                }
+                moveRobotCentric(-anglePitch, -angleRoll, 0);
+            } else { // Vincent Bryan code
 
-            if (anglePitch > 2) {
-                moveFieldCentric((anglePitch - 2) / 10, 0, 0);
+                if (anglePitch > 2) {
+                    timesEqualPitch = 0;
+                    moveRobotCentric((anglePitch - 2) / 10, 0, 0);
+                } else if (anglePitch < -2) {
+                    timesEqualPitch = 0;
+                    moveRobotCentric(-((anglePitch + 2) / 10), 0, 0);
+                } else {
+                    timesEqualPitch++;
+                }
+                if (angleRoll > 2) {
+                    timesEqualRoll = 0;
+                    moveRobotCentric(0, (angleRoll - 2) / 10, 0);
+                } else if (angleRoll < -2) {
+                    timesEqualRoll = 0;
+                    moveRobotCentric(0, (angleRoll - 2) / 10, 0);
+                } else {
+                    timesEqualRoll++;
+                }
             }
-            if (anglePitch < -2) {
-                moveFieldCentric(-((anglePitch - 2) / 10), 0, 0);
-            }
-            if (angleRoll > 2) {
-                moveFieldCentric(0, (angleRoll - 2) / 10, 0);
-            }
-            if (angleRoll < -2) {
-                moveFieldCentric(0, -((angleRoll - 2) / 10), 0);
-            }
-
-            timesEqual++;
-
-            if (timesEqual > 10) { // 10 is a placeholder, if engage is secured
-                go = false;
-            }
-
             new WaitCommand(.05); // Stops continuous running
         }
     } //float tilt = ((gyro.getPitch()*gyro.getY())+(gyro.getRoll()*gyro.getX()))/(gyro.getX()*gyro.getY())

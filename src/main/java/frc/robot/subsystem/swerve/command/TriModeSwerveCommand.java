@@ -121,7 +121,7 @@ public class TriModeSwerveCommand extends CommandBase {
                 if (-2 < angleRoll && angleRoll < 2) {
                     timesEqualRoll++;
                 }
-                moveRobotCentric(-anglePitch, -angleRoll, 0);
+                moveRobotCentric(-anglePitch/30, -angleRoll/30, 0);
             } else { // Vincent Bryan code
 
                 if (anglePitch > 2) {

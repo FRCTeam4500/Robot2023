@@ -29,6 +29,9 @@ public class Constants {
 
     public static class SwerveConstants { // Swerve Constants
         public final static double MAX_LINEAR_SPEED = 5.088432798984; // Change this!
+        public final static double MAX_LINEAR_ACCELERATION = ((1276*9.42)/60)/12; // 1276 is rpm, 9.42 is wheel circumference (in.)
+        public final static double MAX_ROTATIONAL_SPEED = 0.0;
+        public final static double MAX_ROTATIONAL_ACCELERATION = 0.0;
 
         public static final double DRIVE_RATIO = 1/5; // drive rotations per motor rotation
         public static final double ANGLE_RATIO = 1/6.75; // angle rotations per motor rotation

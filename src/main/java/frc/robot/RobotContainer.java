@@ -1,7 +1,7 @@
 package frc.robot;
 
-import frc.robot.subsystem.Swerve;
-import frc.robot.utility.ControllerInfo; // thank you vimal for knwoing how to spell commmand
+
+import frc.robot.utility.ControllerInfo;
 
 import static frc.robot.subsystem.Arm.makeArm;
 import static frc.robot.subsystem.Intake.makeIntake;

@@ -107,27 +107,36 @@ public class TriModeSwerveCommand extends CommandBase {
     private void balance() {
         AHRSAngleGetterComponent gyro = new AHRSAngleGetterComponent(I2C.Port.kMXP);
         boolean go = true;
-        double angle;
+        double anglePitch;
+        double angleRoll;
         int timesEqual = 0;
 
         while (go) {
-            angle = Math.toDegrees(gyro.getPitch());
+            anglePitch = Math.toDegrees(gyro.getPitch());
+            angleRoll = Math.toDegrees(gyro.getRoll());
 
-            if (Math.toDegrees(angle) > 2) {
-                moveFieldCentric((angle-2)/10,0,0);
-            } else if (Math.toDegrees(-2) < 2) {
-                moveFieldCentric(-((angle-2)/10),0,0);
-            } else {
-                timesEqual++;
+            if (anglePitch > 2) {
+                moveFieldCentric((anglePitch - 2) / 10, 0, 0);
+            }
+            if (anglePitch < -2) {
+                moveFieldCentric(-((anglePitch - 2) / 10), 0, 0);
+            }
+            if (angleRoll > 2) {
+                moveFieldCentric(0, (angleRoll - 2) / 10, 0);
+            }
+            if (angleRoll < -2) {
+                moveFieldCentric(0, -((angleRoll - 2) / 10), 0);
             }
 
-            if (timesEqual > 10) { // 10 is a placeholder
+            timesEqual++;
+
+            if (timesEqual > 10) { // 10 is a placeholder, if engage is secured
                 go = false;
             }
 
-            new WaitCommand(.05);
+            new WaitCommand(.05); // Stops continuous running
         }
-    } //(((gyro.getPitch()*gyro)+(gyro.getRoll()*anglepitch))/2)*(gyro.getX()*gyro.getX()
+    } //float tilt = ((gyro.getPitch()*gyro.getY())+(gyro.getRoll()*gyro.getX()))/(gyro.getX()*gyro.getY())
     //deadzones the input
     private double withDeadzone(double value, double deadzone){
         if(Math.abs(value) < deadzone)

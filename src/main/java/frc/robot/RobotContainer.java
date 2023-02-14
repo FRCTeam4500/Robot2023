@@ -65,8 +65,8 @@ public class RobotContainer {
     private final SendableChooser<Command> autonChooser = new SendableChooser<Command>();
 
     private final PathFollowingSwerve m_swerve = HardwareSwerveFactory.makeSwerve();
-    //private final Arm m_arm = makeArm();
-    //private final Intake m_intake = makeIntake();
+    private final Arm m_arm = makeArm();
+    private final Intake m_intake = makeIntake();
 
     public RobotContainer() {
         configureControls();

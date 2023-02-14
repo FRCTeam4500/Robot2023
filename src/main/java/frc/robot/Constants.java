@@ -36,14 +36,14 @@ public class Constants {
         public static final double DRIVE_RATIO = 1/5; // drive rotations per motor rotation
         public static final double ANGLE_RATIO = 1/6.75; // angle rotations per motor rotation
 
-        public static final int DBRPORT = 2; //drive back right port
-        public static final int ABRPORT = 3; //angle back right port
-        public static final int DBLPORT = 12; //drive back left port
-        public static final int ABLPORT = 11; //angle back left port
+        public static final int DBRPORT = 1; //drive back right port
+        public static final int ABRPORT = 5; //angle back right port
+        public static final int DBLPORT = 2; //drive back left port
+        public static final int ABLPORT = 6; //angle back left port
         public static final int DFRPORT = 4; //drive front right port
-        public static final int AFRPORT = 5; //angle front right port
-        public static final int DFLPORT = 7; //drive front left port
-        public static final int AFLPORT = 6; //angle front left port TODO: Change All Motor Map Values
+        public static final int AFRPORT = 8; //angle front right port
+        public static final int DFLPORT = 3; //drive front left port
+        public static final int AFLPORT = 7; //angle front left port TODO: Change All Motor Map Values
 
 
         public static final double WHEEL_DIAMETER = 0.0762; // in meters

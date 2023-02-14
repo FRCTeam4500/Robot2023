@@ -9,7 +9,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-import frc.robot.Constants.SwerveConstants;
+import frc.robot.subsystem.swerve.SwerveConstants;
 import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
 
 /**

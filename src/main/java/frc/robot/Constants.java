@@ -37,20 +37,20 @@ public class Constants {
         public static final double ANGLE_RATIO = 1/6.75; // angle rotations per motor rotation
 
         public static final int DBRPORT = 1; //drive back right port
-        public static final int ABRPORT = 5; //angle back right port
         public static final int DBLPORT = 2; //drive back left port
-        public static final int ABLPORT = 6; //angle back left port
-        public static final int DFRPORT = 4; //drive front right port
-        public static final int AFRPORT = 8; //angle front right port
         public static final int DFLPORT = 3; //drive front left port
-        public static final int AFLPORT = 7; //angle front left port TODO: Change All Motor Map Values
+        public static final int DFRPORT = 4; //drive front right port
+        public static final int ABRPORT = 5; //angle back right port
+        public static final int ABLPORT = 6; //angle back left port
+        public static final int AFLPORT = 7; //angle front left port 
+        public static final int AFRPORT = 8; //angle front right port
 
 
         public static final double WHEEL_DIAMETER = 0.0762; // in meters
-        public static final double DRIVE_X_TRANSLATION = 0.2921; // left right translation of wheels, 11.5 inches
-        public static final double DRIVE_Y_TRANSLATION = 0.2794; // front back translation of wheels
-        public static double DRIVE_Y_FRONT_TRANSLATION = 0.2032; // 8 inches from gyro?
-        public static double DRIVE_Y_BACK_TRANSLATION = 0.4064; // 16 inches
+        public static final double DRIVE_X_RIGHT_TRANSLATION = 0.2413; // distance from gyro to swerve
+        public static final double DRIVE_Y_LEFT_TRANSLATION = 0.2413; // front back translation of wheels
+        public static final double DRIVE_Y_FRONT_TRANSLATION = 0.3175; // 8 inches from gyro?
+        public static final double DRIVE_Y_BACK_TRANSLATION = 0.3175; // 16 inches
     }
 
     public static class ArmConstants { // Arm Contstants

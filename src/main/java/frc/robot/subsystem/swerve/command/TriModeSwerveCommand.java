@@ -78,9 +78,6 @@ public class TriModeSwerveCommand extends CommandBase {
             zSpeed = 0;
             xSpeed = ceiling(xSpeed, limitedSpeed);
         }
-        if (balance) {
-            balance();
-        }
         switch (controlMode){
             case FieldCentric:
                 moveFieldCentric(xSpeed, ySpeed, zSpeed);
@@ -104,49 +101,6 @@ public class TriModeSwerveCommand extends CommandBase {
         double wSpeed = 4 * angleAdjustmentController.calculate(swerve.getRobotAngle(), targetAngle);
         moveFieldCentric(r, t, wSpeed);
     }
-    private void balance() {
-        AHRSAngleGetterComponent gyro = new AHRSAngleGetterComponent(I2C.Port.kMXP);
-        double anglePitch;
-        double angleRoll;
-        int timesEqualRoll = 0;
-        int timesEqualPitch = 0;
-
-        while (timesEqualRoll < 10 || timesEqualPitch < 10) {
-            anglePitch = Math.toDegrees(gyro.getPitch());
-            angleRoll = Math.toDegrees(gyro.getRoll());
-            if (false) { // Nate code
-                if (-2 < anglePitch && anglePitch < 2) {
-                    timesEqualPitch++;
-                }
-                if (-2 < angleRoll && angleRoll < 2) {
-                    timesEqualRoll++;
-                }
-                moveRobotCentric(-anglePitch/30, -angleRoll/30, 0);
-            } else { // Vincent Bryan code
-
-                if (anglePitch > 2) {
-                    timesEqualPitch = 0;
-                    moveRobotCentric((anglePitch - 2) / 10, 0, 0);
-                } else if (anglePitch < -2) {
-                    timesEqualPitch = 0;
-                    moveRobotCentric(-((anglePitch + 2) / 10), 0, 0);
-                } else {
-                    timesEqualPitch++;
-                }
-                if (angleRoll > 2) {
-                    timesEqualRoll = 0;
-                    moveRobotCentric(0, (angleRoll - 2) / 10, 0);
-                } else if (angleRoll < -2) {
-                    timesEqualRoll = 0;
-                    moveRobotCentric(0, (angleRoll - 2) / 10, 0);
-                } else {
-                    timesEqualRoll++;
-                }
-            }
-            new WaitCommand(.05); // Stops continuous running
-        }
-    } //float tilt = ((gyro.getPitch()*gyro.getY())+(gyro.getRoll()*gyro.getX()))/(gyro.getX()*gyro.getY())
-    //deadzones the input
     private double withDeadzone(double value, double deadzone){
         if(Math.abs(value) < deadzone)
             return 0;

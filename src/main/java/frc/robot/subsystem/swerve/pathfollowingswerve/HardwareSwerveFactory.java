@@ -15,10 +15,10 @@ import frc.robot.Constants.SwerveConstants;
 public class HardwareSwerveFactory {
 
     public static PathFollowingSwerve makeSwerve(){
-        OdometricWheelModule fl = makeWheelModule(SwerveConstants.AFLPORT, SwerveConstants.DFLPORT, new Translation2d(SwerveConstants.DRIVE_Y_FRONT_TRANSLATION, SwerveConstants.DRIVE_X_LEFT_TRANSLATION), true, true,true, .4, .75);
-        OdometricWheelModule fr = makeWheelModule(SwerveConstants.AFRPORT, SwerveConstants.DFRPORT, new Translation2d(SwerveConstants.DRIVE_Y_FRONT_TRANSLATION, -SwerveConstants.DRIVE_X_RIGHT_TRANSLATION), true, true,false, .75, .75);
-        OdometricWheelModule bl = makeWheelModule(SwerveConstants.ABLPORT, SwerveConstants.DBLPORT, new Translation2d(-SwerveConstants.DRIVE_Y_BACK_TRANSLATION, SwerveConstants.DRIVE_X_LEFT_TRANSLATION), false, true,true, .9, .8);
-        OdometricWheelModule br = makeWheelModule(SwerveConstants.ABRPORT, SwerveConstants.DBRPORT, new Translation2d(-SwerveConstants.DRIVE_Y_BACK_TRANSLATION, -SwerveConstants.DRIVE_X_RIGHT_TRANSLATION ), true, true,false, 1, .8);
+        OdometricWheelModule fl = makeWheelModule(SwerveConstants.AFLPORT, SwerveConstants.DFLPORT, new Translation2d(SwerveConstants.DRIVE_Y_FRONT_TRANSLATION, SwerveConstants.DRIVE_X_LEFT_TRANSLATION), true, true,true, .45, .75);
+        OdometricWheelModule fr = makeWheelModule(SwerveConstants.AFRPORT, SwerveConstants.DFRPORT, new Translation2d(SwerveConstants.DRIVE_Y_FRONT_TRANSLATION, -SwerveConstants.DRIVE_X_RIGHT_TRANSLATION), true, true,false, .6, .75);
+        OdometricWheelModule bl = makeWheelModule(SwerveConstants.ABLPORT, SwerveConstants.DBLPORT, new Translation2d(-SwerveConstants.DRIVE_Y_BACK_TRANSLATION, SwerveConstants.DRIVE_X_LEFT_TRANSLATION), false, true,true, .75, .8);
+        OdometricWheelModule br = makeWheelModule(SwerveConstants.ABRPORT, SwerveConstants.DBRPORT, new Translation2d(-SwerveConstants.DRIVE_Y_BACK_TRANSLATION, -SwerveConstants.DRIVE_X_RIGHT_TRANSLATION ), true, true,false, .33, .8);
 
         return new OdometricSwerve(
                 new AHRSAngleGetterComponent(I2C.Port.kMXP),
@@ -54,7 +54,7 @@ public class HardwareSwerveFactory {
         angleMotor.configClearPositionOnQuadIdx(true, 10);
 
         TalonFXComponent driveMotor = new TalonFXComponent(driveId);
-        driveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 41, 0.1));
+        driveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 29, 37, 0.1));
         driveMotor.config_kP(0, .1);
         driveMotor.config_kI(0, 0);
         driveMotor.config_kD(0,0);

@@ -37,31 +37,45 @@ public class Intake extends SubsystemBase {
 
     public static class IntakeSetAngleCommand extends InstantCommand {
         private Intake intake;
-        private double angle;
+        private boolean isCone;
+        private boolean isBottomCone;
 
-        public IntakeSetAngleCommand(Intake intake, double angle) {
+        public IntakeSetAngleCommand(Intake intake, boolean isCone, boolean isBottomCone) {
             this.intake = intake;
-            this.angle = angle;
+            this.isCone = isCone;
+            this.isBottomCone = isBottomCone;
         }
 
         @Override
         public void initialize() {
-            intake.setAngle(angle);
+            if(isCone){
+                if(isBottomCone){
+                    intake.setAngle(IntakeConstants.INTAKE_BOT_CONE_PLACE_ANGLE)
+                } else {
+                    intake.setAngle(IntakeConstants.INTAKE_TOP_CONE_PLACE_ANGLE)
+                }
+            } else {
+                intake.setAngle(IntakeConstants.INTAKE_CUBE_PLACE_ANGLE);
+            }
         }
     }
 
     public static class IntakeSetOutputCommand extends InstantCommand {
         private Intake intake;
-        private double output;
+        private boolean isCone;
 
-        public IntakeSetOutputCommand(Intake intake, double output) {
+        public IntakeSetOutputCommand(Intake intake, boolean isCone) {
             this.intake = intake;
             this.output = output;
         }
 
         @Override
         public void initialize() {
-            intake.setIntake(output);
+            if(isCone){
+                intake.setIntake(IntakeConstants.INTAKE_CONE_SPEED);
+            } else {
+                intake.setIntake(IntakeConstants.INTAKE_CUBE_SPEED);
+            }
         }
     }
 

@@ -61,7 +61,7 @@ public class RobotContainer {
     private final DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
     private TriModeSwerveCommand swerveCommand;
     private boolean isCone; // Changes with coneButton/cubeButton
-    private boolean isBottomConeOrientation; // Changes with Orientation buttons
+    private boolean isBottomCone; // Changes with Orientation buttons
 
     
     private static final HashMap<String, Command> AUTO_EVENT_MAP = new HashMap<>();
@@ -75,7 +75,7 @@ public class RobotContainer {
         configureControls();
         configureSwerve();
         configureAuto();
-        // configureArmAndIntake();
+        configureArmAndIntake();
     }
 
     void configureControls() {
@@ -121,53 +121,23 @@ public class RobotContainer {
     }
 
     void configureArmAndIntake() {
-        coneButton.toggleOnTrue(new InstantCommand(() -> {isCone = true;})); //0.55 is the past intake speed
+        coneButton.toggleOnTrue(new InstantCommand(() -> {isCone = true;}));
 
         cubeButton.toggleOnTrue(new InstantCommand(() -> {isCone = false;}));
 
-        uprightConeButton.toggleOnTrue(new InstantCommand(() -> {isBottomConeOrientation = false;}));
+        uprightConeButton.toggleOnTrue(new InstantCommand(() -> {isBottomCone = false;}));
 
-        sidewaysConeButton.toggleOnTrue(new InstantCommand(() -> {isBottomConeOrientation = true;}));
+        sidewaysConeButton.toggleOnTrue(new InstantCommand(() -> {isBottomCone = true;}));
 
-        // placeButton.toggleOnTrue(
-        //         new Intake.IntakeSetOutputCommand(
-        //                 m_intake, isCone ? IntakeConstants.INTAKE_CUBE_SPEED : IntakeConstants.INTAKE_CONE_SPEED
-        //         )
-        // );
-        // placeButton.toggleOnFalse(
-        //         new Intake.IntakeSetOutputCommand(
-        //                 m_intake, 0
-        //         )
-        // );
-
-        // /* Sync Arm and Intake */
-        // readyTopButton.toggleOnTrue(new ParallelCommandGroup(
-        //         new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE)
-        //                 .andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_TOP)
-        //         // new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_TRAY_ANGLE)
-        // )));
-
-        // readyMidButton.toggleOnTrue(new ParallelCommandGroup(
-        //          new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE)
-        //                 .andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_MID))
-        //         // new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_TRAY_ANGLE)
-        // ));
-
-        // readyBotButton.toggleOnTrue(new ParallelCommandGroup(
-        //         new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_BOT)
-        //                 .andThen(new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PICKUP_ANGLE))
-        //         // new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_BOTTOM_ANGLE)
-        // ));
-
-        // retractButton.toggleOnTrue(new ParallelCommandGroup(
-        //         new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE)
-        //                 .andThen(new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_RETRACT))
-        //         // new Intake.IntakeSetOutputCommand(m_intake, IntakeConstants.INTAKE_RETRACTED_ANGLE)
-        // ));
     }
 
     void configureAuto() {
-            AUTO_EVENT_MAP.put("Place High", new SequentialCommandGroup(new Arm.ArmSetWinchOutputCommand(m_arm,ArmConstants.ARM_PLACE_TOP) ))
+            AUTO_EVENT_MAP.put("Place High", new SequentialCommandGroup(
+                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE),
+                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_TOP, isBottomCone),
+                new Intake.IntakeSetAngleCommand(m_intake,isCone, isBottomCone),
+                new Intake.IntakeSetOutputCommand(m_intake, isCone)
+                ))
     }
 
     public Command getAutonomousCommand() {

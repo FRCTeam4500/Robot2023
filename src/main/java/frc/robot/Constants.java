@@ -47,10 +47,11 @@ public class Constants {
 
 
         public static final double WHEEL_DIAMETER = 0.0762; // in meters
-        public static final double DRIVE_X_RIGHT_TRANSLATION = 0.2413; // distance from gyro to swerve
-        public static final double DRIVE_X_LEFT_TRANSLATION = 0.2413; // front back translation of wheels
-        public static final double DRIVE_Y_FRONT_TRANSLATION = 0.3175; // 8 inches from gyro?
-        public static final double DRIVE_Y_BACK_TRANSLATION = 0.3175; // 16 inches
+        // distances from the gyro to the swerve module wheel.
+        public static final double DRIVE_X_RIGHT_TRANSLATION = 0.2413; 
+        public static final double DRIVE_X_LEFT_TRANSLATION = 0.2413; 
+        public static final double DRIVE_Y_FRONT_TRANSLATION = 0.3175; 
+        public static final double DRIVE_Y_BACK_TRANSLATION = 0.3175; 
     }
     
 
@@ -66,20 +67,14 @@ public class Constants {
         public static final double ARM_UP_SENSOR_LIMIT = 300;
 
         public static final double ARM_PLACE_ANGLE = 0; // ARM_PLACE_ANGLE is the angle for all heights TODO: change value later
-
         public static final double ARM_PICKUP_ANGLE = 0; // ARM_PICKUP_ANGLE is the angle to pickup from ground TODO: change value later
-
         public static final double ARM_ZERO_ANGLE = 0; // TODO: change value later
 
         public static final double ARM_PLACE_TOP = 0; // TODO: change value later
-
         public static final double ARM_PLACE_MID = 0; // TODO: change value later
-
         public static final double ARM_PLACE_BOT = 0; // TODO: change value later
-
         public static final double ARM_RETRACT = 0; // TODO: change value later
-
-        public static final double ARM_BOTTOM_CONE_INTAKE_ADDITION = 0; // TODO: change value later
+        public static final double ARM_BOT_CONE_ADDITION = 0; // When placing a sideways cone, the arm must be extended a bit further.
 
     }
 
@@ -92,9 +87,11 @@ public class Constants {
         public static final int INTAKE_ANGLE_MOTOR_ID = 0; //TODO: fix
         public static final MotorType ANGLE_MOTOR_TYPE = MotorType.kBrushless;
 
-        public static final double INTAKE_BOTTOM_ANGLE = 0; // Angle that the Intake should be at the bottom when picking up TODO: Fix value
-
-        public static final double INTAKE_TRAY_ANGLE = 0; // INTAKE_TRAY_ANGLE is the angle for placing TODO: Fix value | also will place top cone
+        public static final double INTAKE_BOT_PICKUP_ANGLE = 0; // Angle that the Intake should be at the bottom when picking up TODO: Fix value
+        public static final double INTAKE_TRAY_PICKUP_ANGLE = 0;
+        public static final double INTAKE_TOP_CONE_PLACE_ANGLE = 0;
+        public static final double INTAKE_CUBE_PLACE_ANGLE = 0;
+        public static final double INTAKE_BOT_CONE_PLACE_ANGLE = 0;
         public static final double INTAKE_RETRACTED_ANGLE = 0; // TRUE retracted
     }
 

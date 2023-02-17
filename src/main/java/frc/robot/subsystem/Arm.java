@@ -71,15 +71,21 @@ public class Arm extends SubsystemBase {
     public static class ArmSetWinchOutputCommand extends InstantCommand {
         private Arm arm;
         private double output;
+        private boolean isBottomCone;
 
-        public ArmSetWinchOutputCommand(Arm arm, double output) {
+        public ArmSetWinchOutputCommand(Arm arm, double output, boolean isBottomCone) {
             this.arm = arm;
             this.output = output;
+            this.isBottomCone = isBottomCone;
             addRequirements(arm);
         }
 
         public void initialize() {
-            arm.setWinch(output);
+            if(isBottomCone){
+                arm.setWinch(output + ArmConstants.ARM_BOT_CONE_ADDITION)
+            } else {
+                arm.setWinch(output)
+            }
         }
     }
 

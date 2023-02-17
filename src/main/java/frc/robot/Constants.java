@@ -52,6 +52,7 @@ public class Constants {
         public static final double DRIVE_Y_FRONT_TRANSLATION = 0.3175; // 8 inches from gyro?
         public static final double DRIVE_Y_BACK_TRANSLATION = 0.3175; // 16 inches
     }
+    
 
     public static class ArmConstants { // Arm Contstants
         /* Init */

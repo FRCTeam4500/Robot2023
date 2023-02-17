@@ -6,6 +6,8 @@ import frc.robot.utility.ControllerInfo;
 import static frc.robot.subsystem.Arm.makeArm;
 import static frc.robot.subsystem.Intake.makeIntake;
 
+import java.util.HashMap;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.dashboard.DashboardMessageDisplay;
@@ -60,17 +62,19 @@ public class RobotContainer {
     private TriModeSwerveCommand swerveCommand;
     private boolean isCone; // Changes with coneButton/cubeButton
     private boolean isBottomConeOrientation; // Changes with Orientation buttons
-    
 
+    
+    private static final HashMap<String, Command> AUTO_EVENT_MAP = new HashMap<>();
     private final SendableChooser<Command> autonChooser = new SendableChooser<Command>();
 
     private final PathFollowingSwerve m_swerve = HardwareSwerveFactory.makeSwerve();
-//     private final Arm m_arm = makeArm();
-//     private final Intake m_intake = makeIntake();
+     private final Arm m_arm = makeArm();
+     private final Intake m_intake = makeIntake();
 
     public RobotContainer() {
         configureControls();
         configureSwerve();
+        configureAuto();
         // configureArmAndIntake();
     }
 
@@ -160,6 +164,10 @@ public class RobotContainer {
         //                 .andThen(new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_RETRACT))
         //         // new Intake.IntakeSetOutputCommand(m_intake, IntakeConstants.INTAKE_RETRACTED_ANGLE)
         // ));
+    }
+
+    void configureAuto() {
+            AUTO_EVENT_MAP.put("Place High", new SequentialCommandGroup(new Arm.ArmSetWinchOutputCommand(m_arm,ArmConstants.ARM_PLACE_TOP) ))
     }
 
     public Command getAutonomousCommand() {

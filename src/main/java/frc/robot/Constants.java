@@ -17,6 +17,7 @@ public class Constants {
         public final static int CONE_INTAKE = 11; // Also places cubes
         public final static int CUBE_INTAKE = 12; // Also places cones 
         public final static int PLACE = 1;
+        public final static int PICKUP = 1;
         public final static int READY_GROUND = 10;
         public final static int READY_BOTTOM = 0;
         public final static int READY_MIDDLE = 0;
@@ -87,11 +88,10 @@ public class Constants {
         public static final int INTAKE_ANGLE_MOTOR_ID = 0; //TODO: fix
         public static final MotorType ANGLE_MOTOR_TYPE = MotorType.kBrushless;
 
-        public static final double INTAKE_BOT_PICKUP_ANGLE = 0; // Angle that the Intake should be at the bottom when picking up TODO: Fix value
+        public static final double INTAKE_BOT_ANGLE = 0; // Angle that the Intake should be at the bottom when picking up, as well as when it's intaking TODO: Fix value
         public static final double INTAKE_TRAY_PICKUP_ANGLE = 0;
         public static final double INTAKE_TOP_CONE_PLACE_ANGLE = 0;
         public static final double INTAKE_CUBE_PLACE_ANGLE = 0;
-        public static final double INTAKE_BOT_CONE_PLACE_ANGLE = 0;
         public static final double INTAKE_RETRACTED_ANGLE = 0; // TRUE retracted
     }
 

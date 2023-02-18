@@ -39,23 +39,29 @@ public class Intake extends SubsystemBase {
         private Intake intake;
         private boolean isCone;
         private boolean isBottomCone;
+        private boolean zeroing;
 
-        public IntakeSetAngleCommand(Intake intake, boolean isCone, boolean isBottomCone) {
+        public IntakeSetAngleCommand(Intake intake, boolean isCone, boolean isBottomCone, boolean zeroing) {
             this.intake = intake;
             this.isCone = isCone;
             this.isBottomCone = isBottomCone;
+            this.zeroing = zeroing;
         }
 
         @Override
         public void initialize() {
-            if(isCone){
-                if(isBottomCone){
-                    intake.setAngle(IntakeConstants.INTAKE_BOT_CONE_PLACE_ANGLE);
-                } else {
-                    intake.setAngle(IntakeConstants.INTAKE_TOP_CONE_PLACE_ANGLE);
-                }
+            if(zeroing){
+                intake.setAngle(IntakeConstants.INTAKE_RETRACTED_ANGLE);
             } else {
-                intake.setAngle(IntakeConstants.INTAKE_CUBE_PLACE_ANGLE);
+                if(isCone){
+                    if(isBottomCone){
+                        intake.setAngle(IntakeConstants.INTAKE_BOT_ANGLE);
+                    } else {
+                        intake.setAngle(IntakeConstants.INTAKE_TOP_CONE_PLACE_ANGLE);
+                    }
+                } else {
+                    intake.setAngle(IntakeConstants.INTAKE_CUBE_PLACE_ANGLE);
+                }
             }
         }
     }
@@ -63,18 +69,24 @@ public class Intake extends SubsystemBase {
     public static class IntakeSetOutputCommand extends InstantCommand {
         private Intake intake;
         private boolean isCone;
+        private boolean zeroing;
 
-        public IntakeSetOutputCommand(Intake intake, boolean isCone) {
+        public IntakeSetOutputCommand(Intake intake, boolean isCone, boolean zeroing) {
             this.intake = intake;
             this.isCone = isCone;
+            this.zeroing = zeroing;
         }
 
         @Override
         public void initialize() {
-            if(isCone){
-                intake.setIntake(IntakeConstants.INTAKE_CONE_SPEED);
+            if(zeroing){
+                intake.setIntake(0);
             } else {
-                intake.setIntake(IntakeConstants.INTAKE_CUBE_SPEED);
+                if(isCone){
+                    intake.setIntake(IntakeConstants.INTAKE_CONE_SPEED);
+                } else {
+                    intake.setIntake(IntakeConstants.INTAKE_CUBE_SPEED);
+                }
             }
         }
     }

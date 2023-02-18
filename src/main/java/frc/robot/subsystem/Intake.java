@@ -50,9 +50,9 @@ public class Intake extends SubsystemBase {
         public void initialize() {
             if(isCone){
                 if(isBottomCone){
-                    intake.setAngle(IntakeConstants.INTAKE_BOT_CONE_PLACE_ANGLE)
+                    intake.setAngle(IntakeConstants.INTAKE_BOT_CONE_PLACE_ANGLE);
                 } else {
-                    intake.setAngle(IntakeConstants.INTAKE_TOP_CONE_PLACE_ANGLE)
+                    intake.setAngle(IntakeConstants.INTAKE_TOP_CONE_PLACE_ANGLE);
                 }
             } else {
                 intake.setAngle(IntakeConstants.INTAKE_CUBE_PLACE_ANGLE);
@@ -66,7 +66,7 @@ public class Intake extends SubsystemBase {
 
         public IntakeSetOutputCommand(Intake intake, boolean isCone) {
             this.intake = intake;
-            this.output = output;
+            this.isCone = isCone;
         }
 
         @Override

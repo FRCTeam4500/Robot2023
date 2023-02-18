@@ -64,7 +64,7 @@ public class RobotContainer {
     private boolean isBottomCone; // Changes with Orientation buttons
 
     
-    private static final HashMap<String, Command> AUTO_EVENT_MAP = new HashMap<>();
+    private static final HashMap<String, Command> COMMAND_MAP = new HashMap<>();
     private final SendableChooser<Command> autonChooser = new SendableChooser<Command>();
 
     private final PathFollowingSwerve m_swerve = HardwareSwerveFactory.makeSwerve();
@@ -73,6 +73,7 @@ public class RobotContainer {
 
     public RobotContainer() {
         configureControls();
+        configureCommands();
         configureSwerve();
         configureAuto();
         configureArmAndIntake();
@@ -87,6 +88,30 @@ public class RobotContainer {
         info.zDeadzone = 0.2;
         Shuffleboard.getTab("Driver Controls").add("Driver Controls", info);
         Shuffleboard.getTab("Driver Controls").add("Messages", messages);
+    }
+
+    void configureCommands() {
+        // Define commonly used commands
+        // They can then be called using COMMAND_MAP.get("key");
+        COMMAND_MAP.put("Ready Bot", new SequentialCommandGroup(
+            new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE),
+            new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_BOT, isBottomCone),
+            new Intake.IntakeSetAngleCommand(m_intake,isCone, isBottomCone)
+            ));
+
+        COMMAND_MAP.put("Ready Mid", new SequentialCommandGroup(
+            new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE),
+            new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_MID, isBottomCone),
+            new Intake.IntakeSetAngleCommand(m_intake,isCone, isBottomCone)
+            ));
+
+        COMMAND_MAP.put("Ready Top", new SequentialCommandGroup(
+            new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE),
+            new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_TOP, isBottomCone),
+            new Intake.IntakeSetAngleCommand(m_intake,isCone, isBottomCone)
+            ));
+
+        COMMAND_MAP.put("Place", new Intake.IntakeSetOutputCommand(m_intake, isCone));
     }
     void configureSwerve() {
         swerveCommand = new TriModeSwerveCommand(m_swerve, driveStick, info, messages);
@@ -122,22 +147,18 @@ public class RobotContainer {
 
     void configureArmAndIntake() {
         coneButton.toggleOnTrue(new InstantCommand(() -> {isCone = true;}));
-
         cubeButton.toggleOnTrue(new InstantCommand(() -> {isCone = false;}));
-
         uprightConeButton.toggleOnTrue(new InstantCommand(() -> {isBottomCone = false;}));
-
         sidewaysConeButton.toggleOnTrue(new InstantCommand(() -> {isBottomCone = true;}));
+
+        readyTopButton.toggleOnTrue(COMMAND_MAP.get("Ready Top"));
+
+
 
     }
 
     void configureAuto() {
-            AUTO_EVENT_MAP.put("Place High", new SequentialCommandGroup(
-                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE),
-                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_TOP, isBottomCone),
-                new Intake.IntakeSetAngleCommand(m_intake,isCone, isBottomCone),
-                new Intake.IntakeSetOutputCommand(m_intake, isCone)
-                ))
+        
     }
 
     public Command getAutonomousCommand() {

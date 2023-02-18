@@ -82,9 +82,9 @@ public class Arm extends SubsystemBase {
 
         public void initialize() {
             if(isBottomCone){
-                arm.setWinch(output + ArmConstants.ARM_BOT_CONE_ADDITION)
+                arm.setWinch(output + ArmConstants.ARM_BOT_CONE_ADDITION);
             } else {
-                arm.setWinch(output)
+                arm.setWinch(output);
             }
         }
     }

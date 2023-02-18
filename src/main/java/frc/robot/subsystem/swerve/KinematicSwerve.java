@@ -92,7 +92,7 @@ public class KinematicSwerve extends SubsystemBase implements Swerve, Sendable {
      * A wrapper for {@link #moveAngleCentric(double, double, double, Rotation2d)}
      */
     public void moveAngleCentric(double xSpeed, double ySpeed, double wSpeed, double robotAngle){
-        moveAngleCentric(xSpeed, ySpeed, wSpeed, new Rotation2d(robotAngle));
+        moveAngleCentric(xSpeed, ySpeed, wSpeed, new Rotation2d(robotAngle)); // We do a bit of dividing TODO: CHANGE
     }
     /**
      * Move the swerve drive relative to an angle. This angle is usually the gyroscope reading. When the angle is zero, the swerve drive is assumed to face the positive X direction, and positive Y is directly to the left of the swerve drive.
@@ -115,7 +115,7 @@ public class KinematicSwerve extends SubsystemBase implements Swerve, Sendable {
         moveFieldCentric(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond);
     }
     public void moveFieldCentric(double xSpeed, double ySpeed, double wSpeed, Translation2d centerOfRotation){
-        moveAngleCentric(xSpeed, ySpeed, wSpeed, new Rotation2d(gyro.getAngle() - currentGyroZero),centerOfRotation);
+        moveAngleCentric(xSpeed, ySpeed, wSpeed, new Rotation2d(gyro.getAngle() - currentGyroZero), centerOfRotation);
     }
 
     private Translation2d[] getTranslations(KinematicWheelModule[] wheelModules){
@@ -157,10 +157,11 @@ public class KinematicSwerve extends SubsystemBase implements Swerve, Sendable {
 
     @Override
     public void initSendable(SendableBuilder builder) {
-        builder.addDoubleProperty("Gyro Angle", gyro::getAngle, null);
+        builder.addDoubleProperty("Gyro Angle", () -> Math.toDegrees(gyro.getAngle()), null);
         builder.addDoubleProperty("Current X", () -> currentSpeeds.vxMetersPerSecond, null);
         builder.addDoubleProperty("Current Y", () -> currentSpeeds.vyMetersPerSecond, null);
         builder.addDoubleProperty("Current Z", () -> currentSpeeds.omegaRadiansPerSecond, null);
+        builder.addDoubleProperty("Gyro Offset from Current Zero %2Pi", () -> Math.toDegrees((gyro.getAngle()-currentGyroZero)%(2*Math.PI)), null);
     }
 
     public ChassisSpeeds getSpeeds(){

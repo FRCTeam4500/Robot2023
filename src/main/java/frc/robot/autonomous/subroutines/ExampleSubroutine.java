@@ -1,36 +1,31 @@
-/*
+
 package frc.robot.autonomous.subroutines;
+
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.autonomous.NewTrajectoryUtilities;
 import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
-import frc.robot.Constants.IntakeConstants;
-import frc.robot.Constants.ArmConstants;
-import frc.robot.subsystem.intake.IntakeSetAngleCommand;
-import frc.robot.subsystem.intake.IntakeSetOutputCommand;
-import frc.robot.subsystem.arm.ArmSetTiltAngleCommand;
-import frc.robot.subsystem.arm.ArmSetWinchOutputCommand;
+import frc.robot.utility.ExtendedTrajectoryUtilities;
+import frc.robot.RobotContainer;
 
 public class ExampleSubroutine extends SequentialCommandGroup {
-    public ExampleSubroutine (PathFollowingSwerve swerve, Arm arm, Intake intake) {
-        addRequirments(swerve, arm, intake);
+    public ExampleSubroutine (PathFollowingSwerve swerve) {
         Trajectory path = ExtendedTrajectoryUtilities.getDeployedTrajectory("ExamplePathWeaverFile");
         Command swerveCmd = NewTrajectoryUtilities.generateSwerveControllerCommand(swerve, path);
+        RobotContainer.isCone = true;
+        RobotContainer.isBottomCone = false;
         
         addCommands(
             new InstantCommand(() -> swerve.resetPose(path.getInitialPose())),
-            new ParallelCommandGroup(
-                // TODO: Align with AprilTag First 
-                new ArmSetTiltAngleCommand(arm, ArmConstants.ARM_PLACE_ANGLE),
-                new ArmSetWinchOutputCommand(arm, ArmConstants.ARM_PLACE_TOP),
-            )
-        )
+            RobotContainer.COMMAND_MAP.get("Ready Top"),
+            RobotContainer.COMMAND_MAP.get("Place"),
+            new WaitCommand(0.5),
+            RobotContainer.COMMAND_MAP.get("Zero"),
+            swerveCmd
+        );
     }
 }
-*/
+
 

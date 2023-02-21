@@ -61,16 +61,16 @@ public class RobotContainer {
 
     private final DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
     private TriModeSwerveCommand swerveCommand;
-    private boolean isCone; // Changes with coneButton/cubeButton
-    private boolean isBottomCone; // Changes with Orientation buttons
 
-    
-    private static final HashMap<String, Command> COMMAND_MAP = new HashMap<>();
+    public static boolean isCone; // Changes with coneButton/cubeButton        These are public so that autonomous routines and subroutines can access them
+    public static boolean isBottomCone; // Changes with Orientation buttons
+    public static final HashMap<String, Command> COMMAND_MAP = new HashMap<>();
+
     private final SendableChooser<Command> autonChooser = new SendableChooser<Command>();
 
     private final PathFollowingSwerve m_swerve = HardwareSwerveFactory.makeSwerve();
-     private final Arm m_arm = makeArm();
-     private final Intake m_intake = makeIntake();
+    private final Arm m_arm = makeArm();
+    private final Intake m_intake = makeIntake();
 
     public RobotContainer() {
         configureControls();
@@ -144,9 +144,6 @@ public class RobotContainer {
 
         limitSwerveSpeedButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.limitSpeed = true;}));
         limitSwerveSpeedButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.limitSpeed = false;}));
-
-        balanceButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.balance = true;}));
-        balanceButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.balance = false; swerveCommand.controlMode = ControlMode.FieldCentric;}));
 
         resetGyroButton.toggleOnTrue(new InstantCommand(() -> {m_swerve.resetRobotAngle();}));
 

@@ -20,7 +20,7 @@ public interface Swerve extends Subsystem, Sendable {
     void resetRobotAngle();
     void resetRobotAngle(double offset);
     double getRobotAngle();
-    void driveByStates(SwerveModuleState[] states);
+    void driveByStates(SwerveModuleState
+    [] states);
     SwerveDriveKinematics getKinematics();
-
 }

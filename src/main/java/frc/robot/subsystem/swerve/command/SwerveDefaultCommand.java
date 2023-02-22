@@ -22,7 +22,7 @@ import frc.robot.utility.ControllerInfo;
     }
 
     public void execute(){
-        double xSpeed = -joystick.getX();
+        double xSpeed = joystick.getX();
         double ySpeed = -joystick.getY();
         double zSpeed = -joystick.getZ();
         if (lockRotation)

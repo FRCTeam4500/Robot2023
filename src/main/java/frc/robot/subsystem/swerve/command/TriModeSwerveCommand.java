@@ -4,11 +4,8 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.component.hardware.AHRSAngleGetterComponent;
 import frc.robot.dashboard.DashboardMessageDisplay;
 import frc.robot.subsystem.swerve.Swerve;
 import frc.robot.utility.ControllerInfo;
@@ -29,10 +26,9 @@ import edu.wpi.first.util.sendable.Sendable;
  *
  * AlignToAngle
  * Aligns to a target angle
- * TODO: make this automatically align the robot rotationally with the goal,
- * to avoid the goal going out of view of the vision
+ * TODO: make this automatically align the robot rotationally with the goal, to avoid the goal going out of view of the vision
  */
-public class TriModeSwerveCommand extends CommandBase {
+public class TriModeSwerveCommand extends CommandBase implements Sendable {
     private Swerve swerve;
     private Joystick joystick;
     private ControllerInfo info;
@@ -43,14 +39,13 @@ public class TriModeSwerveCommand extends CommandBase {
 
     public boolean lockRotation = false;
     public boolean limitSpeed = false;
-    public double targetAngle = 0;
     public boolean noForward = false;
-    public boolean balance = false;
+    public double targetAngle = 0;
 
     private double limitedSpeed = .75;
 
 
-    public TriModeSwerveCommand(Swerve swerve, Joystick joystick, ControllerInfo controllerInfo, DashboardMessageDisplay messageDisplay) {
+    public TriModeSwerveCommand(Swerve swerve, Joystick joystick, ControllerInfo controllerInfo, DashboardMessageDisplay messageDisplay){
         this.swerve = swerve;
         this.joystick = joystick;
         info = controllerInfo;
@@ -71,13 +66,14 @@ public class TriModeSwerveCommand extends CommandBase {
             ySpeed = ceiling(ySpeed, limitedSpeed);
             zSpeed = ceiling(zSpeed, limitedSpeed);
         }
-        if (lockRotation)
+        if (lockRotation) {
             zSpeed = 0;
+        }
         if (noForward) {
             ySpeed = 0;
             zSpeed = 0;
             xSpeed = ceiling(xSpeed, limitedSpeed);
-        }
+        }        
         switch (controlMode){
             case FieldCentric:
                 moveFieldCentric(xSpeed, ySpeed, zSpeed);
@@ -101,6 +97,7 @@ public class TriModeSwerveCommand extends CommandBase {
         double wSpeed = 4 * angleAdjustmentController.calculate(swerve.getRobotAngle(), targetAngle);
         moveFieldCentric(r, t, wSpeed);
     }
+    //deadzones the input
     private double withDeadzone(double value, double deadzone){
         if(Math.abs(value) < deadzone)
             return 0;
@@ -139,5 +136,6 @@ public class TriModeSwerveCommand extends CommandBase {
         builder.addDoubleProperty("controller y", joystick::getY, null);
         builder.addDoubleProperty("controller z", joystick::getZ, null);
         builder.addBooleanProperty("Limit Speed", () -> {return limitSpeed;}, null);
+        
     }
 }

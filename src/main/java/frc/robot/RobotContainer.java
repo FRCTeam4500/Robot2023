@@ -61,8 +61,8 @@ public class RobotContainer {
 
     private final DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
     private TriModeSwerveCommand swerveCommand;
-    public boolean isCone; // Changes with coneButton/cubeButton
-    public boolean isBottomCone; // Changes with Orientation buttons
+    public static boolean isCone; // Changes with coneButton/cubeButton
+    public static boolean isBottomCone; // Changes with Orientation buttons
     /**
     * Hash Map containing useable command groups
     * Access commands using .get()

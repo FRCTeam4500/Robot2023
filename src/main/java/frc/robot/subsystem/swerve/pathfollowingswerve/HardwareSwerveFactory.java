@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.I2C;
 import frc.robot.component.hardware.AHRSAngleGetterComponent;
 import frc.robot.component.hardware.TalonFXComponent;
 import frc.robot.component.hardware.TalonSRXComponent;
-import frc.robot.subsystem.swerve.SwerveConstants;
+import frc.robot.Constants.SwerveConstants;
 
 public class HardwareSwerveFactory {
 

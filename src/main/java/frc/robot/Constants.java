@@ -37,7 +37,7 @@ public class Constants {
         public static final double DRIVE_RATIO = 1/5; // drive rotations per motor rotation
         public static final double ANGLE_RATIO = 1/6.75; // angle rotations per motor rotation
 
-        public static final int DBRPORT = 1; //drive back right port
+        public static final int DBRPORT = 9; //drive back right port
         public static final int DBLPORT = 2; //drive back left port
         public static final int DFLPORT = 3; //drive front left port
         public static final int DFRPORT = 4; //drive front right port
@@ -49,10 +49,10 @@ public class Constants {
 
         public static final double WHEEL_DIAMETER = 0.0762; // in meters
         // distances from the gyro to the swerve module wheel.
-        public static final double DRIVE_X_RIGHT_TRANSLATION = 0.2413; 
+        public static final double DRIVE_X_RIGHT_TRANSLATION = -0.2413; 
         public static final double DRIVE_X_LEFT_TRANSLATION = 0.2413; 
         public static final double DRIVE_Y_FRONT_TRANSLATION = 0.3175; 
-        public static final double DRIVE_Y_BACK_TRANSLATION = 0.3175; 
+        public static final double DRIVE_Y_BACK_TRANSLATION = -0.3175; 
     }
     
 

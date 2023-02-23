@@ -61,15 +61,14 @@ public class RobotContainer {
 
     private final DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
     private TriModeSwerveCommand swerveCommand;
-    private boolean isCone; // Changes with coneButton/cubeButton
-    private boolean isBottomCone; // Changes with Orientation buttons
+    public boolean isCone; // Changes with coneButton/cubeButton
+    public boolean isBottomCone; // Changes with Orientation buttons
     /**
     * Hash Map containing useable command groups
-    * Access 
+    * Access commands using .get()
     */
-    private static final HashMap<String, Command> COMMAND_MAP = new HashMap<>();
+    public static final HashMap<String, Command> COMMAND_MAP = new HashMap<>();
     private final SendableChooser<Command> autonChooser = new SendableChooser<Command>();
-
     private final PathFollowingSwerve m_swerve = HardwareSwerveFactory.makeSwerve();
     private final Arm m_arm = makeArm();
     private final Intake m_intake = makeIntake();

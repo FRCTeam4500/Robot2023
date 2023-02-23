@@ -34,7 +34,7 @@ public class Constants {
         public final static double MAX_ROTATIONAL_SPEED = MAX_LINEAR_SPEED/(4/3); // 4/3 is (about) the radius from the center of the robot to the swerve drive wheels.
         public final static double MAX_ROTATIONAL_ACCELERATION = 4; // Linear Acceleration/radius
 
-        public static final double DRIVE_RATIO = 1/5; // drive rotations per motor rotation
+        public static final double DRIVE_RATIO = 1/5.; // drive rotations per motor rotation
         public static final double ANGLE_RATIO = 1/6.75; // angle rotations per motor rotation
 
         public static final int DBRPORT = 1; //drive back right port
@@ -99,7 +99,7 @@ public class Constants {
         /* Camera */
         public static final int width = 300;//TODO: fix
         public static final int height = 200;
-
+        public static final double MAXIMUM_ALLOWABLE_OFFSET = 0;
         
     }
 

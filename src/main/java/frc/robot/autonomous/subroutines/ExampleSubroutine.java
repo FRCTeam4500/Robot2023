@@ -12,17 +12,12 @@ import frc.robot.RobotContainer;
 
 public class ExampleSubroutine extends SequentialCommandGroup {
     public ExampleSubroutine (PathFollowingSwerve swerve) {
-        Trajectory path = ExtendedTrajectoryUtilities.getDeployedTrajectory("ExamplePathWeaverFile");
+        Trajectory path = ExtendedTrajectoryUtilities.getDeployedTrajectory("Test");
         Command swerveCmd = NewTrajectoryUtilities.generateSwerveControllerCommand(swerve, path);
-        RobotContainer.isCone = true;
-        RobotContainer.isBottomCone = false;
         
         addCommands(
             new InstantCommand(() -> swerve.resetPose(path.getInitialPose())),
-            RobotContainer.COMMAND_MAP.get("Ready Top"),
-            RobotContainer.COMMAND_MAP.get("Place"),
             new WaitCommand(0.5),
-            RobotContainer.COMMAND_MAP.get("Zero"),
             swerveCmd
         );
     }

@@ -1,6 +1,7 @@
 package frc.robot.subsystem.vision;
 
 import frc.robot.component.VisionComponent;
+import frc.robot.Constants.VisionConstants;
 
 public class VisionImpl implements Vision{
     private  VisionComponent visionComponent;
@@ -16,6 +17,14 @@ public class VisionImpl implements Vision{
 
     public boolean hasValidTargets(){
         return visionComponent.hasValidTargets();
+    }
+
+    public double getDepthToTarget() {
+        return (VisionConstants.TARGET_HEIGHT - VisionConstants.VISION_HEIGHT) / Math.tan(getVerticalOffsetFromCrosshair());
+    }
+
+    public double getHorizontalOffsetFromTarget() {
+        return (getDepthToTarget() * getHorizontalOffsetFromCrosshair()) + VisionConstants.VISION_OFFSET;
     }
 
     public double getHorizontalOffsetFromCrosshair(){

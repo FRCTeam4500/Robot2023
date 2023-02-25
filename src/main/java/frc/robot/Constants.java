@@ -100,6 +100,13 @@ public class Constants {
         public static final int width = 300;//TODO: fix
         public static final int height = 200;
         public static final double MAXIMUM_ALLOWABLE_OFFSET = 0;
+
+        public static final double VISION_HEIGHT = 0.0;
+        public static final double VISION_ANGLE = 0.0;
+        public static final double VISION_OFFSET = 0.0;
+
+        public static final double TARGET_HEIGHT = 0.0;
+
         
     }
 

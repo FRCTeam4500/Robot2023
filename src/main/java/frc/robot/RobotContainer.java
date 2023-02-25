@@ -29,7 +29,6 @@ import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.JoystickConstants;
 import frc.robot.component.hardware.SparkMaxComponent;
-import frc.robot.subsystem.swerve.command.AlignToTargetCommand;
 import frc.robot.subsystem.swerve.command.TriModeSwerveCommand;
 import frc.robot.subsystem.swerve.pathfollowingswerve.HardwareSwerveFactory;
 import frc.robot.subsystem.swerve.pathfollowingswerve.OdometricSwerve;
@@ -155,9 +154,6 @@ public class RobotContainer {
         limitSwerveSpeedButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.limitSpeed = false;}));
 
         resetGyroButton.toggleOnTrue(new InstantCommand(() -> {m_swerve.resetRobotAngle();}));
-
-        alignButton.toggleOnTrue(new AlignToTargetCommand(m_swerve, m_vision));
-        alignButton.toggleOnFalse(new TriModeSwerveCommand(m_swerve, driveStick, info, messages)); 
 
         Shuffleboard.getTab("Swerve").add("Swerve", m_swerve);
         Shuffleboard.getTab("Swerve").add("Swerve Command", swerveCommand);

@@ -12,6 +12,7 @@ public class Constants {
         public final static int LIMIT_SWERVE_SPEED = 2;
         public final static int NO_FORWARD = 9;
         public final static int BALANCE = 11;
+        public final static int ALIGN = 3;
 
         // Control stick map
         public final static int CONE_INTAKE = 11; // Also places cubes
@@ -106,6 +107,9 @@ public class Constants {
         public static final double VISION_OFFSET = 0.0;
 
         public static final double TARGET_HEIGHT = 0.0;
+
+        public static final double MAX_DEPTH_TO_TARGET = 0.1;
+        public static final double MAX_OFFSET_TO_TARGET = 0.1;
 
         
     }

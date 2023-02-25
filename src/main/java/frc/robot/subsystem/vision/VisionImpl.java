@@ -23,6 +23,7 @@ public class VisionImpl implements Vision{
         return (VisionConstants.TARGET_HEIGHT - VisionConstants.VISION_HEIGHT) / Math.tan(getVerticalOffsetFromCrosshair());
     }
 
+    
     public double getHorizontalOffsetFromTarget() {
         return (getDepthToTarget() * getHorizontalOffsetFromCrosshair()) + VisionConstants.VISION_OFFSET;
     }

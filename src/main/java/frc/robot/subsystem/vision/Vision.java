@@ -13,6 +13,10 @@ public interface Vision extends Subsystem {
 
     double getVerticalOffsetFromCrosshair();
 
+    double getDepthToTarget();
+
+    double getHorizontalOffsetFromTarget();
+
     double getTargetArea();
 
     double getSkew();

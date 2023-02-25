@@ -5,6 +5,8 @@ import frc.robot.Constants.IntakeConstants;
 import frc.robot.component.hardware.SparkMaxComponent;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
+import java.util.function.BooleanSupplier;
+
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
@@ -14,6 +16,7 @@ public class Intake extends SubsystemBase {
     private SparkMaxComponent intakeAngleMotor;
     private double targetTiltAngle;
     private double targetIntakeOutput;
+    private static boolean isCone2;
 
     public Intake() {
         this.intakeMotor = new SparkMaxComponent(IntakeConstants.INTAKE_MOTOR_ID, IntakeConstants.INTAKE_MOTOR_TYPE);
@@ -79,6 +82,7 @@ public class Intake extends SubsystemBase {
 
         @Override
         public void initialize() {
+            isCone2 = isCone;
             if(zeroing){
                 intake.setIntake(0);
             } else {
@@ -99,5 +103,6 @@ public class Intake extends SubsystemBase {
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("Target Intake Tilt position", () -> targetTiltAngle, (value) -> {setAngle((double) value);});
         builder.addDoubleProperty("Target Intake Wheel output", () -> targetIntakeOutput, (value) -> {setIntake((double) value);});
+        builder.addBooleanProperty("IS CONE?!?!?", () -> isCone2, null);
     }
 }

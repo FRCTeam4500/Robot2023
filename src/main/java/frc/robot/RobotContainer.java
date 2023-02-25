@@ -174,8 +174,8 @@ public class RobotContainer {
         pickupButton.toggleOnFalse(COMMAND_MAP.get("Zero"));
         retractButton.toggleOnTrue(COMMAND_MAP.get("Zero"));
 
-        
-
+        Shuffleboard.getTab("Arm and Intake").addBoolean("Is Cone", () -> isCone);
+        Shuffleboard.getTab("Arm and Intake").add("Intake", m_intake);
 
     }
 

@@ -18,7 +18,7 @@ public class HardwareSwerveFactory {
     private static final double ANGLE_RATIO = 1/6.75; //angle rotations per motor rotation
     private static final double MAX_SPEED = SwerveConstants.MAX_LINEAR_SPEED; //max surface speed, meters per second
 
-    private static final int DBRPORT = 1; //drive back right port
+    private static final int DBRPORT = 9; //drive back right port
     private static final int ABRPORT = 5; //angle back right port
     private static final int DBLPORT = 2; //drive back left port
     private static final int ABLPORT = 6; //angle back left port

@@ -17,14 +17,14 @@ public class Constants {
         public final static int CONE_INTAKE = 11; // Also places cubes
         public final static int CUBE_INTAKE = 12; // Also places cones 
         public final static int PLACE = 1;
-        public final static int PICKUP = 1;
+        public final static int PICKUP = 8;
         public final static int READY_GROUND = 10;
-        public final static int READY_BOTTOM = 0;
-        public final static int READY_MIDDLE = 0;
-        public final static int READY_TOP = 0;
-        public final static int RETRACT = 0;
-        public final static int UPRIGHT_CONE = 0;
-        public final static int SIDEWAYS_CONE = 0;
+        public final static int READY_BOTTOM = 2;
+        public final static int READY_MIDDLE = 3;
+        public final static int READY_TOP = 4;
+        public final static int RETRACT = 5;
+        public final static int UPRIGHT_CONE = 6;
+        public final static int SIDEWAYS_CONE = 7;
 
     }
 
@@ -37,7 +37,7 @@ public class Constants {
         public static final double DRIVE_RATIO = 1/5.; // drive rotations per motor rotation
         public static final double ANGLE_RATIO = 1/6.75; // angle rotations per motor rotation
 
-        public static final int DBRPORT = 1; //drive back right port
+        public static final int DBRPORT = 9; //drive back right port
         public static final int DBLPORT = 2; //drive back left port
         public static final int DFLPORT = 3; //drive front left port
         public static final int DFRPORT = 4; //drive front right port
@@ -49,18 +49,18 @@ public class Constants {
 
         public static final double WHEEL_DIAMETER = 0.0762; // in meters
         // distances from the gyro to the swerve module wheel.
-        public static final double DRIVE_X_RIGHT_TRANSLATION = 0.2413; 
+        public static final double DRIVE_X_RIGHT_TRANSLATION = -0.2413; 
         public static final double DRIVE_X_LEFT_TRANSLATION = 0.2413; 
         public static final double DRIVE_Y_FRONT_TRANSLATION = 0.3175; 
-        public static final double DRIVE_Y_BACK_TRANSLATION = 0.3175; 
+        public static final double DRIVE_Y_BACK_TRANSLATION = -0.3175; 
     }
     
 
     public static class ArmConstants { // Arm Contstants
         /* Init */
-        public static final int TILT_MOTOR_ID = 0; //TODO: fix
+        public static final int TILT_MOTOR_ID = 10; //TODO: fix
         public static final MotorType TILT_MOTOR_TYPE = MotorType.kBrushless; 
-        public static final int WINCH_MOTOR_ID = 0; //TODO: fix
+        public static final int WINCH_MOTOR_ID = 11; //TODO: fix
         public static final MotorType WINCH_MOTOR_TYPE = MotorType.kBrushless; 
 
         /* Force Limit */
@@ -83,9 +83,9 @@ public class Constants {
         public static final double INTAKE_CUBE_SPEED = 0.55; //TODO: fix
         public static final double INTAKE_CONE_SPEED = -0.55;
 
-        public static final int INTAKE_MOTOR_ID = 0; //TODO: fix
+        public static final int INTAKE_MOTOR_ID = 13; //TODO: fix
         public static final MotorType INTAKE_MOTOR_TYPE = MotorType.kBrushless;
-        public static final int INTAKE_ANGLE_MOTOR_ID = 0; //TODO: fix
+        public static final int INTAKE_ANGLE_MOTOR_ID = 12; //TODO: fix
         public static final MotorType ANGLE_MOTOR_TYPE = MotorType.kBrushless;
 
         public static final double INTAKE_BOT_ANGLE = 0; // Angle that the Intake should be at the bottom when picking up, as well as when it's intaking TODO: Fix value

@@ -62,6 +62,7 @@ public class RobotContainer {
     private final JoystickButton retractButton = new JoystickButton(controlStick, JoystickConstants.RETRACT);
     private final JoystickButton uprightConeButton = new JoystickButton(controlStick, JoystickConstants.UPRIGHT_CONE);
     private final JoystickButton sidewaysConeButton = new JoystickButton(controlStick, JoystickConstants.SIDEWAYS_CONE);
+    private final JoystickButton setIntakeAngleButton =  new JoystickButton(controlStick, JoystickConstants.SET_ANGLE);
 
     private final DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
     private TriModeSwerveCommand swerveCommand;
@@ -127,6 +128,8 @@ public class RobotContainer {
             new Intake.IntakeSetAngleCommand(m_intake, isCone, isBottomCone, true),
             new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT, isBottomCone),
             new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE)
+
+        
         ));
     }
     
@@ -216,6 +219,9 @@ public class RobotContainer {
                 new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE)
             )
         );
+
+        setIntakeAngleButton.toggleOnTrue(new InstantCommand(() -> m_intake.intakeAngleMotor.setAngle(-1)));
+        setIntakeAngleButton.toggleOnFalse(new InstantCommand(() -> m_intake.intakeAngleMotor.setAngle(0)));
 
         Shuffleboard.getTab("Arm and Intake").addBoolean("Is Cone", () -> isCone);
         Shuffleboard.getTab("Arm and Intake").addBoolean("Is Bottom Cone", () -> isBottomCone);

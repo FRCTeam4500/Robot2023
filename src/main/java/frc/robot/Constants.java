@@ -26,6 +26,7 @@ public class Constants {
         public final static int RETRACT = 5;
         public final static int UPRIGHT_CONE = 6;
         public final static int SIDEWAYS_CONE = 7;
+        public final static int SET_ANGLE = 12;
 
     }
 

@@ -13,7 +13,7 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 
 public class Intake extends SubsystemBase {
     private SparkMaxComponent intakeMotor;
-    private SparkMaxComponent intakeAngleMotor;
+    public SparkMaxComponent intakeAngleMotor;
     private double targetTiltAngle;
     private double targetIntakeOutput;
     private static boolean isCone2;

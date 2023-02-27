@@ -4,6 +4,9 @@ import frc.robot.Constants.ArmConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxRelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
@@ -13,6 +16,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 public class Arm extends SubsystemBase {
     private SparkMaxComponent tiltMotor;
     private SparkMaxComponent winchMotor;
+    private RelativeEncoder tiltEncoder;
+    private RelativeEncoder winchEncoder;
     private double targetTiltAngle;
     private double targetWinchPosition;
     Position position;
@@ -23,8 +28,17 @@ public class Arm extends SubsystemBase {
     public Arm() {
         this.tiltMotor = new SparkMaxComponent(ArmConstants.TILT_MOTOR_ID, ArmConstants.TILT_MOTOR_TYPE);
         this.winchMotor = new SparkMaxComponent(ArmConstants.WINCH_MOTOR_ID, ArmConstants.WINCH_MOTOR_TYPE);
+        
+        this.tiltEncoder = tiltMotor.getEncoder();
+        this.winchEncoder = winchMotor.getEncoder();
+
+        this.tiltMotor.setSoftLimit(SoftLimitDirection.kForward, 16f); // The "f" is specifying that it is a float
+        this.tiltMotor.setSoftLimit(SoftLimitDirection.kReverse, 0f);
         this.winchMotor.setSoftLimit(SoftLimitDirection.kForward, 55f);
         this.winchMotor.setSoftLimit(SoftLimitDirection.kReverse, 0.5f);
+
+        this.tiltMotor.setIdleMode(IdleMode.kBrake);
+        this.winchMotor.setIdleMode(IdleMode.kBrake);
     }
     
     /**
@@ -47,10 +61,10 @@ public class Arm extends SubsystemBase {
      */
     public void setTilt(double position) {
         targetTiltAngle = position;
-        boolean up = targetTiltAngle > tiltMotor.getEncoder().getPosition();
+        boolean up = targetTiltAngle > tiltEncoder.getPosition();
 
-        while (up ? tiltMotor.getEncoder().getPosition() < targetTiltAngle :
-                tiltMotor.getEncoder().getPosition() > targetTiltAngle) {
+        while (up ? tiltEncoder.getPosition() < targetTiltAngle :
+                tiltEncoder.getPosition() > targetTiltAngle) {
             tiltMotor.setOutput(up ? .5 : -.5);
         }
     }
@@ -61,10 +75,10 @@ public class Arm extends SubsystemBase {
      */
     public void setWinch(double position) {
         targetWinchPosition = position;
-        boolean forward = targetWinchPosition > winchMotor.getEncoder().getPosition();
+        boolean forward = targetWinchPosition > winchEncoder.getPosition();
 
-        while (forward ? winchMotor.getEncoder().getPosition() < targetWinchPosition :
-                winchMotor.getEncoder().getPosition() > targetWinchPosition) {
+        while (forward ? winchEncoder.getPosition() < targetWinchPosition :
+                winchEncoder.getPosition() > targetWinchPosition) {
             winchMotor.setOutput(forward ? .5 : -.5);
         }
     }
@@ -115,12 +129,15 @@ public class Arm extends SubsystemBase {
         Bottom,
         Middle,
         Top,
-        Retracted,
-        Ground
+        Retracted
     }
 
     public Position getPosition() {
         return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
     public static Arm makeArm() {
@@ -131,5 +148,20 @@ public class Arm extends SubsystemBase {
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("Target tilt position", () -> targetTiltAngle, (value) -> {setTilt((double) value);});
         builder.addDoubleProperty("Target winch output", () -> targetWinchPosition, (value) -> {setWinch((double) value);});
+    
+        builder.addStringProperty("Position", () -> {
+            switch (position) {
+                case Bottom:
+                    return "Bottom";
+                case Middle:
+                    return "Middle";
+                case Top:
+                    return "Top";
+                case Retracted:
+                    return "Retracted";
+                default:
+                    return "Unknown";
+            }
+        }, null);
     }
 }

@@ -33,8 +33,6 @@ import frc.robot.subsystem.swerve.command.TriModeSwerveCommand;
 import frc.robot.subsystem.swerve.pathfollowingswerve.HardwareSwerveFactory;
 import frc.robot.subsystem.swerve.pathfollowingswerve.OdometricSwerve;
 import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
-import frc.robot.subsystem.vision.HardwareVisionFactory;
-import frc.robot.subsystem.vision.Vision;
 import frc.robot.subsystem.swerve.command.TriModeSwerveCommand.ControlMode;
 
 
@@ -78,11 +76,10 @@ public class RobotContainer {
     private final PathFollowingSwerve m_swerve = HardwareSwerveFactory.makeSwerve();
     private final Arm m_arm = makeArm();
     private final Intake m_intake = makeIntake();
-    private final Vision m_vision = HardwareVisionFactory.makeVision();
 
     public RobotContainer() {
         configureControls();
-        configureCommands();
+        // configureCommands();
         configureSwerve();
         configureAuto();
         configureArmAndIntake();
@@ -99,26 +96,29 @@ public class RobotContainer {
         Shuffleboard.getTab("Driver Controls").add("Messages", messages);
     }
 
+    /**
+     * Unused for now due to un-synchronized commands
+     */
     void configureCommands() {
-        // Define commonly used commands
+        //  Define commonly used commands
         // They can then be called using COMMAND_MAP.get("key");
         COMMAND_MAP.put("Ready Bot", new SequentialCommandGroup(
             new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_BOT, isBottomCone),
             new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE),
             new Intake.IntakeSetAngleCommand(m_intake,isCone, isBottomCone, false)
-            ));
+        ));
 
         COMMAND_MAP.put("Ready Mid", new SequentialCommandGroup(
             new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE),
             new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_MID, isBottomCone),
             new Intake.IntakeSetAngleCommand(m_intake,isCone, isBottomCone, false)
-            ));
+        ));
 
         COMMAND_MAP.put("Ready Top", new SequentialCommandGroup(
             new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE),
             new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_TOP, isBottomCone),
             new Intake.IntakeSetAngleCommand(m_intake,isCone, isBottomCone, false)
-            ));
+        ));
 
         COMMAND_MAP.put("Place", new Intake.IntakeSetOutputCommand(m_intake, !isCone, false));
         COMMAND_MAP.put("Pickup", new Intake.IntakeSetOutputCommand(m_intake, isCone, false));
@@ -141,8 +141,8 @@ public class RobotContainer {
         switchDriveModeRobotCentricButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.FieldCentric;}));
 
         /* Slow Side to Side movement */
-        noForwardButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.RobotCentric; swerveCommand.noForward = true;}));
-        noForwardButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.FieldCentric; swerveCommand.noForward = false;}));
+        noForwardButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.noForward = true;}));
+        noForwardButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.noForward = false;}));
 
         alignSwerveToAngleButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.AlignToAngle; swerveCommand.targetAngle = 0;}));
         alignSwerveToAngleButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.FieldCentric;}));
@@ -165,18 +165,61 @@ public class RobotContainer {
         uprightConeButton.toggleOnTrue(new InstantCommand(() -> {isBottomCone = false;}));
         sidewaysConeButton.toggleOnTrue(new InstantCommand(() -> {isBottomCone = true;}));
 
-        readyBotButton.toggleOnTrue(COMMAND_MAP.get("Ready Bot"));
-        readyMidButton.toggleOnTrue(COMMAND_MAP.get("Ready Mid"));
-        readyTopButton.toggleOnTrue(COMMAND_MAP.get("Ready Top"));
-        placeButton.toggleOnTrue(COMMAND_MAP.get("Place"));
-        pickupButton.toggleOnTrue(COMMAND_MAP.get("Pickup"));
-        placeButton.toggleOnFalse(COMMAND_MAP.get("Zero"));
-        pickupButton.toggleOnFalse(COMMAND_MAP.get("Zero"));
-        retractButton.toggleOnTrue(COMMAND_MAP.get("Zero"));
+        readyBotButton.toggleOnTrue(
+            new SequentialCommandGroup (
+                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_BOT, isBottomCone),
+                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE),
+                new Intake.IntakeSetAngleCommand(m_intake,isCone, isBottomCone, false)
+            )
+        );
+        readyMidButton.toggleOnTrue(
+            new SequentialCommandGroup (
+                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE),
+                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_MID, isBottomCone),
+                new Intake.IntakeSetAngleCommand(m_intake,isCone, isBottomCone, false)
+            )
+        );
+        readyTopButton.toggleOnTrue(
+            new SequentialCommandGroup (
+                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE),
+                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_TOP, isBottomCone),
+                new Intake.IntakeSetAngleCommand(m_intake,isCone, isBottomCone, false)
+            )
+        );
+        placeButton.toggleOnTrue(
+            new Intake.IntakeSetOutputCommand(m_intake, !isCone, false)
+        );
+        pickupButton.toggleOnTrue(
+            new Intake.IntakeSetOutputCommand(m_intake, isCone, false)
+        );
+        placeButton.toggleOnFalse(
+            new SequentialCommandGroup(
+                new Intake.IntakeSetOutputCommand(m_intake, isCone, true),
+                new Intake.IntakeSetAngleCommand(m_intake, isCone, isBottomCone, true),
+                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT, isBottomCone),
+                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE)
+            )
+        );
+        pickupButton.toggleOnFalse(
+            new SequentialCommandGroup(
+                new Intake.IntakeSetOutputCommand(m_intake, isCone, true),
+                new Intake.IntakeSetAngleCommand(m_intake, isCone, isBottomCone, true),
+                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT, isBottomCone),
+                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE)
+            )
+        );
+        retractButton.toggleOnTrue(
+            new SequentialCommandGroup(
+                new Intake.IntakeSetOutputCommand(m_intake, isCone, true),
+                new Intake.IntakeSetAngleCommand(m_intake, isCone, isBottomCone, true),
+                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT, isBottomCone),
+                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE)
+            )
+        );
 
         Shuffleboard.getTab("Arm and Intake").addBoolean("Is Cone", () -> isCone);
+        Shuffleboard.getTab("Arm and Intake").addBoolean("Is Bottom Cone", () -> isBottomCone);
         Shuffleboard.getTab("Arm and Intake").add("Intake", m_intake);
-
     }
 
     void configureAuto() {
@@ -189,7 +232,7 @@ public class RobotContainer {
 
     public void teleopInit() {
         Command auton = autonChooser.getSelected();
-        if (auton != null){
+        if (auton != null) {
             auton.cancel();
         }
     }

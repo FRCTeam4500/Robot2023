@@ -15,21 +15,21 @@ public class Constants {
         public final static int ALIGN = 3;
 
         // Control stick map
-        public final static int CONE_INTAKE = 9; // Also places cubes
-        public final static int CUBE_INTAKE = 10; // Also places cones 
+        public final static int CONE_INTAKE = 11; // Also places cubes
+        public final static int CUBE_INTAKE = 12; // Also places cones
         public final static int PLACE = 1;
 
         public final static int GO_OUT = 2; // TODO: Change
-        public final static int GO_IN = 12;
+        //public final static int GO_IN = ?;
 
-        public final static int PICKUP = 8;
+        public final static int PICKUP = 4;
         public final static int READY_GROUND = 11;
-        public final static int READY_BOTTOM = 2;
-        public final static int READY_MIDDLE = 3;
-        public final static int READY_TOP = 4;
-        public final static int RETRACT = 5;
+        public final static int READY_BOTTOM = 9;
+        public final static int READY_MIDDLE = 7;
+        public final static int READY_TOP = 8;
+        public final static int RETRACT = 10; // FIXME: Made it goIn for now
         public final static int UPRIGHT_CONE = 6;
-        public final static int SIDEWAYS_CONE = 7;
+        public final static int SIDEWAYS_CONE = 5;
 
     }
 

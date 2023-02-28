@@ -68,7 +68,7 @@ public class RobotContainer {
     private final JoystickButton uprightConeButton = new JoystickButton(controlStick, JoystickConstants.UPRIGHT_CONE);
     private final JoystickButton sidewaysConeButton = new JoystickButton(controlStick, JoystickConstants.SIDEWAYS_CONE);
 
-    private final JoystickButton goInButton = new JoystickButton(controlStick, JoystickConstants.GO_IN);
+//    private final JoystickButton goInButton = new JoystickButton(controlStick, JoystickConstants.GO_IN);
     private final JoystickButton goOutButton = new JoystickButton(controlStick, JoystickConstants.GO_OUT);
 
     private final DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
@@ -171,9 +171,6 @@ public class RobotContainer {
         uprightConeButton.toggleOnTrue(new InstantCommand(() -> isBottomCone = false));
         sidewaysConeButton.toggleOnTrue(new InstantCommand(() -> isBottomCone = true));
 
-        goInButton.toggleOnTrue(new Arm.ArmSetActualOutputCommand(m_arm, .3));
-        goInButton.toggleOnFalse(new Arm.ArmSetActualOutputCommand(m_arm, 0));
-
         goOutButton.toggleOnTrue(new Arm.ArmSetActualOutputCommand(m_arm, -.3));
         goOutButton.toggleOnFalse(new Arm.ArmSetActualOutputCommand(m_arm, 0));
 
@@ -186,18 +183,17 @@ public class RobotContainer {
         );
         readyMidButton.toggleOnTrue(
             new SequentialCommandGroup (
-                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE),
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_MID, isBottomCone),
+                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE),
                 new Intake.IntakeSetAngleCommand(m_intake,isCone, isBottomCone, false)
             )
         );
         readyTopButton.toggleOnTrue(
-            // new SequentialCommandGroup (
-            //     new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE),
-            //     new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_TOP, isBottomCone),
-            //     new Intake.IntakeSetAngleCommand(m_intake,isCone, isBottomCone, false)
-            // )
-            new Arm.ArmSetWinchOutputCommand(m_arm, m_arm.getWinchPosition()+1, isBottomCone)
+             new SequentialCommandGroup (
+                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_TOP, isBottomCone),
+                 new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE),
+                 new Intake.IntakeSetAngleCommand(m_intake, isCone, isBottomCone, false)
+             )
         );
         placeButton.toggleOnTrue(
             new Intake.IntakeSetOutputCommand(m_intake, !isCone, false)
@@ -226,7 +222,7 @@ public class RobotContainer {
                 // new Intake.IntakeSetOutputCommand(m_intake, isCone, true),
                 // new Intake.IntakeSetAngleCommand(m_intake, isCone, isBottomCone, true),
                 // new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT, isBottomCone),
-                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE),
+                // new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE),
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT, isBottomCone)
             )
         );

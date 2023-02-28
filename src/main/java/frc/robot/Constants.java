@@ -1,5 +1,5 @@
 package frc.robot;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Constants {
     public static class JoystickConstants {
@@ -68,14 +68,14 @@ public class Constants {
         public static final double ARM_DOWN_SENSOR_LIMIT = 1240; //TODO: fix all of these lol
         public static final double ARM_UP_SENSOR_LIMIT = 300;
 
-        public static final double ARM_PLACE_ANGLE = 0; // ARM_PLACE_ANGLE is the angle for all heights TODO: change value later
+        public static final double ARM_PLACE_ANGLE = -38.2615; // ARM_PLACE_ANGLE is the angle for all heights TODO: change value later
         public static final double ARM_PICKUP_ANGLE = 0; // ARM_PICKUP_ANGLE is the angle to pickup from ground TODO: change value later
         public static final double ARM_ZERO_ANGLE = 0; // TODO: change value later
 
         public static final double ARM_PLACE_TOP = 0; // TODO: change value later
         public static final double ARM_PLACE_MID = 0; // TODO: change value later
-        public static final double ARM_PLACE_BOT = 0; // TODO: change value later
-        public static final double ARM_RETRACT = 0; // TODO: change value later
+        public static final double ARM_PLACE_BOT = 25; // TODO: change value later
+        public static final double ARM_RETRACT = 25; // TODO: change value later
         public static final double ARM_BOT_CONE_ADDITION = 0; // When placing a sideways cone, the arm must be extended a bit further.
 
     }
@@ -91,7 +91,7 @@ public class Constants {
 
         public static final double INTAKE_BOT_ANGLE = 0; // Angle that the Intake should be at the bottom when picking up, as well as when it's intaking TODO: Fix value
         public static final double INTAKE_TRAY_PICKUP_ANGLE = 0;
-        public static final double INTAKE_TOP_CONE_PLACE_ANGLE = 0;
+        public static final double INTAKE_TOP_CONE_PLACE_ANGLE = -9.2;
         public static final double INTAKE_CUBE_PLACE_ANGLE = 0;
         public static final double INTAKE_RETRACTED_ANGLE = 0; // TRUE retracted
     }

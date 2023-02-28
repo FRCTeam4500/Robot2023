@@ -24,7 +24,9 @@ public class Intake extends SubsystemBase {
     public Intake() {
         this.intakeMotor = new SparkMaxComponent(IntakeConstants.INTAKE_MOTOR_ID, IntakeConstants.INTAKE_MOTOR_TYPE);
         this.intakeTiltMotor = new SparkMaxComponent(IntakeConstants.INTAKE_ANGLE_MOTOR_ID, IntakeConstants.ANGLE_MOTOR_TYPE);
-    
+
+        this.intakeMotor.setIdleMode(IdleMode.kBrake);
+
         this.intakeTiltMotor.setIdleMode(IdleMode.kCoast);
 
         this.tiltPIDController = this.intakeTiltMotor.getPIDController();

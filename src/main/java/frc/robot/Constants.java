@@ -18,6 +18,10 @@ public class Constants {
         public final static int CONE_INTAKE = 9; // Also places cubes
         public final static int CUBE_INTAKE = 10; // Also places cones 
         public final static int PLACE = 1;
+
+        public final static int GO_OUT = 2; // TODO: Change
+        public final static int GO_IN = 12;
+
         public final static int PICKUP = 8;
         public final static int READY_GROUND = 11;
         public final static int READY_BOTTOM = 2;
@@ -68,15 +72,16 @@ public class Constants {
         public static final double ARM_DOWN_SENSOR_LIMIT = 1240; //TODO: fix all of these lol
         public static final double ARM_UP_SENSOR_LIMIT = 300;
 
-        public static final double ARM_PLACE_ANGLE = -38.2615; // ARM_PLACE_ANGLE is the angle for all heights TODO: change value later
-        public static final double ARM_PICKUP_ANGLE = 0; // ARM_PICKUP_ANGLE is the angle to pickup from ground TODO: change value later
+        public static final double ARM_PLACE_ANGLE = 0; // ARM_PLACE_ANGLE is the angle for all heights TODO: change value later
+        public static final double ARM_GROUND_ANGLE = -38.2615; // ARM_PICKUP_ANGLE is the angle to pickup from ground TODO: change value later
         public static final double ARM_ZERO_ANGLE = 0; // TODO: change value later
 
-        public static final double ARM_PLACE_TOP = 0; // TODO: change value later
-        public static final double ARM_PLACE_MID = 0; // TODO: change value later
+        public static final double ARM_PLACE_TOP = 55; // TODO: change value later
+        public static final double ARM_PLACE_MID = 35; // TODO: change value later
         public static final double ARM_PLACE_BOT = 25; // TODO: change value later
-        public static final double ARM_RETRACT = 25; // TODO: change value later
-        public static final double ARM_BOT_CONE_ADDITION = 0; // When placing a sideways cone, the arm must be extended a bit further.
+        public static final double ARM_RETRACT = 1;
+        public static final double ARM_BOT_CONE_ADDITION = 5; // When placing a sideways cone, the arm must be extended a bit further.
+
 
     }
 
@@ -84,16 +89,15 @@ public class Constants {
         public static final double INTAKE_CUBE_SPEED = 0.55; //TODO: fix
         public static final double INTAKE_CONE_SPEED = -0.55;
 
-        public static final int INTAKE_MOTOR_ID = 13; //TODO: fix
+        public static final int INTAKE_MOTOR_ID = 13;
         public static final MotorType INTAKE_MOTOR_TYPE = MotorType.kBrushless;
-        public static final int INTAKE_ANGLE_MOTOR_ID = 12; //TODO: fix
+        public static final int INTAKE_ANGLE_MOTOR_ID = 12;
         public static final MotorType ANGLE_MOTOR_TYPE = MotorType.kBrushless;
 
-        public static final double INTAKE_BOT_ANGLE = 0; // Angle that the Intake should be at the bottom when picking up, as well as when it's intaking TODO: Fix value
-        public static final double INTAKE_TRAY_PICKUP_ANGLE = 0;
-        public static final double INTAKE_TOP_CONE_PLACE_ANGLE = -9.2;
-        public static final double INTAKE_CUBE_PLACE_ANGLE = 0;
-        public static final double INTAKE_RETRACTED_ANGLE = 0; // TRUE retracted
+        public static final double INTAKE_BOT_ANGLE = -9.2; // Angle that the Intake should be at the bottom when picking up, as well as when it's intaking TODO: Fix value
+        public static final double INTAKE_TRAY_PICKUP_ANGLE = -12;
+        public static final double INTAKE_TOP_CONE_PLACE_ANGLE = -12; // Change
+        public static final double INTAKE_RETRACTED_ANGLE = -1; // TRUE retracted
     }
 
     public static class VisionConstants { // Vision Constants

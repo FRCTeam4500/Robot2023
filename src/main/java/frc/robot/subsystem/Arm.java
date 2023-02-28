@@ -76,6 +76,9 @@ public class Arm extends SubsystemBase {
         winchMotor.setAngle(position);
     }
 
+    public void setOutput(double output) {
+        winchMotor.setOutput(output);
+    }
     /**
      * Command for setting the position of the tilt motor
      */
@@ -127,6 +130,20 @@ public class Arm extends SubsystemBase {
         Middle,
         Top,
         Retracted
+    }
+
+    public static class ArmSetActualOutputCommand extends InstantCommand {
+        private Arm arm;
+        private double output;
+
+        public ArmSetActualOutputCommand(Arm arm, double output) {
+            this.arm = arm;
+            this.output = output;
+        }
+
+        public void initialize() {
+            arm.setOutput(output);
+        }
     }
 
     public Position getPosition() {

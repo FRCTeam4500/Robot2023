@@ -31,7 +31,6 @@ import frc.robot.subsystem.Intake;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.JoystickConstants;
-import frc.robot.autonomous.routines.Top2PieceAuto;
 import frc.robot.component.hardware.SparkMaxComponent;
 import frc.robot.subsystem.swerve.command.TriModeSwerveCommand;
 import frc.robot.subsystem.swerve.pathfollowingswerve.HardwareSwerveFactory;
@@ -69,10 +68,13 @@ public class RobotContainer {
     private final JoystickButton uprightConeButton = new JoystickButton(controlStick, JoystickConstants.UPRIGHT_CONE);
     private final JoystickButton sidewaysConeButton = new JoystickButton(controlStick, JoystickConstants.SIDEWAYS_CONE);
 
+    private final JoystickButton goInButton = new JoystickButton(controlStick, JoystickConstants.GO_IN);
+    private final JoystickButton goOutButton = new JoystickButton(controlStick, JoystickConstants.GO_OUT);
+
     private final DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
     private TriModeSwerveCommand swerveCommand;
     public static boolean isCone; // Changes with coneButton/cubeButton
-    public static boolean isBottomCone; // Changes with Orientation buttons
+    public static boolean isBottomCone = false; // Changes with Orientation buttons
     /**
     * Hash Map containing useable command groups
     * Access commands using .get()
@@ -164,15 +166,21 @@ public class RobotContainer {
     }
 
     void configureArmAndIntake() {
-        coneButton.toggleOnTrue(new Arm.ArmSetWinchOutputCommand(m_arm, 20, isBottomCone));
-        cubeButton.toggleOnTrue(new InstantCommand(() -> {isCone = false;}));
-        uprightConeButton.toggleOnTrue(new InstantCommand(() -> {isBottomCone = false;}));
-        sidewaysConeButton.toggleOnTrue(new InstantCommand(() -> {isBottomCone = true;}));
+        cubeButton.toggleOnTrue(new InstantCommand(() -> isCone = false));
+        coneButton.toggleOnTrue(new InstantCommand(() -> isCone = true));
+        uprightConeButton.toggleOnTrue(new InstantCommand(() -> isBottomCone = false));
+        sidewaysConeButton.toggleOnTrue(new InstantCommand(() -> isBottomCone = true));
+
+        goInButton.toggleOnTrue(new Arm.ArmSetActualOutputCommand(m_arm, .3));
+        goInButton.toggleOnFalse(new Arm.ArmSetActualOutputCommand(m_arm, 0));
+
+        goOutButton.toggleOnTrue(new Arm.ArmSetActualOutputCommand(m_arm, -.3));
+        goOutButton.toggleOnFalse(new Arm.ArmSetActualOutputCommand(m_arm, 0));
 
         readyBotButton.toggleOnTrue(
             new SequentialCommandGroup (
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_BOT, isBottomCone),
-                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE),
+                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE),
                 new Intake.IntakeSetAngleCommand(m_intake, isCone, isBottomCone, false)
             )
         );
@@ -190,7 +198,6 @@ public class RobotContainer {
             //     new Intake.IntakeSetAngleCommand(m_intake,isCone, isBottomCone, false)
             // )
             new Arm.ArmSetWinchOutputCommand(m_arm, m_arm.getWinchPosition()+1, isBottomCone)
-
         );
         placeButton.toggleOnTrue(
             new Intake.IntakeSetOutputCommand(m_intake, !isCone, false)
@@ -220,7 +227,7 @@ public class RobotContainer {
                 // new Intake.IntakeSetAngleCommand(m_intake, isCone, isBottomCone, true),
                 // new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT, isBottomCone),
                 new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE),
-                new Arm.ArmSetWinchOutputCommand(m_arm, 0, isBottomCone)
+                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT, isBottomCone)
             )
         );
 
@@ -231,8 +238,8 @@ public class RobotContainer {
     }
 
     void configureAuto() {
-        autonChooser.setDefaultOption("Top2Piece", new Top2PieceAuto(m_swerve));
-        Shuffleboard.getTab("Driver Controls").add("Auto Route", autonChooser);
+//        autonChooser.setDefaultOption("Top2Piece", new Top2PieceAuto(m_swerve));
+//        Shuffleboard.getTab("Driver Controls").add("Auto Route", autonChooser);
     }
 
     public Command getAutonomousCommand() {
@@ -240,7 +247,7 @@ public class RobotContainer {
     }
 
     public void teleopInit() {
-        Command auton = autonChooser.getSelected();
+        Command auton = null;//autonChooser.getSelected();
         if (auton != null){
             auton.cancel();
         }

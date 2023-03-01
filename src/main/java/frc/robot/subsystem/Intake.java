@@ -34,7 +34,7 @@ public class Intake extends SubsystemBase {
         this.tiltPIDController.setI(0);
         this.tiltPIDController.setD(0);
 
-        this.tiltPIDController.setOutputRange(-.3, .3);
+        this.tiltPIDController.setOutputRange(-.2, .2);
     }
 
     public Intake(SparkMaxComponent intakeMotor, SparkMaxComponent intakeAngleMotor) {
@@ -68,7 +68,7 @@ public class Intake extends SubsystemBase {
         @Override
         public void initialize() {
             if (zeroing) {
-                intake.setAngle(IntakeConstants.INTAKE_RETRACTED_ANGLE);
+                intake.setAngle(IntakeConstants.INTAKE_BOT_ANGLE);
             } else {
                 if (isCone) {
                     if (isBottomCone) {
@@ -77,7 +77,7 @@ public class Intake extends SubsystemBase {
                         intake.setAngle(IntakeConstants.INTAKE_TOP_CONE_PLACE_ANGLE);
                     }
                 } else {
-                    intake.setAngle(IntakeConstants.INTAKE_TOP_CONE_PLACE_ANGLE);
+                    intake.setAngle(IntakeConstants.INTAKE_BOT_ANGLE);
                 }
             }
         }
@@ -85,10 +85,10 @@ public class Intake extends SubsystemBase {
 
     public static class IntakeSetOutputCommand extends InstantCommand {
         private Intake intake;
-        private boolean isCone;
+        private BooleanSupplier isCone;
         private boolean zeroing;
 
-        public IntakeSetOutputCommand(Intake intake, boolean isCone, boolean zeroing) {
+        public IntakeSetOutputCommand(Intake intake, BooleanSupplier isCone, boolean zeroing) {
             this.intake = intake;
             this.isCone = isCone;
             this.zeroing = zeroing;
@@ -96,11 +96,11 @@ public class Intake extends SubsystemBase {
 
         @Override
         public void initialize() {
-            isCone2 = isCone;
+            isCone2 = isCone.getAsBoolean();
             if(zeroing){
                 intake.setIntake(0);
             } else {
-                if(isCone){
+                if(isCone.getAsBoolean()){
                     intake.setIntake(IntakeConstants.INTAKE_CONE_SPEED);
                 } else {
                     intake.setIntake(IntakeConstants.INTAKE_CUBE_SPEED);

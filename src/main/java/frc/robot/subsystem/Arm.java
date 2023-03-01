@@ -33,7 +33,7 @@ public class Arm extends SubsystemBase {
         this.tiltMotor.setInverted(true);
         
         this.tiltPIDController = this.tiltMotor.getPIDController();
-        this.tiltPIDController.setP(0.08);
+        this.tiltPIDController.setP(0.04);
         this.tiltPIDController.setI(0);
         this.tiltPIDController.setD(0);
 

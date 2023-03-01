@@ -74,7 +74,7 @@ public class RobotContainer {
     private final DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
     private TriModeSwerveCommand swerveCommand;
     public static boolean isCone; // Changes with coneButton/cubeButton
-    public static boolean isBottomCone = false; // Changes with Orientation buttons
+    public static boolean isBottomCone = true; // Changes with Orientation buttons
     /**
     * Hash Map containing useable command groups
     * Access commands using .get()
@@ -168,62 +168,66 @@ public class RobotContainer {
     void configureArmAndIntake() {
         cubeButton.toggleOnTrue(new InstantCommand(() -> isCone = false));
         coneButton.toggleOnTrue(new InstantCommand(() -> isCone = true));
-        uprightConeButton.toggleOnTrue(new InstantCommand(() -> isBottomCone = false));
-        sidewaysConeButton.toggleOnTrue(new InstantCommand(() -> isBottomCone = true));
+        uprightConeButton.toggleOnTrue(new Arm.ArmSetTiltAngleCommand(m_arm, 0));
+        sidewaysConeButton.toggleOnTrue(new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE));
 
-        goOutButton.toggleOnTrue(new Arm.ArmSetActualOutputCommand(m_arm, -.3));
-        goOutButton.toggleOnFalse(new Arm.ArmSetActualOutputCommand(m_arm, 0));
+        //goOutButton.toggleOnTrue(new Arm.ArmSetActualOutputCommand(m_arm, .3));
+        //goOutButton.toggleOnFalse(new Arm.ArmSetActualOutputCommand(m_arm, 0));
 
         readyBotButton.toggleOnTrue(
             new SequentialCommandGroup (
-                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_BOT, isBottomCone),
-                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE),
-                new Intake.IntakeSetAngleCommand(m_intake, isCone, isBottomCone, false)
+                //new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_BOT, false),
+                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_GROUND_ANGLE),
+                new Intake.IntakeSetAngleCommand(m_intake, false, false, false)
             )
         );
         readyMidButton.toggleOnTrue(
             new SequentialCommandGroup (
-                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_MID, isBottomCone),
+                //new Arm.ArmSetWinchOutputCommand(m_arm, 0, false),
                 new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE),
-                new Intake.IntakeSetAngleCommand(m_intake,isCone, isBottomCone, false)
+                //new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_MID, false),
+                new Intake.IntakeSetAngleCommand(m_intake,true, false, false)
             )
         );
         readyTopButton.toggleOnTrue(
              new SequentialCommandGroup (
-                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_TOP, isBottomCone),
-                 new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE),
-                 new Intake.IntakeSetAngleCommand(m_intake, isCone, isBottomCone, false)
+                //new Arm.ArmSetWinchOutputCommand(m_arm, 0, false),
+                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE),
+                //new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_TOP, isBottomCone),
+                new Intake.IntakeSetAngleCommand(m_intake, true, false, false)
              )
         );
         placeButton.toggleOnTrue(
-            new Intake.IntakeSetOutputCommand(m_intake, !isCone, false)
+            new Intake.IntakeSetOutputCommand(m_intake, () -> !isCone, false)
         );
         pickupButton.toggleOnTrue(
-            new Intake.IntakeSetOutputCommand(m_intake, isCone, false)
+            new Intake.IntakeSetOutputCommand(m_intake, () -> isCone, false)
         );
         placeButton.toggleOnFalse(
             new SequentialCommandGroup(
-                new Intake.IntakeSetOutputCommand(m_intake, isCone, true),
+                new Intake.IntakeSetOutputCommand(m_intake, () -> isCone, true),
                 new Intake.IntakeSetAngleCommand(m_intake, isCone, isBottomCone, true),
-                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT, isBottomCone),
+                //new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT, isBottomCone),
                 new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE)
             )
         );
         pickupButton.toggleOnFalse(
             new SequentialCommandGroup(
                 // new Intake.IntakeSetAngleCommand(m_intake, isCone, isBottomCone, true),
-                new Intake.IntakeSetOutputCommand(m_intake, isCone, true),
-                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT, isBottomCone),
+                new Intake.IntakeSetOutputCommand(m_intake, () -> isCone, true),
+                //new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT, isBottomCone),
                 new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE)
             )
         );
         retractButton.toggleOnTrue(
             new SequentialCommandGroup(
                 // new Intake.IntakeSetOutputCommand(m_intake, isCone, true),
-                // new Intake.IntakeSetAngleCommand(m_intake, isCone, isBottomCone, true),
+                new Intake.IntakeSetAngleCommand(m_intake, false, true, false),
                 // new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT, isBottomCone),
-                // new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE),
-                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT, isBottomCone)
+                //new Arm.ArmSetActualOutputCommand(m_arm, -.3)
+                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE)
+                // new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT, isBottomCone)
+                
             )
         );
 

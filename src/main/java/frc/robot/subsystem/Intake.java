@@ -13,6 +13,9 @@ import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
 
+import static frc.robot.RobotContainer.isCone;
+import static frc.robot.RobotContainer.isBottomCone;
+
 public class Intake extends SubsystemBase {
     private SparkMaxComponent intakeMotor;
     private SparkMaxComponent intakeTiltMotor;
@@ -54,53 +57,56 @@ public class Intake extends SubsystemBase {
 
     public static class IntakeSetAngleCommand extends InstantCommand {
         private Intake intake;
-        private boolean isCone;
-        private boolean isBottomCone;
+        private boolean launching;
         private boolean zeroing;
+        private boolean placing;
 
-        public IntakeSetAngleCommand(Intake intake, boolean isCone, boolean isBottomCone, boolean zeroing) {
+        public IntakeSetAngleCommand(Intake intake, boolean placing, boolean launching, boolean zeroing) {
             this.intake = intake;
-            this.isCone = isCone;
-            this.isBottomCone = isBottomCone;
+            this.launching = launching;
             this.zeroing = zeroing;
+            this.placing = placing;
         }
 
         @Override
         public void initialize() {
-            if (zeroing) {
+            if (launching) {
                 intake.setAngle(IntakeConstants.INTAKE_BOT_ANGLE);
+            } else if(zeroing){
+                intake.setAngle(IntakeConstants.INTAKE_ZERO_ANGLE);
+            }else if(!placing) {
+                intake.setAngle(IntakeConstants.INTAKE_BOT_ANGLE);
+            }else if(isBottomCone) {
+                intake.setAngle(IntakeConstants.INTAKE_BOT_CONE_PLACE_ANGLE);
             } else {
-                if (isCone) {
-                    if (isBottomCone) {
-                        intake.setAngle(IntakeConstants.INTAKE_BOT_ANGLE);
-                    } else {
-                        intake.setAngle(IntakeConstants.INTAKE_TOP_CONE_PLACE_ANGLE);
-                    }
-                } else {
-                    intake.setAngle(IntakeConstants.INTAKE_BOT_ANGLE);
-                }
+                intake.setAngle(IntakeConstants.INTAKE_TOP_CONE_PLACE_ANGLE);
             }
         }
     }
 
     public static class IntakeSetOutputCommand extends InstantCommand {
         private Intake intake;
-        private BooleanSupplier isCone;
+        private boolean placing;
         private boolean zeroing;
 
-        public IntakeSetOutputCommand(Intake intake, BooleanSupplier isCone, boolean zeroing) {
+        public IntakeSetOutputCommand(Intake intake, boolean zeroing, boolean placing) {
             this.intake = intake;
-            this.isCone = isCone;
+            this.placing = placing;
             this.zeroing = zeroing;
         }
 
         @Override
         public void initialize() {
-            isCone2 = isCone.getAsBoolean();
             if(zeroing){
                 intake.setIntake(0);
+            } else if(placing) {
+                if(isCone){
+                    intake.setIntake(IntakeConstants.INTAKE_CUBE_SPEED);
+                } else {
+                    intake.setIntake(IntakeConstants.INTAKE_CONE_SPEED);
+                }
             } else {
-                if(isCone.getAsBoolean()){
+                if(isCone) {
                     intake.setIntake(IntakeConstants.INTAKE_CONE_SPEED);
                 } else {
                     intake.setIntake(IntakeConstants.INTAKE_CUBE_SPEED);

@@ -14,6 +14,9 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
+import static frc.robot.RobotContainer.isCone;
+import static frc.robot.RobotContainer.isBottomCone;
+
 public class Arm extends SubsystemBase {
     private SparkMaxComponent tiltMotor;
     private SparkMaxComponent winchMotor;
@@ -100,21 +103,15 @@ public class Arm extends SubsystemBase {
     public static class ArmSetWinchOutputCommand extends InstantCommand {
         private Arm arm;
         private double output;
-        private boolean isBottomCone;
 
-        public ArmSetWinchOutputCommand(Arm arm, double output, boolean isBottomCone) {
+        public ArmSetWinchOutputCommand(Arm arm, double output) {
             this.arm = arm;
             this.output = output;
-            this.isBottomCone = isBottomCone;
             addRequirements(arm);
         }
 
         public void initialize() {
-            if(isBottomCone && output!=ArmConstants.ARM_RETRACT) {
-                arm.setWinch(output + ArmConstants.ARM_BOT_CONE_ADDITION);
-            } else {
                 arm.setWinch(output);
-            }
         }
     }
 

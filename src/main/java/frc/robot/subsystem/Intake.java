@@ -37,7 +37,7 @@ public class Intake extends SubsystemBase {
         this.tiltPIDController.setI(0);
         this.tiltPIDController.setD(0);
 
-        this.tiltPIDController.setOutputRange(-.2, .2);
+        this.tiltPIDController.setOutputRange(-.15, .15);
     }
 
     public Intake(SparkMaxComponent intakeMotor, SparkMaxComponent intakeAngleMotor) {

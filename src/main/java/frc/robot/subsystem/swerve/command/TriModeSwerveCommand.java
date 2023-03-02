@@ -42,7 +42,7 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
     public boolean noForward = false;
     public double targetAngle = 0;
 
-    private double limitedSpeed = .75;
+    private double limitedSpeed = .2;  // was .75
 
 
     public TriModeSwerveCommand(Swerve swerve, Joystick joystick, ControllerInfo controllerInfo, DashboardMessageDisplay messageDisplay){
@@ -62,9 +62,9 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
         double ySpeed = -withDeadzone(joystick.getY(), info.yDeadzone) * info.ySensitivity;
         double zSpeed = -withDeadzone(joystick.getZ(), info.zDeadzone) * info.zSensitivity;
         if (limitSpeed){
-            xSpeed = ceiling(xSpeed, limitedSpeed);
-            ySpeed = ceiling(ySpeed, limitedSpeed);
-            zSpeed = ceiling(zSpeed, limitedSpeed);
+            xSpeed = limitedSpeed * xSpeed; //ceiling(xSpeed, limitedSpeed);
+            ySpeed = limitedSpeed * ySpeed; //ceiling(ySpeed, limitedSpeed);
+            zSpeed = limitedSpeed * zSpeed; //ceiling(zSpeed, limitedSpeed);
         }
         if (lockRotation) {
             zSpeed = 0;

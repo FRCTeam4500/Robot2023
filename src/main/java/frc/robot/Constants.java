@@ -82,15 +82,15 @@ public class Constants {
     }
 
     public static class IntakeConstants { // Intake Constants
-        public static final double INTAKE_CUBE_SPEED = 0.55; //TODO: fix
-        public static final double INTAKE_CONE_SPEED = -0.55;
+        public static final double INTAKE_CUBE_SPEED = -0.55; 
+        public static final double INTAKE_CONE_SPEED = 0.55;
 
         public static final int INTAKE_MOTOR_ID = 13;
         public static final MotorType INTAKE_MOTOR_TYPE = MotorType.kBrushless;
         public static final int INTAKE_ANGLE_MOTOR_ID = 12;
         public static final MotorType ANGLE_MOTOR_TYPE = MotorType.kBrushless;
 
-        public static final double INTAKE_BOT_ANGLE = -12; // Angle that the Intake should be at the bottom when picking up, 
+        public static final double INTAKE_BOT_ANGLE = -6; // Angle that the Intake should be at the bottom when picking up, 
         public static final double INTAKE_TRAY_PICKUP_ANGLE = -12;
         public static final double INTAKE_TOP_CONE_PLACE_ANGLE = -14; // Change
         public static final double INTAKE_BOT_CONE_PLACE_ANGLE = 0;

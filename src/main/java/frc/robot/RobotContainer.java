@@ -132,14 +132,14 @@ public class RobotContainer {
 
     void configureArmAndIntake() {
         cubeButton.toggleOnTrue( // Intakes cones
-            new InstantCommand(() -> isCone = true)
+            new InstantCommand(() -> isCone = false)
             .andThen(new Intake.IntakeSetOutputCommand(m_intake, false, false))
         );
         cubeButton.toggleOnFalse(
             new Intake.IntakeSetOutputCommand(m_intake, true, false)
-            .andThen(new Intake.IntakeSetAngleCommand(m_intake, false, false, true))
+           // .andThen(new Intake.IntakeSetAngleCommand(m_intake, false, false, true))
            // .andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT))
-            .andThen(new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE))
+           // .andThen(new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE))
         );
 
         sidewaysConeButton.toggleOnTrue(
@@ -149,9 +149,9 @@ public class RobotContainer {
         );
         sidewaysConeButton.toggleOnFalse(
             new Intake.IntakeSetOutputCommand(m_intake, true, false)
-            .andThen(new Intake.IntakeSetAngleCommand(m_intake, false, false, true))
+            //.andThen(new Intake.IntakeSetAngleCommand(m_intake, false, false, true))
            // .andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT))
-            .andThen(new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE))
+            //.andThen(new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE))
         );
 
         uprightConeButton.toggleOnTrue(
@@ -161,9 +161,9 @@ public class RobotContainer {
         );
         uprightConeButton.toggleOnFalse(
             new Intake.IntakeSetOutputCommand(m_intake, true, false)
-            .andThen(new Intake.IntakeSetAngleCommand(m_intake, false, false, true))
+            //.andThen(new Intake.IntakeSetAngleCommand(m_intake, false, false, true))
             //.andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT))
-            .andThen(new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE))
+            //.andThen(new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE))
         );
 
         readyBotButton.toggleOnTrue(
@@ -171,7 +171,7 @@ public class RobotContainer {
             new WaitCommand(0)
             .andThen(new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_GROUND_ANGLE))
            // .andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_BOT))
-            .andThen(new Intake.IntakeSetAngleCommand(m_intake, true, false, false))
+            .andThen(new Intake.IntakeSetAngleCommand(m_intake, false, false, false))
         );
 
         readyMidButton.toggleOnTrue(
@@ -195,9 +195,9 @@ public class RobotContainer {
         );
         placeButton.toggleOnFalse(
             new Intake.IntakeSetOutputCommand(m_intake, true, false)
-            .andThen(new Intake.IntakeSetAngleCommand(m_intake, false, false, true))
+            //.andThen(new Intake.IntakeSetAngleCommand(m_intake, false, false, true))
             //.andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT))
-            .andThen(new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE))
+            //.andThen(new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE))
         );
 
         goInButton.toggleOnTrue(

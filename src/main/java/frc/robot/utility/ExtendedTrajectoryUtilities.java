@@ -35,6 +35,11 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
  * A bunch of the included methods will not be used, for the most part we will only be using getDeployedTrajectory()
  */
 public class ExtendedTrajectoryUtilities {
+    /**Gets the trajectory from a .wpilib.json file
+     * @param trajectoryName the name of the file (not including the extension)
+     * @return The trajectory from the file
+     * @throws IOException if reading from the file fails
+     */
     private static Trajectory getDeployedTrajectoryExcept(String trajectoryName) throws IOException {
 
         var trajectoryJSON = "paths/"+trajectoryName+".wpilib.json";
@@ -43,6 +48,11 @@ public class ExtendedTrajectoryUtilities {
         Trajectory trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
         return trajectory;
     }
+
+    /**Gets the trajectory from a .wpilib.json file
+     * @param trajectoryName The name of the file (not including the extension)
+     * @return The trajectory from the file, or a null Trajectory if the file cannot be read
+     */
     public static Trajectory getDeployedTrajectory(String trajectoryName){
         try{
             return getDeployedTrajectoryExcept(trajectoryName);
@@ -51,8 +61,19 @@ public class ExtendedTrajectoryUtilities {
             return new Trajectory(null);
         }
     }
+
+    /** Applies the specified config to the trajectory
+     *
+     * @param trajectory The trajectory to be regenerated with different configuration
+     * @param config The configuration with which to regenerate the trajectory
+     * @return The regenerated trajectory
+     */
     public static Trajectory regenerateTrajectory(Trajectory trajectory, TrajectoryConfig config){
-        return TrajectoryGenerator.generateTrajectory(Arrays.asList(trajectory.getStates().stream().map(s -> s.poseMeters).toArray(Pose2d[]::new)), config);
+        return TrajectoryGenerator.generateTrajectory(Arrays.asList(trajectory.getStates()
+                    .stream()
+                    .map(s -> s.poseMeters)
+                    .toArray(Pose2d[]::new)),
+                config);
     }
 
    

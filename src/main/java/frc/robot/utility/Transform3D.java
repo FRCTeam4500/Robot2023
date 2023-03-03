@@ -41,21 +41,21 @@ public class Transform3D {
     }
 
     /**
-     * @return the pitch
+     * @return pitch (rotation moving the front up and down)
      */
     public double getPitch() {
         return pitch;
     }
 
     /**
-     * @return the yaw
+     * @return yaw (rotation moving the front left and right)
      */
     public double getYaw() {
         return yaw;
     }
 
     /**
-     * @return the roll
+     * @return roll (rotation moving the top left and right)
      */
     public double getRoll() {
         return roll;

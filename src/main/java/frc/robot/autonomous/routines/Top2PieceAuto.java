@@ -5,7 +5,11 @@ import frc.robot.autonomous.subroutines.Top2Piece;
 import frc.robot.subsystem.Arm;
 import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
 
+/**
+ * Does {@link frc.robot.autonomous.subroutines.Top2Piece}.
+ */
 public class Top2PieceAuto extends SequentialCommandGroup{
+
     public Top2PieceAuto(PathFollowingSwerve swerve, Arm arm) {
         addCommands(
             new Top2Piece(swerve, arm)

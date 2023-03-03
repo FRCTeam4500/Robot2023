@@ -1,9 +1,11 @@
 package frc.robot.subsystem;
 import frc.robot.component.hardware.SparkMaxComponent;
+import frc.robot.component.hardware.TalonSRXComponent;
 import frc.robot.Constants.ArmConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.SparkMaxRelativeEncoder;
@@ -19,9 +21,8 @@ import static frc.robot.RobotContainer.isBottomCone;
 
 public class Arm extends SubsystemBase {
     private SparkMaxComponent tiltMotor;
-    private SparkMaxComponent winchMotor;
+    private TalonSRXComponent winchMotor;
     private SparkMaxPIDController tiltPIDController;
-    private SparkMaxPIDController winchPIDController;
     private double targetTiltAngle;
     private double targetWinchPosition;
     Position position;
@@ -31,7 +32,7 @@ public class Arm extends SubsystemBase {
      */
     public Arm() {
         this.tiltMotor = new SparkMaxComponent(ArmConstants.TILT_MOTOR_ID, ArmConstants.TILT_MOTOR_TYPE);
-        this.winchMotor = new SparkMaxComponent(ArmConstants.WINCH_MOTOR_ID, ArmConstants.WINCH_MOTOR_TYPE);
+        this.winchMotor = new TalonSRXComponent(ArmConstants.WINCH_MOTOR_ID);
 
         this.tiltMotor.setInverted(true);
         
@@ -40,13 +41,18 @@ public class Arm extends SubsystemBase {
         this.tiltPIDController.setI(0);
         this.tiltPIDController.setD(0);
 
-        this.winchPIDController = this.winchMotor.getPIDController();
-        this.winchPIDController.setP(0.1);
-        this.winchPIDController.setI(0);
-        this.winchPIDController.setD(0);
+        this.winchMotor.config_kP(0, 6);
+        this.winchMotor.config_kI(0, 0);
+        this.winchMotor.config_kD(0, 0);
 
         this.tiltPIDController.setOutputRange(-.3, .3);
-        this.winchPIDController.setOutputRange(-.4, .4);
+
+        this.winchMotor.configAllowableClosedloopError(0, 1000);
+        this.winchMotor.configForwardSoftLimitEnable(true);
+        this.winchMotor.configForwardSoftLimitThreshold(11000);
+        this.winchMotor.configPeakOutputForward(0.6);
+        this.winchMotor.configPeakOutputReverse(-0.3);
+
     }
     
     /**
@@ -54,7 +60,7 @@ public class Arm extends SubsystemBase {
      * @param tiltMotor
      * @param winchMotor
      */
-    public Arm(SparkMaxComponent tiltMotor, SparkMaxComponent winchMotor) {
+    public Arm(SparkMaxComponent tiltMotor, TalonSRXComponent winchMotor) {
         this.tiltMotor = tiltMotor;
         this.winchMotor = winchMotor;
     }
@@ -80,7 +86,11 @@ public class Arm extends SubsystemBase {
     }
 
     public void setOutput(double output) {
-        winchMotor.setOutput(output);
+        tiltMotor.setOutput(output);
+    }
+
+    public void zero(){
+        tiltMotor.getEncoder().setPosition(0);
     }
     /**
      * Command for setting the position of the tilt motor
@@ -88,17 +98,28 @@ public class Arm extends SubsystemBase {
     public static class ArmSetTiltAngleCommand extends InstantCommand {
         private Arm arm;
         private double position;
+        private boolean isLaunching;
 
         public ArmSetTiltAngleCommand(Arm arm, double position) {
             this.arm = arm;
             this.position = position;
             addRequirements(arm);
         }
+
+        public ArmSetTiltAngleCommand(Arm arm, boolean isLaunching) {
+            this.arm = arm;
+            this.isLaunching = isLaunching;
+        }
     
         public void initialize() {
-            arm.setTilt(position);
+            if (isLaunching) {
+                arm.setTilt(ArmConstants.ARM_LAUNCH_ANGLE);
+            } else {
+                arm.setTilt(position);
+            }
         }
     }
+    
 
     public static class ArmSetWinchOutputCommand extends InstantCommand {
         private Arm arm;
@@ -116,7 +137,7 @@ public class Arm extends SubsystemBase {
     }
 
     public double getWinchPosition() {
-        return winchMotor.getEncoder().getPosition();
+        return winchMotor.getSelectedSensorPosition() / 4096;
     }
 
     /** 
@@ -161,7 +182,7 @@ public class Arm extends SubsystemBase {
         builder.addDoubleProperty("Target winch output", () -> targetWinchPosition, (value) -> {setWinch((double) value);});
     
         builder.addDoubleProperty("Current Encoder Tilt Position", () -> tiltMotor.getEncoder().getPosition(), null);
-        builder.addDoubleProperty("Current Winch Encoder Position", () -> winchMotor.getEncoder().getPosition(), null);
+        builder.addDoubleProperty("Current Winch Encoder Position", () -> winchMotor.getSelectedSensorPosition(), null);
         // builder.addStringProperty("Position", () -> {
         //     switch (position) {
         //         case Bottom:

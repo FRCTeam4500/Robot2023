@@ -3,6 +3,7 @@ package frc.robot.subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.component.hardware.SparkMaxComponent;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 import java.util.function.BooleanSupplier;
@@ -55,11 +56,20 @@ public class Intake extends SubsystemBase {
         intakeTiltMotor.setAngle(angle);
     }
 
+    public double getAngle() {
+        return intakeTiltMotor.getEncoder().getPosition();
+    }
+
+    public void setAngleOutput(double output) {
+        intakeTiltMotor.setOutput(output);
+    }
+
     public static class IntakeSetAngleCommand extends InstantCommand {
         private Intake intake;
         private boolean launching;
         private boolean zeroing;
         private boolean placing;
+        private boolean up;
 
         public IntakeSetAngleCommand(Intake intake, boolean placing, boolean launching, boolean zeroing) {
             this.intake = intake;
@@ -68,16 +78,22 @@ public class Intake extends SubsystemBase {
             this.placing = placing;
         }
 
+        public IntakeSetAngleCommand(Intake intake, boolean up) {
+            this.up = up;
+        }
+
         @Override
         public void initialize() {
             if (launching) {
-                intake.setAngle(IntakeConstants.INTAKE_BOT_ANGLE);
+                intake.setAngle(IntakeConstants.INTAKE_LAUNCHING_ANGLE);
             } else if(zeroing){
                 intake.setAngle(IntakeConstants.INTAKE_ZERO_ANGLE);
             }else if(!placing) {
                 intake.setAngle(IntakeConstants.INTAKE_BOT_ANGLE);
             }else if(isBottomCone) {
                 intake.setAngle(IntakeConstants.INTAKE_BOT_CONE_PLACE_ANGLE);
+            } else if (up) {
+                intake.setAngle(intake.getAngle());
             } else {
                 intake.setAngle(IntakeConstants.INTAKE_TOP_CONE_PLACE_ANGLE);
             }
@@ -97,10 +113,10 @@ public class Intake extends SubsystemBase {
 
         @Override
         public void initialize() {
-            if(zeroing){
+            if(zeroing) {
                 intake.setIntake(0);
             } else if(placing) {
-                if(isCone){
+                if(isCone) {
                     intake.setIntake(IntakeConstants.INTAKE_CUBE_SPEED);
                 } else {
                     intake.setIntake(IntakeConstants.INTAKE_CONE_SPEED);
@@ -113,6 +129,22 @@ public class Intake extends SubsystemBase {
                 }
             }
         }
+    }
+
+    public static class IntakeSetAngleOutputCommand extends CommandBase {
+        Intake intake;
+        double output;
+        
+        public IntakeSetAngleOutputCommand(Intake intake, double output) {
+            this.intake = intake;
+            this.output = output;
+        }
+
+        @Override
+        public void initialize() {
+            intake.setAngleOutput(output);
+        }
+
     }
 
     public static Intake makeIntake() {

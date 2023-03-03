@@ -32,6 +32,7 @@ import frc.robot.subsystem.Intake;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.JoystickConstants;
+import frc.robot.autonomous.routines.Top2PieceAuto;
 import frc.robot.component.hardware.SparkMaxComponent;
 import frc.robot.subsystem.swerve.command.TriModeSwerveCommand;
 import frc.robot.subsystem.swerve.pathfollowingswerve.HardwareSwerveFactory;
@@ -68,6 +69,7 @@ public class RobotContainer {
 
     private final JoystickButton goInButton = new JoystickButton(controlStick, JoystickConstants.GO_IN);
     private final JoystickButton goOutButton = new JoystickButton(controlStick, JoystickConstants.GO_OUT);
+    private final JoystickButton zeroIntakeButton = new JoystickButton(controlStick, 11);
 
     private final DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
     private TriModeSwerveCommand swerveCommand;
@@ -115,11 +117,11 @@ public class RobotContainer {
         noForwardButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.RobotCentric; swerveCommand.noForward = true;}));
         noForwardButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.FieldCentric; swerveCommand.noForward = false;}));
 
-        alignSwerveToAngleButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.AlignToAngle; swerveCommand.targetAngle = 0;}));
-        alignSwerveToAngleButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.FieldCentric;}));
+        // alignSwerveToAngleButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.AlignToAngle; swerveCommand.targetAngle = 0;}));
+        // alignSwerveToAngleButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.FieldCentric;}));
 
-        alignSwerveReverseButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.AlignToAngle; swerveCommand.targetAngle = Math.PI;}));
-        alignSwerveReverseButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.FieldCentric;}));
+        // alignSwerveReverseButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.AlignToAngle; swerveCommand.targetAngle = Math.PI;}));
+        // alignSwerveReverseButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.FieldCentric;}));
 
         limitSwerveSpeedButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.limitSpeed = true;}));
         limitSwerveSpeedButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.limitSpeed = false;}));
@@ -131,15 +133,17 @@ public class RobotContainer {
     }
 
     void configureArmAndIntake() {
+
+
         cubeButton.toggleOnTrue( // Intakes cones
             new InstantCommand(() -> isCone = false)
             .andThen(new Intake.IntakeSetOutputCommand(m_intake, false, false))
         );
         cubeButton.toggleOnFalse(
             new Intake.IntakeSetOutputCommand(m_intake, true, false)
-           // .andThen(new Intake.IntakeSetAngleCommand(m_intake, false, false, true))
-           // .andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT))
-           // .andThen(new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE))
+            .andThen(new Intake.IntakeSetAngleCommand(m_intake, false, false, true))
+            .andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT))
+            .andThen(new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE))
         );
 
         sidewaysConeButton.toggleOnTrue(
@@ -149,9 +153,9 @@ public class RobotContainer {
         );
         sidewaysConeButton.toggleOnFalse(
             new Intake.IntakeSetOutputCommand(m_intake, true, false)
-            //.andThen(new Intake.IntakeSetAngleCommand(m_intake, false, false, true))
-           // .andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT))
-            //.andThen(new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE))
+            .andThen(new Intake.IntakeSetAngleCommand(m_intake, false, false, true))
+            .andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT))
+            .andThen(new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE))
         );
 
         uprightConeButton.toggleOnTrue(
@@ -161,32 +165,29 @@ public class RobotContainer {
         );
         uprightConeButton.toggleOnFalse(
             new Intake.IntakeSetOutputCommand(m_intake, true, false)
-            //.andThen(new Intake.IntakeSetAngleCommand(m_intake, false, false, true))
-            //.andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT))
-            //.andThen(new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE))
+            .andThen(new Intake.IntakeSetAngleCommand(m_intake, false, false, true))
+            .andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT))
+            .andThen(new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE))
         );
 
         readyBotButton.toggleOnTrue(
-            //new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT)
-            new WaitCommand(0)
+            new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT)
             .andThen(new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_GROUND_ANGLE))
-           // .andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_BOT))
+            .andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_BOT))
             .andThen(new Intake.IntakeSetAngleCommand(m_intake, false, false, false))
         );
 
         readyMidButton.toggleOnTrue(
-            //new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT)
-            new WaitCommand(0)
+            new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT)
             .andThen(new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE))
-            //.andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_MID))
+            .andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_MID))
             .andThen(new Intake.IntakeSetAngleCommand(m_intake, true, false, false))
         );
 
         readyTopButton.toggleOnTrue(
-            //new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT)
-            new WaitCommand(0)
-            .andThen(new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE))
-            //.andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_TOP))
+            new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT)
+            .andThen(new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_LAUNCH_ANGLE))
+            .andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_TOP))
             .andThen(new Intake.IntakeSetAngleCommand(m_intake, true, true, false))
         );
        
@@ -195,24 +196,32 @@ public class RobotContainer {
         );
         placeButton.toggleOnFalse(
             new Intake.IntakeSetOutputCommand(m_intake, true, false)
-            //.andThen(new Intake.IntakeSetAngleCommand(m_intake, false, false, true))
-            //.andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT))
-            //.andThen(new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE))
+            .andThen(new Intake.IntakeSetAngleCommand(m_intake, false, false, true))
+            .andThen(new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT))
+            .andThen(new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE))
         );
 
         goInButton.toggleOnTrue(
-            new Arm.ArmSetActualOutputCommand(m_arm, -.3)
+            new Intake.IntakeSetAngleOutputCommand(m_intake, .2)
         );
         goInButton.toggleOnFalse(
-            new Arm.ArmSetActualOutputCommand(m_arm, 0)
+            new Intake.IntakeSetAngleOutputCommand(m_intake, 0).andThen(
+            new Intake.IntakeSetAngleCommand(m_intake, true))
+                
         );
 
         goOutButton.toggleOnTrue(
-            new Arm.ArmSetActualOutputCommand(m_arm, .3)
+            new Intake.IntakeSetAngleOutputCommand(m_intake, -.2)
         );
         goOutButton.toggleOnFalse(
-            new Arm.ArmSetActualOutputCommand(m_arm, 0)
+            new Intake.IntakeSetAngleOutputCommand(m_intake, 0).andThen(
+            new Intake.IntakeSetAngleCommand(m_intake, true))
         );
+
+        zeroIntakeButton.toggleOnTrue(
+            new InstantCommand(() -> m_arm.zero())
+        );
+
 
 
         Shuffleboard.getTab("Arm and Intake").addBoolean("Is Cone", () -> isCone);
@@ -222,8 +231,8 @@ public class RobotContainer {
     }
 
     void configureAuto() {
-//        autonChooser.setDefaultOption("Top2Piece", new Top2PieceAuto(m_swerve));
-//        Shuffleboard.getTab("Driver Controls").add("Auto Route", autonChooser);
+       autonChooser.setDefaultOption("Top2Piece", new Top2PieceAuto(m_swerve, m_arm));
+       Shuffleboard.getTab("Driver Controls").add("Auto Route", autonChooser);
     }
 
     public Command getAutonomousCommand() {

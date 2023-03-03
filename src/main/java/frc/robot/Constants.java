@@ -61,20 +61,21 @@ public class Constants {
         /* Init */
         public static final int TILT_MOTOR_ID = 10; //TODO: fix
         public static final MotorType TILT_MOTOR_TYPE = MotorType.kBrushless; 
-        public static final int WINCH_MOTOR_ID = 11; //TODO: fix
+        public static final int WINCH_MOTOR_ID = 15; //TODO: fix
         public static final MotorType WINCH_MOTOR_TYPE = MotorType.kBrushless; 
 
         /* Force Limit */
         public static final double ARM_DOWN_SENSOR_LIMIT = 1240; //TODO: fix all of these lol
         public static final double ARM_UP_SENSOR_LIMIT = 300;
 
-        public static final double ARM_PLACE_ANGLE = 0; // ARM_PLACE_ANGLE is the angle for all heights TODO: change value later
-        public static final double ARM_GROUND_ANGLE = -42; // ARM_PICKUP_ANGLE is the angle to pickup from ground TODO: change value later
+        public static final double ARM_PLACE_ANGLE = -7.95; //-6.71; // ARM_PLACE_ANGLE is the angle for all heights TODO: change value later
+        public static final double ARM_LAUNCH_ANGLE = -6.05;
+        public static final double ARM_GROUND_ANGLE = -39.41; // ARM_PICKUP_ANGLE is the angle to pickup from ground TODO: change value later
         public static final double ARM_ZERO_ANGLE = 0; // TODO: change value later
 
-        public static final double ARM_PLACE_TOP = 55; // TODO: change value later
-        public static final double ARM_PLACE_MID = 35; // TODO: change value later
-        public static final double ARM_PLACE_BOT = 25; // TODO: change value later
+        public static final double ARM_PLACE_TOP = 10411.0; //10447 // TODO: change value later
+        public static final double ARM_PLACE_MID = 3229;//4204; // TODO: change value later
+        public static final double ARM_PLACE_BOT = 4324;//3863; // TODO: change value later
         public static final double ARM_RETRACT = 0;
         public static final double ARM_BOT_CONE_ADDITION = 5; // When placing a sideways cone, the arm must be extended a bit further.
 
@@ -90,11 +91,12 @@ public class Constants {
         public static final int INTAKE_ANGLE_MOTOR_ID = 12;
         public static final MotorType ANGLE_MOTOR_TYPE = MotorType.kBrushless;
 
-        public static final double INTAKE_BOT_ANGLE = -6; // Angle that the Intake should be at the bottom when picking up, 
+        public static final double INTAKE_BOT_ANGLE = -3.41;//-3.52; // Angle that the Intake should be at the bottom when picking up, 
         public static final double INTAKE_TRAY_PICKUP_ANGLE = -12;
-        public static final double INTAKE_TOP_CONE_PLACE_ANGLE = -14; // Change
+        public static final double INTAKE_TOP_CONE_PLACE_ANGLE = -11.67;//-11.38; // Change
         public static final double INTAKE_BOT_CONE_PLACE_ANGLE = 0;
         public static final double INTAKE_ZERO_ANGLE = 0; // TRUE retracted
+        public static final double INTAKE_LAUNCHING_ANGLE = -5.81;//-6.71;
     }
 
     public static class VisionConstants { // Vision Constants

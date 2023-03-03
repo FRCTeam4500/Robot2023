@@ -8,9 +8,11 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 import java.util.function.BooleanSupplier;
 
+import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
 
@@ -34,11 +36,12 @@ public class Intake extends SubsystemBase {
         this.intakeTiltMotor.setIdleMode(IdleMode.kCoast);
 
         this.tiltPIDController = this.intakeTiltMotor.getPIDController();
-        this.tiltPIDController.setP(0.3);
+        this.tiltPIDController.setP(1);
         this.tiltPIDController.setI(0);
         this.tiltPIDController.setD(0);
 
-        this.tiltPIDController.setOutputRange(-.15, .15);
+        this.tiltPIDController.setOutputRange(-.3, .3);
+        this.intakeTiltMotor.setSoftLimit(SoftLimitDirection.kReverse, -40f);
     }
 
     public Intake(SparkMaxComponent intakeMotor, SparkMaxComponent intakeAngleMotor) {
@@ -69,22 +72,24 @@ public class Intake extends SubsystemBase {
         private boolean launching;
         private boolean zeroing;
         private boolean placing;
-        private boolean up;
+        private boolean substation;
 
-        public IntakeSetAngleCommand(Intake intake, boolean placing, boolean launching, boolean zeroing) {
+        public IntakeSetAngleCommand(Intake intake, boolean placing, boolean launching, boolean zeroing, boolean substation) {
             this.intake = intake;
             this.launching = launching;
             this.zeroing = zeroing;
             this.placing = placing;
+            this.substation = substation;
         }
 
-        public IntakeSetAngleCommand(Intake intake, boolean up) {
-            this.up = up;
-        }
+        
+        
 
         @Override
         public void initialize() {
-            if (launching) {
+            if(substation){
+                intake.setAngle(IntakeConstants.INTAKE_TRAY_PICKUP_ANGLE);
+            } else if (launching) {
                 intake.setAngle(IntakeConstants.INTAKE_LAUNCHING_ANGLE);
             } else if(zeroing){
                 intake.setAngle(IntakeConstants.INTAKE_ZERO_ANGLE);
@@ -92,9 +97,7 @@ public class Intake extends SubsystemBase {
                 intake.setAngle(IntakeConstants.INTAKE_BOT_ANGLE);
             }else if(isBottomCone) {
                 intake.setAngle(IntakeConstants.INTAKE_BOT_CONE_PLACE_ANGLE);
-            } else if (up) {
-                intake.setAngle(intake.getAngle());
-            } else {
+            }else {
                 intake.setAngle(IntakeConstants.INTAKE_TOP_CONE_PLACE_ANGLE);
             }
         }

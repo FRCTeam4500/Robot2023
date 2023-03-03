@@ -41,13 +41,13 @@ public class Arm extends SubsystemBase {
         this.tiltPIDController.setI(0);
         this.tiltPIDController.setD(0);
 
-        this.winchMotor.config_kP(0, 6);
+        this.winchMotor.config_kP(0, 3);
         this.winchMotor.config_kI(0, 0);
         this.winchMotor.config_kD(0, 0);
 
-        this.tiltPIDController.setOutputRange(-.3, .3);
+        this.tiltPIDController.setOutputRange(-.5, .5);
 
-        this.winchMotor.configAllowableClosedloopError(0, 1000);
+        this.winchMotor.configAllowableClosedloopError(0, 400);
         this.winchMotor.configForwardSoftLimitEnable(true);
         this.winchMotor.configForwardSoftLimitThreshold(11000);
         this.winchMotor.configPeakOutputForward(0.6);

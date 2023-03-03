@@ -10,6 +10,7 @@ import frc.robot.dashboard.DashboardMessageDisplay;
 import frc.robot.subsystem.swerve.Swerve;
 import frc.robot.utility.ControllerInfo;
 import edu.wpi.first.util.sendable.Sendable;
+import frc.robot.utility.ExtendedMath;
 
 /**
  * A swerve command with support for three swerve control modes:
@@ -72,18 +73,12 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
         if (noForward) {
             ySpeed = 0;
             zSpeed = 0;
-            xSpeed = ceiling(xSpeed, limitedSpeed);
-        }        
-        switch (controlMode){
-            case FieldCentric:
-                moveFieldCentric(xSpeed, ySpeed, zSpeed);
-                break;
-            case RobotCentric:
-                moveRobotCentric(xSpeed,ySpeed,zSpeed);
-                break;
-            case AlignToAngle:
-                moveAlign(xSpeed,ySpeed,zSpeed);
-                break;
+            xSpeed = ExtendedMath.clamp(xSpeed, limitedSpeed);
+        }
+        switch (controlMode) {
+            case FieldCentric -> moveFieldCentric(xSpeed, ySpeed, zSpeed);
+            case RobotCentric -> moveRobotCentric(xSpeed, ySpeed, zSpeed);
+            case AlignToAngle -> moveAlign(xSpeed, ySpeed, zSpeed);
         }
     }
 
@@ -109,13 +104,6 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
         FieldCentric,
         RobotCentric,
         AlignToAngle
-    }
-
-    private double ceiling(double value, double maximum){
-        if (Math.abs(value) > maximum){
-            return maximum * Math.signum(value);
-        }
-        return value;
     }
 
     public void initSendable(SendableBuilder builder){

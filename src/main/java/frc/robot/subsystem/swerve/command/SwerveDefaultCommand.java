@@ -6,8 +6,12 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.swerve.Swerve;
 import frc.robot.utility.ControllerInfo;
+import frc.robot.utility.ExtendedMath;
 
- public class SwerveDefaultCommand extends CommandBase implements Sendable {
+/**
+ * Joystick movement :)
+ */
+public class SwerveDefaultCommand extends CommandBase implements Sendable {
     private Swerve swerve;
     private Joystick joystick;
     private ControllerInfo info;
@@ -22,17 +26,9 @@ import frc.robot.utility.ControllerInfo;
     }
 
     public void execute(){
-        double xSpeed = joystick.getX();
-        double ySpeed = -joystick.getY();
-        double zSpeed = -joystick.getZ();
-        if (lockRotation)
-            zSpeed = 0;
-        if (Math.abs(xSpeed) < info.xDeadzone)
-            xSpeed = 0;
-        if (Math.abs(ySpeed) < info.yDeadzone)
-            ySpeed = 0;
-        if (Math.abs(zSpeed) < info.zDeadzone)
-            zSpeed = 0;
+        double xSpeed = ExtendedMath.withHardDeadzone(joystick.getX(), info.xDeadzone);
+        double ySpeed = ExtendedMath.withHardDeadzone(-joystick.getY(), info.yDeadzone);
+        double zSpeed = lockRotation ? 0 : ExtendedMath.withHardDeadzone(-joystick.getZ(), info.zDeadzone);
         if (isRobotCentric){
             swerve.moveRobotCentric(
                     ySpeed * info.ySensitivity,

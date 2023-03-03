@@ -163,5 +163,15 @@ public class ExtendedMath {
         var y = end.getY() - start.getY();
         return Math.sqrt(x*x + y*y);
     }
+
+    /**
+     * Bidirectional clamp
+     * @param x the value to be clamped
+     * @param limit The value it may not exceed
+     * @return clamp(x, limit, limit)
+     */
+    public static double clamp(double x, double limit) {
+        return clamp(x, -limit, limit);
+    }
 }
 

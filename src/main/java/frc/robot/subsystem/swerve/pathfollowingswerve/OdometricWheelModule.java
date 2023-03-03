@@ -16,9 +16,6 @@ import frc.robot.component.hardware.TalonFXComponent;
 import frc.robot.subsystem.swerve.KinematicWheelModule;
 import static frc.robot.utility.ExtendedMath.getShortestRadianToTarget;
 
-/**
- * Add your docs here.
- */
 public class OdometricWheelModule extends KinematicWheelModule {
 
     protected TalonFXComponent driveMotor;
@@ -35,12 +32,18 @@ public class OdometricWheelModule extends KinematicWheelModule {
     }
 
 
+    /**
+     * @return The current state of the robot
+     */
     public SwerveModuleState getState() {
         return new SwerveModuleState(driveMotor.getAngularVelocity() * driveRotsPerMotorRots / 2
                 / Math.PI * Math.PI * wheelDiameter,
                 new Rotation2d(angleMotor.getAngle() * angleRotsPerMotorRots));
     }
 
+    /**
+     * @return The current position of the robot
+     */
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition((driveMotor.getSelectedSensorPosition()/2048/5.3625)*(2*Math.PI*0.0381), new Rotation2d(angleMotor.getAngle() * angleRotsPerMotorRots));
     }

@@ -119,7 +119,7 @@ public class ExtendedMath {
     /**
      * A continuous deadzone with automatic slope, selected so that for {@code input} 1, it always returns 1.
      * @param input A number to deadzone
-     * @param deadzone The deadzone size
+     * @param deadzone The deadzone size (probably should be less than 1)
      * @return A continuously deadzoned value.
      */
     public static double withContinuousDeadzone(double input, double deadzone){

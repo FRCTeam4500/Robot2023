@@ -41,7 +41,7 @@ public class Arm extends SubsystemBase {
         this.tiltPIDController.setI(0);
         this.tiltPIDController.setD(0);
 
-        this.winchMotor.config_kP(0, 3);
+        this.winchMotor.config_kP(0, 1.5);
         this.winchMotor.config_kI(0, 0);
         this.winchMotor.config_kD(0, 0);
 
@@ -49,8 +49,8 @@ public class Arm extends SubsystemBase {
 
         this.winchMotor.configAllowableClosedloopError(0, 400);
         this.winchMotor.configForwardSoftLimitEnable(true);
-        this.winchMotor.configForwardSoftLimitThreshold(11000);
-        this.winchMotor.configPeakOutputForward(0.6);
+        this.winchMotor.configForwardSoftLimitThreshold(10000);
+        this.winchMotor.configPeakOutputForward(.6);
         this.winchMotor.configPeakOutputReverse(-0.3);
 
     }
@@ -74,6 +74,7 @@ public class Arm extends SubsystemBase {
      * @param position
      */
     public void setTilt(double position) {
+        targetTiltAngle = position;
         tiltMotor.setAngle(position);
     }
 
@@ -82,6 +83,7 @@ public class Arm extends SubsystemBase {
      * @param position is the angle that it has to turn
      */
     public void setWinch(double position) {
+        targetWinchPosition = position;
         winchMotor.setAngle(position);
     }
 
@@ -178,8 +180,8 @@ public class Arm extends SubsystemBase {
 
     @Override
     public void initSendable(SendableBuilder builder) {
-        builder.addDoubleProperty("Target tilt position", () -> targetTiltAngle, (value) -> {setTilt((double) value);});
-        builder.addDoubleProperty("Target winch output", () -> targetWinchPosition, (value) -> {setWinch((double) value);});
+        builder.addDoubleProperty("Target tilt position", () -> targetTiltAngle, null);
+        builder.addDoubleProperty("Target winch output", () -> targetWinchPosition, null);
     
         builder.addDoubleProperty("Current Encoder Tilt Position", () -> tiltMotor.getEncoder().getPosition(), null);
         builder.addDoubleProperty("Current Winch Encoder Position", () -> winchMotor.getSelectedSensorPosition(), null);

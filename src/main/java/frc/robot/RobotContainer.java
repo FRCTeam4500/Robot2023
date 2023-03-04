@@ -32,6 +32,7 @@ import frc.robot.subsystem.Intake;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.JoystickConstants;
+import frc.robot.autonomous.routines.BasicAuto;
 import frc.robot.autonomous.routines.Top2PieceAuto;
 import frc.robot.component.hardware.SparkMaxComponent;
 import frc.robot.subsystem.swerve.command.TriModeSwerveCommand;
@@ -235,7 +236,8 @@ public class RobotContainer {
     }
 
     void configureAuto() {
-       autonChooser.setDefaultOption("Top2Piece", new Top2PieceAuto(m_swerve, m_arm));
+       autonChooser.setDefaultOption("Basic", new BasicAuto(m_swerve, m_arm, m_intake));
+       autonChooser.addOption("Top2Piece", new Top2PieceAuto(m_swerve, m_arm));
        Shuffleboard.getTab("Driver Controls").add("Auto Route", autonChooser);
     }
 
@@ -244,7 +246,7 @@ public class RobotContainer {
     }
 
     public void teleopInit() {
-        Command auton = null;//autonChooser.getSelected();
+        Command auton = autonChooser.getSelected();
         if (auton != null){
             auton.cancel();
         }

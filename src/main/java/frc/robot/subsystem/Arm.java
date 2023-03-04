@@ -51,7 +51,7 @@ public class Arm extends SubsystemBase {
         this.winchMotor.configForwardSoftLimitEnable(true);
         this.winchMotor.configForwardSoftLimitThreshold(11000);
         this.winchMotor.configPeakOutputForward(0.6);
-        this.winchMotor.configPeakOutputReverse(-0.3);
+        this.winchMotor.configPeakOutputReverse(-0.5);
 
     }
     

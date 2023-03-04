@@ -11,9 +11,7 @@ public class Constants {
         public final static int RESET_GYRO = 10;
         public final static int LIMIT_SWERVE_SPEED = 2;
         public final static int NO_FORWARD = 9;
-        public final static int BALANCE = 11;
-        public final static int ALIGN = 3;
-
+        
         // Control stick map
         public final static int CUBE_INTAKE = 12; // Also places cones
         public final static int PLACE = 1;
@@ -68,7 +66,7 @@ public class Constants {
         public static final double ARM_PLACE_ANGLE = -6; //-6.71; // ARM_PLACE_ANGLE is the angle for all heights TODO: change value later
         public static final double ARM_LAUNCH_ANGLE = 0;
         public static final double ARM_GROUND_ANGLE = -39.41; // ARM_PICKUP_ANGLE is the angle to pickup from ground TODO: change value later
-        public static final double ARM_ZERO_ANGLE = 0; // TODO: change value later
+        public static final double ARM_ZERO_ANGLE = -10; // TODO: change value later
 
         public static final double ARM_PLACE_TOP = 10900.0; //10447 // TODO: change value later
         public static final double ARM_PLACE_MID = 3229;//4204; // TODO: change value later
@@ -80,20 +78,20 @@ public class Constants {
     }
 
     public static class IntakeConstants { // Intake Constants
-        public static final double INTAKE_CUBE_SPEED = -0.75; 
-        public static final double INTAKE_CONE_SPEED = 0.75;
+        public static final double INTAKE_CUBE_SPEED = -1d; 
+        public static final double INTAKE_CONE_SPEED = 1d;
 
         public static final int INTAKE_MOTOR_ID = 13;
         public static final MotorType INTAKE_MOTOR_TYPE = MotorType.kBrushless;
         public static final int INTAKE_ANGLE_MOTOR_ID = 12;
         public static final MotorType ANGLE_MOTOR_TYPE = MotorType.kBrushless;
 
-        public static final double INTAKE_BOT_ANGLE = -9.07;//-3.41;//-3.52; // Angle that the Intake should be at the bottom when picking up, 
+        public static final double INTAKE_BOT_ANGLE = -8;//-3.41;//-3.52; // Angle that the Intake should be at the bottom when picking up, 
         public static final double INTAKE_TRAY_PICKUP_ANGLE = -24.64;
         public static final double INTAKE_TOP_CONE_PLACE_ANGLE = -18.4;//-11.38; // Change
         public static final double INTAKE_BOT_CONE_PLACE_ANGLE = -18.4;
         public static final double INTAKE_ZERO_ANGLE = -5.5; // TRUE retracted
-        public static final double INTAKE_LAUNCHING_ANGLE = -12;//-6.71;
+        public static final double INTAKE_LAUNCHING_ANGLE = -5;//-6.71;
     }
 
     public static class VisionConstants { // Vision Constants

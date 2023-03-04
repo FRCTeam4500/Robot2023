@@ -74,6 +74,7 @@ public class Intake extends SubsystemBase {
         private boolean placing;
         private boolean substation;
 
+        
         public IntakeSetAngleCommand(Intake intake, boolean placing, boolean launching, boolean zeroing, boolean substation) {
             this.intake = intake;
             this.launching = launching;
@@ -89,7 +90,7 @@ public class Intake extends SubsystemBase {
         public void initialize() {
             if(substation){
                 intake.setAngle(IntakeConstants.INTAKE_TRAY_PICKUP_ANGLE);
-            } else if (launching) {
+            } else if(launching) {
                 intake.setAngle(IntakeConstants.INTAKE_LAUNCHING_ANGLE);
             } else if(zeroing){
                 intake.setAngle(IntakeConstants.INTAKE_ZERO_ANGLE);

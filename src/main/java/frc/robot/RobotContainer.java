@@ -152,6 +152,7 @@ public class RobotContainer {
         readyBotButton.toggleOnTrue(
             new SequentialCommandGroup(
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
+                new WaitCommand(1),
                 new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_GROUND_ANGLE),
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_BOT),
                 new Intake.IntakeSetAngleCommand(m_intake, false, false, false, false)
@@ -161,6 +162,7 @@ public class RobotContainer {
         readyMidButton.toggleOnTrue(
             new SequentialCommandGroup(
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
+                new WaitCommand(1),
                 new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE),
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_MID),
                 new Intake.IntakeSetAngleCommand(m_intake, true, false, false, false)
@@ -170,6 +172,7 @@ public class RobotContainer {
         readyTopButton.toggleOnTrue(
             new SequentialCommandGroup(
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
+                new WaitCommand(1),
                 new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_LAUNCH_ANGLE),
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_TOP),
                 new Intake.IntakeSetAngleCommand(m_intake, true, true, false, false)
@@ -179,7 +182,8 @@ public class RobotContainer {
         readySubstationButton.toggleOnTrue(
             new SequentialCommandGroup(
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
-                new Arm.ArmSetTiltAngleCommand(m_arm, 0),
+                new WaitCommand(1),
+                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_SUBSTATION_ANGLE),
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_TOP),
                 new Intake.IntakeSetAngleCommand(m_intake, true, false, false, true)
             )

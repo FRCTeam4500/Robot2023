@@ -74,6 +74,7 @@ public class Arm extends SubsystemBase {
      * @param position
      */
     public void setTilt(double position) {
+        targetTiltAngle = position;
         tiltMotor.setAngle(position);
     }
 

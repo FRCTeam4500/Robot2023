@@ -211,7 +211,7 @@ public class RobotContainer {
         readySubstationButton.toggleOnTrue(
             new SequentialCommandGroup(
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
-                new Arm.ArmSetTiltAngleCommand(m_arm, 0),
+                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_SUBSTATION_ANGLE),
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_TOP),
                 new Intake.IntakeSetAngleCommand(m_intake, true, false, false, true)
             )

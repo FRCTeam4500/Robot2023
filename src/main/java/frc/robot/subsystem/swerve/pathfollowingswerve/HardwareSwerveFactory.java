@@ -35,10 +35,10 @@ public class HardwareSwerveFactory {
     public static final double DRIVE_Y_BACK_TRANSLATION = -0.3175; // 16 inches
 
     public static PathFollowingSwerve makeSwerve(){
-        OdometricWheelModule fl = makeWheelModule(AFLPORT, DFLPORT, new Translation2d(DRIVE_Y_FRONT_TRANSLATION, DRIVE_X_LEFT_TRANSLATION), false, false,true, .4, .75);
-        OdometricWheelModule fr = makeWheelModule(AFRPORT, DFRPORT, new Translation2d(DRIVE_Y_FRONT_TRANSLATION, DRIVE_X_RIGHT_TRANSLATION), false, false,false, .65, .75);
-        OdometricWheelModule bl = makeWheelModule(ABLPORT, DBLPORT, new Translation2d(DRIVE_Y_BACK_TRANSLATION, DRIVE_X_LEFT_TRANSLATION), false, false,true, .9, .8);
-        OdometricWheelModule br = makeWheelModule(ABRPORT, DBRPORT, new Translation2d(DRIVE_Y_BACK_TRANSLATION, DRIVE_X_RIGHT_TRANSLATION ), false, false,false, .6, .8); // Inverted speeds for back drive motors due to opposite splin, calibrated for back two(gear in), front two(gear out). Made it so that it's both gear out :)
+        OdometricWheelModule fl = makeWheelModule(AFLPORT, DFLPORT, new Translation2d(DRIVE_Y_FRONT_TRANSLATION, DRIVE_X_LEFT_TRANSLATION), false, false,true, .3, .75);
+        OdometricWheelModule fr = makeWheelModule(AFRPORT, DFRPORT, new Translation2d(DRIVE_Y_FRONT_TRANSLATION, DRIVE_X_RIGHT_TRANSLATION), false, false,false, .3, .75);
+        OdometricWheelModule bl = makeWheelModule(ABLPORT, DBLPORT, new Translation2d(DRIVE_Y_BACK_TRANSLATION, DRIVE_X_LEFT_TRANSLATION), false, false,true, .3, .8);
+        OdometricWheelModule br = makeWheelModule(ABRPORT, DBRPORT, new Translation2d(DRIVE_Y_BACK_TRANSLATION, DRIVE_X_RIGHT_TRANSLATION ), false, false,false, .3, .8); // Inverted speeds for back drive motors due to opposite splin, calibrated for back two(gear in), front two(gear out). Made it so that it's both gear out :)
 
         return new OdometricSwerve(
                 new AHRSAngleGetterComponent(I2C.Port.kMXP),

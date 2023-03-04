@@ -11,23 +11,28 @@ import frc.robot.subsystem.Arm;
 import frc.robot.subsystem.Intake;
 import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
 import frc.robot.utility.ExtendedTrajectoryUtilities;
+import static frc.robot.RobotContainer.isCone;
 
 public class PlaceAndMove extends SequentialCommandGroup{
     public PlaceAndMove(PathFollowingSwerve swerve, Arm arm, Intake intake){
-        Trajectory path = ExtendedTrajectoryUtilities.getDeployedTrajectory("A1");
+        Trajectory path = ExtendedTrajectoryUtilities.getDeployedTrajectory("Curve");
         Command swerveCmd = NewTrajectoryUtilities.generateSwerveControllerCommand(swerve, path);
 
         addCommands(
+
+            new InstantCommand(() -> {swerve.resetRobotAngle();}),
             new InstantCommand(() -> swerve.resetPose(path.getInitialPose())),
+            new InstantCommand(() -> isCone = true),
             new Arm.ArmSetTiltAngleCommand(arm, ArmConstants.ARM_ZERO_ANGLE),
-            new WaitCommand(.25),
-            new Arm.ArmSetTiltAngleCommand(arm, ArmConstants.ARM_PLACE_ANGLE),
+            new Arm.ArmSetWinchOutputCommand(arm, ArmConstants.ARM_RETRACT),
             new WaitCommand(.5),
-            new Arm.ArmSetWinchOutputCommand(arm, ArmConstants.ARM_PLACE_MID),
-            new Intake.IntakeSetAngleCommand(intake, true, false, false, false),
-            new WaitCommand(0.5),
+            new Arm.ArmSetTiltAngleCommand(arm, ArmConstants.ARM_LAUNCH_ANGLE),
+            new WaitCommand(.5),
+            new Arm.ArmSetWinchOutputCommand(arm, ArmConstants.ARM_PLACE_TOP),
+            new Intake.IntakeSetAngleCommand(intake, true, true, false, false),
+            new WaitCommand(1.5),
             new Intake.IntakeSetOutputCommand(intake, false, true),
-            new WaitCommand(0.5),
+            new WaitCommand(1),
             new Intake.IntakeSetOutputCommand(intake, true, false),
             new Intake.IntakeSetAngleCommand(intake, false, false, true, false),
             new Arm.ArmSetWinchOutputCommand(arm, 0),

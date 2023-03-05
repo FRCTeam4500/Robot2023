@@ -87,7 +87,14 @@ public class RobotContainer {
     private final Vision m_vision = HardwareVisionFactory.makeVision();
 
     /**Both PID constants need to be tested */
-    private final SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(m_swerve::getCurrentPose, m_swerve::resetPose, new PIDConstants(5, 0, 0), new PIDConstants(.5, 0, 0), m_swerve::moveRobotCentric, commandMap, m_swerve);    
+    private final SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
+        m_swerve::getCurrentPose, 
+        m_swerve::resetPose, 
+        new PIDConstants(5, 0, 0), 
+        new PIDConstants(.5, 0, 0), 
+        m_swerve::moveRobotCentric, 
+        commandMap, 
+        m_swerve);    
     private final SendableChooser<Command> autonChooser = new SendableChooser<Command>();
     
 
@@ -230,100 +237,25 @@ public class RobotContainer {
 
     void configureArmAndIntake() {
 
-        cubeButton.toggleOnTrue( // Intakes cones
-            new SequentialCommandGroup(
-                new InstantCommand(() -> isCone = false),
-                new Intake.IntakeSetOutputCommand(m_intake, false, false)
-            )
-        );
-        cubeButton.toggleOnFalse(
-            new SequentialCommandGroup(
-                new Intake.IntakeSetOutputCommand(m_intake, true, false),
-                new Intake.IntakeSetAngleCommand(m_intake, false, false, true, false),
-                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
-                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE)
-            )
-        );
+        cubeButton.toggleOnTrue(commandMap.get("intakeCube"));
+        cubeButton.toggleOnFalse(commandMap.get("zero"));
 
-        sidewaysConeButton.toggleOnTrue(
-            new SequentialCommandGroup(
-                new InstantCommand(() -> isBottomCone = true),
-                new InstantCommand(() -> isCone = true),
-                new Intake.IntakeSetOutputCommand(m_intake, false, false)
-            )
-        );
-        sidewaysConeButton.toggleOnFalse(
-            new SequentialCommandGroup(
-                new Intake.IntakeSetOutputCommand(m_intake, true, false),
-                new Intake.IntakeSetAngleCommand(m_intake, false, false, true, false),
-                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
-                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE)
-            )
-        );
+        sidewaysConeButton.toggleOnTrue(commandMap.get("intakeTiltedCone"));
+        sidewaysConeButton.toggleOnFalse(commandMap.get("zero"));
 
-        uprightConeButton.toggleOnTrue(
-            new SequentialCommandGroup(
-                new InstantCommand(() -> isBottomCone = false),
-                new InstantCommand(() -> isCone = true),
-                new Intake.IntakeSetOutputCommand(m_intake, false, false)
-            )
-        );
-        uprightConeButton.toggleOnFalse(
-            new SequentialCommandGroup(
-                new Intake.IntakeSetOutputCommand(m_intake, true, false),
-                new Intake.IntakeSetAngleCommand(m_intake, false, false, true, false),
-                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
-                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE)
-            )
-        );
+        uprightConeButton.toggleOnTrue(commandMap.get("intakeUprightCone"));
+        uprightConeButton.toggleOnFalse(commandMap.get("zero"));
 
-        readyBotButton.toggleOnTrue(
-            new SequentialCommandGroup(
-                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
-                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_GROUND_ANGLE),
-                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_BOT),
-                new Intake.IntakeSetAngleCommand(m_intake, false, false, false, false)
-            )
-        );
+        readyBotButton.toggleOnTrue(commandMap.get("readyBot"));
 
-        readyMidButton.toggleOnTrue(
-            new SequentialCommandGroup(
-                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
-                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE),
-                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_MID),
-                new Intake.IntakeSetAngleCommand(m_intake, true, false, false, false)
-            )
-        );
+        readyMidButton.toggleOnTrue(commandMap.get("readyMid"));
 
-        readyTopButton.toggleOnTrue(
-            new SequentialCommandGroup(
-                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
-                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_LAUNCH_ANGLE),
-                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_TOP),
-                new Intake.IntakeSetAngleCommand(m_intake, true, true, false, false)
-            )
-        );
+        readyTopButton.toggleOnTrue(commandMap.get("readyTop"));
 
-        readySubstationButton.toggleOnTrue(
-            new SequentialCommandGroup(
-                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
-                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_SUBSTATION_ANGLE),
-                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_TOP),
-                new Intake.IntakeSetAngleCommand(m_intake, true, false, false, true)
-            )
-        );
+        readySubstationButton.toggleOnTrue(commandMap.get("readySubstation"));
        
-        placeButton.toggleOnTrue(
-            new Intake.IntakeSetOutputCommand(m_intake, false, true)
-        );
-        placeButton.toggleOnFalse(
-            new SequentialCommandGroup(
-                new Intake.IntakeSetOutputCommand(m_intake, true, false),
-                new Intake.IntakeSetAngleCommand(m_intake, false, false, true, false),
-                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
-                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE)
-            )
-        );
+        placeButton.toggleOnTrue(commandMap.get("place"));
+        placeButton.toggleOnFalse(commandMap.get("zero"));
 
         Shuffleboard.getTab("Arm and Intake").addBoolean("Is Cone", () -> isCone);
         Shuffleboard.getTab("Arm and Intake").addBoolean("Is Bottom Cone", () -> isBottomCone);

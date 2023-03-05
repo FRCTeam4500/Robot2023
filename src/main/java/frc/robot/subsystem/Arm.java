@@ -24,7 +24,8 @@ public class Arm extends SubsystemBase {
     private TalonSRXComponent winchMotor;
     private SparkMaxPIDController tiltPIDController;
     private double targetTiltAngle;
-    private double targetWinchPosition;
+    private static double targetWinchPosition;
+    private boolean winchGood;
     Position position;
 
     /**
@@ -133,9 +134,19 @@ public class Arm extends SubsystemBase {
             addRequirements(arm);
         }
 
+        
         public void initialize() {
                 arm.setWinch(output);
         }
+
+        // public boolean isFinished(){
+        //     if (targetWinchPosition - arm.winchMotor.getAngle() < 400){
+        //         return true;
+        //     } 
+        //     return false;
+        // }
+
+
     }
 
     public double getWinchPosition() {

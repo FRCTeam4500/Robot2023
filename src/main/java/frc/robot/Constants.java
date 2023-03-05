@@ -120,11 +120,12 @@ public class Constants {
     }
 
     public static class AutoConstants {
-        public static final double RAMSETE_B_VALUE = 2.0;
-        public static final double RAMSETE_THETA_VALUE = 0.7; // Standard Values, not tested for our robot
+        // everything here should be in meters per second
+        public static final double AUTO_MAX_SPEED = 4.0;
+        public static final double AUTO_MAX_ACCEL = 3.0;
 
         public static final List<PathPlannerTrajectory> BotPlaceAndMoveAuto = PathPlanner.loadPathGroup(
-        "BotPlaceAndMove", RAMSETE_B_VALUE, RAMSETE_THETA_VALUE);
+        "BotPlaceAndMove", AUTO_MAX_SPEED, AUTO_MAX_ACCEL);
 
         // Add Auto Paths here, like the above
     }

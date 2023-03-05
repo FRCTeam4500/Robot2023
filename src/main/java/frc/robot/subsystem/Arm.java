@@ -5,19 +5,9 @@ import frc.robot.Constants.ArmConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.SparkMaxRelativeEncoder;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-
-import static frc.robot.RobotContainer.isCone;
-import static frc.robot.RobotContainer.isBottomCone;
 
 public class Arm extends SubsystemBase {
     private SparkMaxComponent tiltMotor;
@@ -25,7 +15,7 @@ public class Arm extends SubsystemBase {
     private SparkMaxPIDController tiltPIDController;
     private double targetTiltAngle;
     private static double targetWinchPosition;
-    private boolean winchGood;
+    // private boolean winchGood;
     Position position;
 
     /**

@@ -5,9 +5,14 @@ import frc.robot.utility.ControllerInfo;
 
 import static frc.robot.subsystem.Arm.makeArm;
 import static frc.robot.subsystem.Intake.makeIntake;
+import static frc.robot.Constants.RobotConstants.commandMap;
 
 import java.util.HashMap;
 
+import com.pathplanner.lib.auto.PIDConstants;
+import com.pathplanner.lib.auto.RamseteAutoBuilder;
+import com.pathplanner.lib.auto.SwerveAutoBuilder;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -22,6 +27,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.subsystem.Arm.Position;
@@ -30,11 +36,9 @@ import frc.robot.subsystem.Arm;
 import frc.robot.subsystem.Intake;
 
 import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.JoystickConstants;
-import frc.robot.autonomous.routines.BasicAuto;
-import frc.robot.autonomous.routines.TestingAuto;
-import frc.robot.autonomous.routines.Top2PieceAuto;
 import frc.robot.component.hardware.SparkMaxComponent;
 import frc.robot.subsystem.swerve.command.TriModeSwerveCommand;
 import frc.robot.subsystem.swerve.pathfollowingswerve.HardwareSwerveFactory;
@@ -76,16 +80,20 @@ public class RobotContainer {
     private TriModeSwerveCommand swerveCommand;
     public static boolean isCone; // Changes with coneButton/cubeButton
     public static boolean isBottomCone = true; // Changes with Orientation buttons
-    
-    private final SendableChooser<Command> autonChooser = new SendableChooser<Command>();
+
     private final PathFollowingSwerve m_swerve = HardwareSwerveFactory.makeSwerve();
     private final Arm m_arm = makeArm();
     private final Intake m_intake = makeIntake();
     private final Vision m_vision = HardwareVisionFactory.makeVision();
 
+    /**Both PID constants need to be tested */
+    private final SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(m_swerve::getCurrentPose, m_swerve::resetPose, new PIDConstants(5, 0, 0), new PIDConstants(.5, 0, 0), m_swerve::moveRobotCentric, commandMap, m_swerve);    
+    private final SendableChooser<Command> autonChooser = new SendableChooser<Command>();
+    
+
     public RobotContainer() {
         configureControls();
-        // configureCommands();
+        configureCommands();
         configureSwerve();
         configureAuto();
         configureArmAndIntake();
@@ -131,6 +139,93 @@ public class RobotContainer {
 
         Shuffleboard.getTab("Swerve").add("Swerve", m_swerve);
         Shuffleboard.getTab("Swerve").add("Swerve Command", swerveCommand);
+    }
+
+    void configureCommands() {
+        commandMap.put(
+            "readyBot", 
+            new SequentialCommandGroup(
+                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
+                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_GROUND_ANGLE),
+                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_BOT),
+                new Intake.IntakeSetAngleCommand(m_intake, false, false, false, false)
+            )
+        );
+
+        commandMap.put(
+            "readyMid",
+            new SequentialCommandGroup(
+                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
+                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE),
+                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_MID),
+                new Intake.IntakeSetAngleCommand(m_intake, true, false, false, false)
+            )
+        );
+
+        commandMap.put(
+            "readyTop",
+            new SequentialCommandGroup(
+                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
+                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_LAUNCH_ANGLE),
+                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_TOP),
+                new Intake.IntakeSetAngleCommand(m_intake, true, true, false, false)
+            )
+        );
+
+        commandMap.put(
+            "readySubstation",
+            new SequentialCommandGroup(
+                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
+                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_SUBSTATION_ANGLE),
+                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_TOP),
+                new Intake.IntakeSetAngleCommand(m_intake, true, false, false, true)
+            )
+        );
+
+        commandMap.put(
+            "place",
+            new Intake.IntakeSetOutputCommand(m_intake, false, true)
+        );
+
+        commandMap.put(
+            "intakeCube",
+            new SequentialCommandGroup(
+                new InstantCommand(() -> isCone = false),
+                new Intake.IntakeSetOutputCommand(m_intake, false, false)
+            )
+        );
+
+        commandMap.put(
+            "intakeTiltedCone",
+            new SequentialCommandGroup(
+                new InstantCommand(() -> isBottomCone = true),
+                new InstantCommand(() -> isCone = true),
+                new Intake.IntakeSetOutputCommand(m_intake, false, false)
+            )
+        );
+        
+        commandMap.put(
+            "intakeUprightCone",
+            new SequentialCommandGroup(
+                new InstantCommand(() -> isBottomCone = false),
+                new InstantCommand(() -> isCone = true),
+                new Intake.IntakeSetOutputCommand(m_intake, false, false)
+            )
+        );
+        
+        commandMap.put(
+            "zero",
+            new SequentialCommandGroup(
+                new Intake.IntakeSetOutputCommand(m_intake, true, false),
+                new Intake.IntakeSetAngleCommand(m_intake, false, false, true, false),
+                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
+                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE)
+            )
+        );
+
+        commandMap.put("waitQuarter", new WaitCommand(.25));
+        commandMap.put("waitHalf", new WaitCommand(.5));
+        commandMap.put("waitOne", new WaitCommand(1));
     }
 
     void configureArmAndIntake() {
@@ -237,11 +332,10 @@ public class RobotContainer {
     }
 
     void configureAuto() {
-       autonChooser.setDefaultOption("Basic", new BasicAuto(m_swerve, m_arm, m_intake));
-       autonChooser.addOption("Top2Piece", new Top2PieceAuto(m_swerve, m_arm));
-       autonChooser.addOption("Testing", new TestingAuto(m_swerve));
-       Shuffleboard.getTab("Driver Controls").add("Auto Route", autonChooser);
+        autonChooser.setDefaultOption("Bottom: Place and Move", autoBuilder.fullAuto(AutoConstants.BotPlaceAndMoveAuto));
+        Shuffleboard.getTab("Auto").add("Auto Routes", autonChooser);
     }
+
 
     public Command getAutonomousCommand() {
         return autonChooser.getSelected();

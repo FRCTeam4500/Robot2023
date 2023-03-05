@@ -1,5 +1,12 @@
 package frc.robot;
+import java.util.HashMap;
+import java.util.List;
+
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj2.command.Command;
 
 public class Constants {
     public static class JoystickConstants {
@@ -109,11 +116,19 @@ public class Constants {
 
         public static final double MAX_DEPTH_TO_TARGET = 0.1;
         public static final double MAX_OFFSET_TO_TARGET = 0.1;
+    }
 
-        
+    public static class AutoConstants {
+        public static final double RAMSETE_B_VALUE = 2.0;
+        public static final double RAMSETE_THETA_VALUE = 0.7; // Standard Values, not tested for our robot
+
+        public static final List<PathPlannerTrajectory> BotPlaceAndMoveAuto = PathPlanner.loadPathGroup(
+        "BotPlaceAndMove", RAMSETE_B_VALUE, RAMSETE_THETA_VALUE);
+
+        // Add Auto Paths here, like the above
     }
 
     public static class RobotConstants {//Robot Constants
-        //TODO: add
+        public static final HashMap<String, Command> commandMap = new HashMap<>();
     }
 }

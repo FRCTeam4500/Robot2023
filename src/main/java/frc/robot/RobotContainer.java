@@ -25,6 +25,7 @@ import frc.robot.subsystem.Intake;
 
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.AutoConstants;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.JoystickConstants;
 import frc.robot.subsystem.swerve.command.BalanceCommand;
 import frc.robot.subsystem.swerve.command.TriModeSwerveCommand;
@@ -59,7 +60,7 @@ public class RobotContainer {
     private TriModeSwerveCommand swerveCommand;
     private BalanceCommand balanceCommand;
     public static boolean isCone; // Changes with coneButton/cubeButton
-    public static boolean isBottomCone = true; // Changes with Orientation buttons
+    public static boolean isBottomCone = false; // Changes with Orientation buttons
 
     private final PathFollowingSwerve m_swerve = HardwareSwerveFactory.makeSwerve();
     private final Arm m_arm = makeArm();
@@ -142,7 +143,7 @@ public class RobotContainer {
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
                 new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_GROUND_ANGLE),
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_BOT),
-                new Intake.IntakeSetAngleCommand(m_intake, false, false, false, false)
+                new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_BOT_ANGLE)
             )
         );
 
@@ -152,7 +153,7 @@ public class RobotContainer {
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
                 new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE),
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_MID),
-                new Intake.IntakeSetAngleCommand(m_intake, true, false, false, false)
+                new Intake.IntakeSetAngleCommand(m_intake)
             )
         );
 
@@ -162,7 +163,7 @@ public class RobotContainer {
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
                 new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_LAUNCH_ANGLE),
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_TOP),
-                new Intake.IntakeSetAngleCommand(m_intake, true, true, false, false)
+                new Intake.IntakeSetAngleCommand(m_intake)
             )
         );
 
@@ -172,20 +173,20 @@ public class RobotContainer {
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
                 new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_SUBSTATION_ANGLE),
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_TOP),
-                new Intake.IntakeSetAngleCommand(m_intake, true, false, false, true)
+                new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_TRAY_PICKUP_ANGLE)
             )
         );
 
         commandMap.put(
             "place",
-            new Intake.IntakeSetOutputCommand(m_intake, false, true)
+            new Intake.IntakeSetOutputCommand(m_intake, true)
         );
 
         commandMap.put(
             "intakeCube",
             new SequentialCommandGroup(
                 new InstantCommand(() -> isCone = false),
-                new Intake.IntakeSetOutputCommand(m_intake, false, false)
+                new Intake.IntakeSetOutputCommand(m_intake, false)
             )
         );
 
@@ -194,7 +195,7 @@ public class RobotContainer {
             new SequentialCommandGroup(
                 new InstantCommand(() -> isBottomCone = true),
                 new InstantCommand(() -> isCone = true),
-                new Intake.IntakeSetOutputCommand(m_intake, false, false)
+                new Intake.IntakeSetOutputCommand(m_intake, false)
             )
         );
         
@@ -203,15 +204,15 @@ public class RobotContainer {
             new SequentialCommandGroup(
                 new InstantCommand(() -> isBottomCone = false),
                 new InstantCommand(() -> isCone = true),
-                new Intake.IntakeSetOutputCommand(m_intake, false, false)
+                new Intake.IntakeSetOutputCommand(m_intake, false)
             )
         );
         
         commandMap.put(
             "zero",
             new SequentialCommandGroup(
-                new Intake.IntakeSetOutputCommand(m_intake, true, false),
-                new Intake.IntakeSetAngleCommand(m_intake, false, false, true, false),
+                new Intake.IntakeSetOutputCommand(m_intake),
+                new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_ZERO_ANGLE),
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
                 new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE)
             )

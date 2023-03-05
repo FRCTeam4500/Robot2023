@@ -21,7 +21,6 @@ public class Intake extends SubsystemBase {
     private double targetTiltAngle;
     private double targetIntakeOutput;
     private SparkMaxPIDController tiltPIDController;
-    private static boolean isCone2;
 
     public Intake() {
         this.intakeMotor = new SparkMaxComponent(IntakeConstants.INTAKE_MOTOR_ID, IntakeConstants.INTAKE_MOTOR_TYPE);
@@ -63,70 +62,67 @@ public class Intake extends SubsystemBase {
         intakeTiltMotor.setOutput(output);
     }
 
+
     public static class IntakeSetAngleCommand extends InstantCommand {
         private Intake intake;
-        private boolean launching;
-        private boolean zeroing;
-        private boolean placing;
-        private boolean substation;
+        private double angle;
 
-        public IntakeSetAngleCommand(Intake intake, boolean placing, boolean launching, boolean zeroing, boolean substation) {
+        /**Use this constructor to do everything except place 
+         * @param intake The intake whose angle should be set
+         * @param angle The angle the intake should be set to
+         */
+        public IntakeSetAngleCommand(Intake intake, double angle) {
             this.intake = intake;
-            this.launching = launching;
-            this.zeroing = zeroing;
-            this.placing = placing;
-            this.substation = substation;
+            this.angle = angle;
         }
 
-        
-        
+        /**
+         * Use this constructor to place game pieces 
+         * @param intake The intake whose angle should be set
+         */
+        public IntakeSetAngleCommand(Intake intake) {
+            this(intake, isBottomCone ? IntakeConstants.INTAKE_BOT_CONE_PLACE_ANGLE : IntakeConstants.INTAKE_TOP_CONE_PLACE_ANGLE);
+        }
 
         @Override
         public void initialize() {
-            if(substation){
-                intake.setAngle(IntakeConstants.INTAKE_TRAY_PICKUP_ANGLE);
-            } else if (launching) {
-                intake.setAngle(IntakeConstants.INTAKE_LAUNCHING_ANGLE);
-            } else if(zeroing){
-                intake.setAngle(IntakeConstants.INTAKE_ZERO_ANGLE);
-            }else if(!placing) {
-                intake.setAngle(IntakeConstants.INTAKE_BOT_ANGLE);
-            }else if(isBottomCone) {
-                intake.setAngle(IntakeConstants.INTAKE_BOT_CONE_PLACE_ANGLE);
-            }else {
-                intake.setAngle(IntakeConstants.INTAKE_TOP_CONE_PLACE_ANGLE);
-            }
+            intake.setAngle(angle);
         }
+
     }
 
     public static class IntakeSetOutputCommand extends InstantCommand {
         private Intake intake;
-        private boolean placing;
-        private boolean zeroing;
+        private double speed;
 
-        public IntakeSetOutputCommand(Intake intake, boolean zeroing, boolean placing) {
+        /**
+         * Only use this constructor to zero the intake speed.
+         * @param intake The intake whose output should be set
+         */
+        public IntakeSetOutputCommand(Intake intake) {
             this.intake = intake;
-            this.placing = placing;
-            this.zeroing = zeroing;
+            this.speed = 0;
+        }
+        /**
+         * 
+         * @param intake The intake whose output should be set
+         * @param placing If we're placing, this should be true. If we're picking up, this should be false.
+         */
+        public IntakeSetOutputCommand(Intake intake, boolean placing) {
+            this.intake = intake;
+            if((placing && isCone) || (!placing && !isCone)) { // If we're placing a cone or picking up a cube
+                this.speed = IntakeConstants.INTAKE_CUBE_SPEED;
+            } else if ((placing && !isCone) || (!placing && isCone)) { // If we're placing a cube or picking up a cone
+                this.speed = IntakeConstants.INTAKE_CONE_SPEED;
+            }
+            
+            
+            
         }
 
         @Override
         public void initialize() {
-            if(zeroing) {
-                intake.setIntake(0);
-            } else if(placing) {
-                if(isCone) {
-                    intake.setIntake(IntakeConstants.INTAKE_CUBE_SPEED);
-                } else {
-                    intake.setIntake(IntakeConstants.INTAKE_CONE_SPEED);
-                }
-            } else {
-                if(isCone) {
-                    intake.setIntake(IntakeConstants.INTAKE_CONE_SPEED);
-                } else {
-                    intake.setIntake(IntakeConstants.INTAKE_CUBE_SPEED);
-                }
-            }
+            intake.setIntake(speed);
         }
     }
 
@@ -152,9 +148,9 @@ public class Intake extends SubsystemBase {
 
     @Override
     public void initSendable(SendableBuilder builder) {
-        builder.addDoubleProperty("Target Intake Tilt position", () -> targetTiltAngle, (value) -> {setAngle((double) value);});
+        builder.addDoubleProperty("Target Intake Tilt angle", () -> targetTiltAngle, (value) -> {setAngle((double) value);});
         builder.addDoubleProperty("Target Intake Wheel output", () -> targetIntakeOutput, (value) -> {setIntake((double) value);});
-        builder.addBooleanProperty("IS CONE?!?!?", () -> isCone2, null);
+        builder.addBooleanProperty("IS CONE?!?!?", () -> isCone, null);
         builder.addDoubleProperty("Intake Angle", () -> intakeTiltMotor.getEncoder().getPosition(), null);
     }
 }

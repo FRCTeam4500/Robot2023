@@ -21,10 +21,10 @@ public class Constants {
         public final static int BALANCE = 5;
         
         // Control stick map
-        public final static int CUBE_INTAKE = 12; // Also places cones
+        public final static int CUBE_INTAKE = 12; 
         public final static int PLACE = 1;
 
-        public final static int GO_OUT = 2; // TODO: Change
+        public final static int GO_OUT = 2; 
         public final static int GO_IN = 3;
 
         public final static int READY_BOTTOM = 9;

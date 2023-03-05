@@ -26,6 +26,7 @@ import frc.robot.subsystem.Intake;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.JoystickConstants;
+import frc.robot.subsystem.swerve.command.BalanceCommand;
 import frc.robot.subsystem.swerve.command.TriModeSwerveCommand;
 import frc.robot.subsystem.swerve.pathfollowingswerve.HardwareSwerveFactory;
 import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
@@ -41,8 +42,9 @@ public class RobotContainer {
     private final JoystickButton lockSwerveRotationButton = new JoystickButton(driveStick, JoystickConstants.LOCK_SWERVE_ROTATION);
     private final JoystickButton switchDriveModeRobotCentricButton = new JoystickButton(driveStick, JoystickConstants.SWITCH_DRIVE_MODE_ROBOT_CENTRIC);
     private final JoystickButton resetGyroButton = new JoystickButton(driveStick, JoystickConstants.RESET_GYRO);
-    // private final JoystickButton limitSwerveSpeedButton = new JoystickButton(driveStick, JoystickConstants.LIMIT_SWERVE_SPEED);
     private final JoystickButton noForwardButton = new JoystickButton(driveStick, JoystickConstants.NO_FORWARD);
+    private final JoystickButton balanceButton = new JoystickButton(driveStick, JoystickConstants.BALANCE);
+    // private final JoystickButton limitSwerveSpeedButton = new JoystickButton(driveStick, JoystickConstants.LIMIT_SWERVE_SPEED);
 
     private final JoystickButton cubeButton = new JoystickButton(controlStick, JoystickConstants.CUBE_INTAKE);
     private final JoystickButton placeButton = new JoystickButton(controlStick, JoystickConstants.PLACE);
@@ -112,6 +114,10 @@ public class RobotContainer {
 
         // limitSwerveSpeedButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.limitSpeed = true;}));
         // limitSwerveSpeedButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.limitSpeed = false;}));
+
+        /* Balance Robot, should end on balancing 10 cycles */
+        balanceButton.toggleOnTrue(new InstantCommand(() -> m_swerve.setDefaultCommand(new BalanceCommand(m_swerve))));
+        balanceButton.toggleOnFalse(new InstantCommand(() -> m_swerve.setDefaultCommand(swerveCommand)));
 
         resetGyroButton.toggleOnTrue(new InstantCommand(() -> {m_swerve.resetRobotAngle();}));
 

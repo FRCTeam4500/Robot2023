@@ -16,6 +16,7 @@ import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.component.GyroComponent;
+import frc.robot.component.hardware.AHRSAngleGetterComponent;
 import frc.robot.subsystem.swerve.Swerve;
 
 public class KinematicSwerve extends SubsystemBase implements Swerve, Sendable {
@@ -24,13 +25,13 @@ public class KinematicSwerve extends SubsystemBase implements Swerve, Sendable {
     protected KinematicWheelModule[] wheelModules;
     protected double lowestMaximumWheelSpeed;
     protected double currentGyroZero = 0.0;
-    protected GyroComponent gyro;
+    protected AHRSAngleGetterComponent gyro;
     private int resetCounter;
     private ChassisSpeeds currentSpeeds = new ChassisSpeeds();
     /**
      * Creates a new KinematicSwerve.
      */
-    public KinematicSwerve(GyroComponent gyro, KinematicWheelModule... wheelModules) {
+    public KinematicSwerve(AHRSAngleGetterComponent gyro, KinematicWheelModule... wheelModules) {
         this.wheelModules = wheelModules;
         this.gyro = gyro;
 
@@ -174,10 +175,13 @@ public class KinematicSwerve extends SubsystemBase implements Swerve, Sendable {
         return kinematics.toChassisSpeeds(states);
     }
 
-    public SwerveDriveKinematics getKinematics(){
+    public SwerveDriveKinematics getKinematics() {
         return kinematics;
     }
 
+    public AHRSAngleGetterComponent getGyro() {
+        return gyro;
+    }
 
 }
 

@@ -7,19 +7,25 @@ import frc.robot.subsystem.swerve.Swerve;
 
 public class BalanceCommand extends CommandBase {
 	private Swerve swerve;
-  	private double tolerence = 2;
+	private float speed = 0.3f;
+  	private float tolerence = 2f;
 	private boolean balanced = false;
 	private int balanceCounter = 0;
 	private final int MAX_COUNT = 10; // Ends after 10 cycles of being balanced
+	private boolean inCommunity;
 	private AHRSAngleGetterComponent gyro = swerve.getGyro();
 
 	/**
 	 * Creates a new BalanceCommand.
 	 *
 	 * @param swerve The subsystem used by this command.
+	 * @param inCommunity Whether the robot is in the community when it starts. 
+	 * This basically detemines wether we are going forward on initialization.
 	 */
-	public BalanceCommand(Swerve swerve) {
+
+	public BalanceCommand(Swerve swerve, boolean inCommunity) {
 		this.swerve = swerve;
+		this.inCommunity = inCommunity;
 		addRequirements(swerve);
 	}
 
@@ -27,6 +33,10 @@ public class BalanceCommand extends CommandBase {
 	@Override
 	public void initialize() {
 		swerve.resetRobotAngle();
+
+		while (gyro.getPitch() < tolerence && gyro.getPitch() > -tolerence) {
+			swerve.moveFieldCentric((inCommunity ? speed : -speed), 0, 0);
+		}
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
@@ -34,12 +44,12 @@ public class BalanceCommand extends CommandBase {
 	public void execute() {
 		
 		if (gyro.getPitch() < -tolerence) {
-			swerve.moveFieldCentric(-0.3, 0, 0);
+			swerve.moveFieldCentric(-speed, 0, 0);
 			balanced = false;
 			balanceCounter = 0;
 
 		} else if (gyro.getPitch() > tolerence) {
-			swerve.moveFieldCentric(0.3, 0, 0);
+			swerve.moveFieldCentric(speed, 0, 0);
 			balanced = false;
 			balanceCounter = 0;
 			

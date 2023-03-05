@@ -57,6 +57,7 @@ public class RobotContainer {
 
     private final DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
     private TriModeSwerveCommand swerveCommand;
+    private BalanceCommand balanceCommand;
     public static boolean isCone; // Changes with coneButton/cubeButton
     public static boolean isBottomCone = true; // Changes with Orientation buttons
 
@@ -100,6 +101,7 @@ public class RobotContainer {
     
     void configureSwerve() {
         swerveCommand = new TriModeSwerveCommand(m_swerve, driveStick, info, messages);
+        balanceCommand = new BalanceCommand(m_swerve, true); // TODO: Change based on Auto.
         m_swerve.setDefaultCommand(swerveCommand);
 
         lockSwerveRotationButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.lockRotation = true;}));
@@ -116,8 +118,16 @@ public class RobotContainer {
         // limitSwerveSpeedButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.limitSpeed = false;}));
 
         /* Balance Robot, should end on balancing 10 cycles */
-        balanceButton.toggleOnTrue(new InstantCommand(() -> m_swerve.setDefaultCommand(new BalanceCommand(m_swerve))));
-        balanceButton.toggleOnFalse(new InstantCommand(() -> m_swerve.setDefaultCommand(swerveCommand)));
+        balanceButton.toggleOnTrue(
+            new InstantCommand(
+                () -> m_swerve.setDefaultCommand(balanceCommand)
+            )
+        );
+        balanceButton.toggleOnFalse(
+            new InstantCommand(
+                () -> m_swerve.setDefaultCommand(swerveCommand)
+            )
+        );
 
         resetGyroButton.toggleOnTrue(new InstantCommand(() -> {m_swerve.resetRobotAngle();}));
 

@@ -72,10 +72,8 @@ public class RobotContainer {
     private final JoystickButton sidewaysConeButton = new JoystickButton(controlStick, JoystickConstants.SIDEWAYS_CONE);
     private final JoystickButton readySubstationButton = new JoystickButton(controlStick, JoystickConstants.SUBSTATION_PICKUP);
 
-    private final JoystickButton goInButton = new JoystickButton(controlStick, JoystickConstants.GO_IN);
-    private final JoystickButton goOutButton = new JoystickButton(controlStick, JoystickConstants.GO_OUT);
-    private final JoystickButton zeroIntakeButton = new JoystickButton(controlStick, 11);
-
+    private final JoystickButton tiltUp = new JoystickButton(controlStick, 4);
+    private final JoystickButton tiltDown = new JoystickButton(controlStick, 2);
     private final DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
     private TriModeSwerveCommand swerveCommand;
     public static boolean isCone; // Changes with coneButton/cubeButton
@@ -230,6 +228,8 @@ public class RobotContainer {
 
     void configureArmAndIntake() {
 
+        tiltUp.toggleOnTrue(new Arm.ArmChangeTiltCommand(m_arm, 1));
+        tiltDown.toggleOnTrue(new Arm.ArmChangeTiltCommand(m_arm, -1));
         cubeButton.toggleOnTrue( // Intakes cones
             new SequentialCommandGroup(
                 new InstantCommand(() -> isCone = false),

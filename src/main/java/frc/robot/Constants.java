@@ -72,7 +72,7 @@ public class Constants {
 
         public static final double ARM_SUBSTATION_ANGLE = -6.5;
         public static final double ARM_PLACE_ANGLE = -6; //-6.71; // ARM_PLACE_ANGLE is the angle for all heights TODO: change value later
-        public static final double ARM_LAUNCH_ANGLE = 0;
+        public static final double ARM_LAUNCH_ANGLE = 1;
         public static final double ARM_GROUND_ANGLE = -40; // ARM_PICKUP_ANGLE is the angle to pickup from ground TODO: change value later
         public static final double ARM_ZERO_ANGLE = -10; // TODO: change value later
 
@@ -119,12 +119,14 @@ public class Constants {
     }
 
     public static class AutoConstants {
-        public static final double RAMSETE_B_VALUE = 2.0;
-        public static final double RAMSETE_THETA_VALUE = 0.7; // Standard Values, not tested for our robot
+        public static final double AUTO_MAX_SPEED = 4;
+        public static final double AUTO_MAX_ACCEL = 3; // Standard Values, not tested for our robot
 
         public static final List<PathPlannerTrajectory> BotPlaceAndMoveAuto = PathPlanner.loadPathGroup(
-        "BotPlaceAndMove", RAMSETE_B_VALUE, RAMSETE_THETA_VALUE);
+        "BotPlaceAndMove", AUTO_MAX_SPEED, AUTO_MAX_ACCEL);
 
+        public static final List<PathPlannerTrajectory> TestEventMarkersAuto = PathPlanner.loadPathGroup(
+        "TestEventMarkers", AUTO_MAX_SPEED, AUTO_MAX_ACCEL);
         // Add Auto Paths here, like the above
     }
 

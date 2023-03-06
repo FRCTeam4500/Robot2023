@@ -16,12 +16,7 @@
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [
-          "readyTop",
-          "waitHalf",
-          "place",
-          "waitOne"
-        ],
+        "names": [],
         "executionBehavior": "sequential",
         "waitBehavior": "after",
         "waitTime": 0
@@ -68,21 +63,12 @@
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [
-          "readyBot"
-        ],
+        "names": [],
         "executionBehavior": "sequential",
         "waitBehavior": "none",
         "waitTime": 0
       }
     }
   ],
-  "markers": [
-    {
-      "position": 0.2727272727272727,
-      "names": [
-        "zero"
-      ]
-    }
-  ]
+  "markers": []
 }

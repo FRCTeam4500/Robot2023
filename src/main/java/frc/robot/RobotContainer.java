@@ -72,7 +72,7 @@ public class RobotContainer {
     private final JoystickButton sidewaysConeButton = new JoystickButton(controlStick, JoystickConstants.SIDEWAYS_CONE);
     private final JoystickButton readySubstationButton = new JoystickButton(controlStick, JoystickConstants.SUBSTATION_PICKUP);
 
-    private final JoystickButton tiltUp = new JoystickButton(controlStick, 4);
+    private final JoystickButton tiltUp = new JoystickButton(controlStick, 3);
     private final JoystickButton tiltDown = new JoystickButton(controlStick, 2);
     private final DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
     private TriModeSwerveCommand swerveCommand;
@@ -346,7 +346,11 @@ public class RobotContainer {
 
     void configureAuto() {
         autonChooser.setDefaultOption("Bottom: Place and Move", autoBuilder.fullAuto(AutoConstants.BotPlaceAndMoveAuto));
+<<<<<<< Updated upstream
         autonChooser.addOption("Test Event Markers", autoBuilder.fullAuto(AutoConstants.TestEventMarkersAuto));
+=======
+       // autonChooser.addOption("Test Event Markers", autoBuilder.fullAuto(AutoConstants.TestEventMarkersAuto));
+>>>>>>> Stashed changes
         Shuffleboard.getTab("Auto").add("Auto Routes", autonChooser);
     }
 

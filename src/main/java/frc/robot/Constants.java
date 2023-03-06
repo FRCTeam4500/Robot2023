@@ -70,7 +70,7 @@ public class Constants {
         public static final int WINCH_MOTOR_ID = 15; //TODO: fix
         public static final MotorType WINCH_MOTOR_TYPE = MotorType.kBrushless; 
 
-        public static final double ARM_SUBSTATION_ANGLE = -6.5;
+        public static final double ARM_SUBSTATION_ANGLE = -3;
         public static final double ARM_PLACE_ANGLE = -6; //-6.71; // ARM_PLACE_ANGLE is the angle for all heights TODO: change value later
         public static final double ARM_LAUNCH_ANGLE = 1;
         public static final double ARM_GROUND_ANGLE = -40; // ARM_PICKUP_ANGLE is the angle to pickup from ground TODO: change value later
@@ -94,7 +94,7 @@ public class Constants {
         public static final int INTAKE_ANGLE_MOTOR_ID = 12;
         public static final MotorType ANGLE_MOTOR_TYPE = MotorType.kBrushless;
 
-        public static final double INTAKE_BOT_ANGLE = -8;//-3.41;//-3.52; // Angle that the Intake should be at the bottom when picking up, 
+        public static final double INTAKE_BOT_ANGLE = -7.5;//-3.41;//-3.52; // Angle that the Intake should be at the bottom when picking up, 
         public static final double INTAKE_TRAY_PICKUP_ANGLE = -24.64;
         public static final double INTAKE_TOP_CONE_PLACE_ANGLE = -18.4;//-11.38; // Change
         public static final double INTAKE_BOT_CONE_PLACE_ANGLE = -18.4;

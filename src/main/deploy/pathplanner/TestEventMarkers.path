@@ -19,7 +19,13 @@
         "names": [
           "zero",
           "waitOne",
+<<<<<<< Updated upstream
           "autoPlaceTop"
+=======
+          "readyTop",
+          "waitOne",
+          
+>>>>>>> Stashed changes
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "none",

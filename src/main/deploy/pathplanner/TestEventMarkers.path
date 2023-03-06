@@ -19,15 +19,9 @@
         "names": [
           "zero",
           "waitOne",
-          "readyTop",
-          "waitOne",
-          "place",
-          "waitOne",
-          "waitHalf",
-          "zero",
-          "waitOne"
+          "autoPlaceTop"
         ],
-        "executionBehavior": "parallel",
+        "executionBehavior": "sequential",
         "waitBehavior": "none",
         "waitTime": 0
       }

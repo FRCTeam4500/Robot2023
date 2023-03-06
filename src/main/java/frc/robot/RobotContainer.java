@@ -141,6 +141,19 @@ public class RobotContainer {
 
     void configureCommands() {
         commandMap.put(
+            "autoPlaceTop",
+            new SequentialCommandGroup(
+                commandMap.get("readyTop"),
+                new WaitCommand(1),
+                commandMap.get("place"),
+                new WaitCommand(1),
+                commandMap.get("zero"),
+                new WaitCommand(1)
+            )
+        );
+
+
+        commandMap.put(
             "readyBot", 
             new SequentialCommandGroup(
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),

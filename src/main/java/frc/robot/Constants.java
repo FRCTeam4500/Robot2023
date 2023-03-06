@@ -151,6 +151,9 @@ public class Constants {
         public static final List<PathPlannerTrajectory> BotPlaceAndMoveAuto = PathPlanner.loadPathGroup(
         "BotPlaceAndMove", AUTO_MAX_SPEED, AUTO_MAX_ACCEL);
 
+        public static final List<PathPlannerTrajectory> NoTurnPlaceAndMove = PathPlanner.loadPathGroup(
+        "NoTurnPlaceAndMove", AUTO_MAX_SPEED, AUTO_MAX_ACCEL);
+
         // Add Auto Paths here, like the above
     }
 

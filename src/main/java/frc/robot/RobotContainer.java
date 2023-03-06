@@ -239,6 +239,7 @@ public class RobotContainer {
 
     void configureAuto() {
         autonChooser.setDefaultOption("Bottom: Place and Move", autoBuilder.fullAuto(AutoConstants.BotPlaceAndMoveAuto));
+        autonChooser.addOption("NoTurnPlaceAndMove", autoBuilder.fullAuto(AutoConstants.NoTurnPlaceAndMove));
         Shuffleboard.getTab("Auto").add("Auto Routes", autonChooser);
     }
 

@@ -142,7 +142,7 @@ public class RobotContainer {
             new SequentialCommandGroup(
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
                 new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_GROUND_ANGLE),
-                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_BOT),
+                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PICKUP),
                 new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_BOT_ANGLE)
             )
         );
@@ -171,9 +171,9 @@ public class RobotContainer {
             "readySubstation",
             new SequentialCommandGroup(
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
-                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_SUBSTATION_ANGLE),
+                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_HIGH_SUBSTATION_ANGLE),
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_TOP),
-                new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_TRAY_PICKUP_ANGLE)
+                new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_HIGH_SUBSTATION_ANGLE)
             )
         );
 

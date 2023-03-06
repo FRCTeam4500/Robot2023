@@ -33,10 +33,7 @@ public class BalanceCommand extends CommandBase {
 	@Override
 	public void initialize() {
 		swerve.resetRobotAngle();
-
-		while (gyro.getPitch() < tolerence && gyro.getPitch() > -tolerence) {
-			swerve.moveFieldCentric((inCommunity ? speed : -speed), 0, 0);
-		}
+		swerve.moveFieldCentric((inCommunity ? speed : -speed), 0, 0);
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.

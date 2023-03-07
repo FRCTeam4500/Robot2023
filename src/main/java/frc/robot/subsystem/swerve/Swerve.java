@@ -24,5 +24,4 @@ public interface Swerve extends Subsystem, Sendable {
     void driveByStates(SwerveModuleState
     [] states);
     SwerveDriveKinematics getKinematics();
-    AHRSAngleGetterComponent getGyro();
 }

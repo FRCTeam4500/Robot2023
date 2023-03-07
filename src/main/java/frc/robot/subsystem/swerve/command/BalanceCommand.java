@@ -3,13 +3,14 @@ package frc.robot.subsystem.swerve.command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.component.hardware.AHRSAngleGetterComponent;
 import frc.robot.subsystem.swerve.Swerve;
+import frc.robot.subsystem.swerve.pathfollowingswerve.HardwareSwerveFactory;
 
 public class BalanceCommand extends CommandBase {
     private Swerve swerve;
     private double tolerance = 2.0; // degrees
     private double maxSpeed = 0.3; // meters per second
     private boolean facingChargingStation;
-    private AHRSAngleGetterComponent gyro = swerve.getGyro();
+    private AHRSAngleGetterComponent gyro = HardwareSwerveFactory.getGyro();
     private double currentPitch;
     private int MAX_TIMES = 50;
 
@@ -28,7 +29,9 @@ public class BalanceCommand extends CommandBase {
 
     // Called when the command is initially scheduled.
     @Override
-    public void initialize() {}
+    public void initialize() {
+        swerve.moveRobotCentric((facingChargingStation ? maxSpeed : -maxSpeed), 0.0, 0.0);
+    }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override

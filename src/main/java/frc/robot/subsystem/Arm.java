@@ -41,7 +41,7 @@ public class Arm extends SubsystemBase {
         this.tiltPIDController.setI(0);
         this.tiltPIDController.setD(0);
 
-        this.winchMotor.config_kP(0, 1.5);
+        this.winchMotor.config_kP(0, .4);
         this.winchMotor.config_kI(0, 0);
         this.winchMotor.config_kD(0, 0);
 

@@ -16,6 +16,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.component.GyroComponent;
+import frc.robot.component.hardware.AHRSAngleGetterComponent;
 import frc.robot.subsystem.swerve.KinematicSwerve;
 
 /**
@@ -27,7 +28,7 @@ public class OdometricSwerve extends KinematicSwerve implements PathFollowingSwe
     OdometricWheelModule[] odometricWheelModules;
     private Translation2d lastTranslation;
     private double lastTime;
-    public OdometricSwerve(GyroComponent gyro, OdometricWheelModule... wheelModules) {
+    public OdometricSwerve(AHRSAngleGetterComponent gyro, OdometricWheelModule... wheelModules) {
         super(gyro, wheelModules);
         odometricWheelModules = wheelModules;
         odometry = new SwerveDriveOdometry(kinematics, new Rotation2d(gyro.getAngle()), getSwerveModulePositions());

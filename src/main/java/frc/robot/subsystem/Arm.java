@@ -20,7 +20,7 @@ import static frc.robot.RobotContainer.isCone;
 import static frc.robot.RobotContainer.isBottomCone;
 
 public class Arm extends SubsystemBase {
-    private static SparkMaxComponent tiltMotor;
+    SparkMaxComponent tiltMotor;
     private TalonSRXComponent winchMotor;
     private SparkMaxPIDController tiltPIDController;
     private double targetTiltAngle;
@@ -162,7 +162,7 @@ public class Arm extends SubsystemBase {
         }
 
         public void initialize(){
-            arm.setTilt(tiltMotor.getEncoder().getPosition() + addition);
+            arm.setTilt(arm.tiltMotor.getEncoder().getPosition() + addition);
         }
     }
 

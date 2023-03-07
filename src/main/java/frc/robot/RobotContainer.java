@@ -40,6 +40,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.JoystickConstants;
 import frc.robot.component.hardware.SparkMaxComponent;
+import frc.robot.subsystem.swerve.command.BalanceCommand;
 import frc.robot.subsystem.swerve.command.TriModeSwerveCommand;
 import frc.robot.subsystem.swerve.pathfollowingswerve.HardwareSwerveFactory;
 import frc.robot.subsystem.swerve.pathfollowingswerve.OdometricSwerve;
@@ -62,6 +63,8 @@ public class RobotContainer {
     private final JoystickButton resetGyroButton = new JoystickButton(driveStick, JoystickConstants.RESET_GYRO);
     private final JoystickButton limitSwerveSpeedButton = new JoystickButton(driveStick, JoystickConstants.LIMIT_SWERVE_SPEED);
     private final JoystickButton noForwardButton = new JoystickButton(driveStick, JoystickConstants.NO_FORWARD);
+
+    private final JoystickButton balanceButton = new JoystickButton(controlStick, 5);
 
     private final JoystickButton cubeButton = new JoystickButton(controlStick, JoystickConstants.CUBE_INTAKE);
     private final JoystickButton placeButton = new JoystickButton(controlStick, JoystickConstants.PLACE);
@@ -132,6 +135,8 @@ public class RobotContainer {
 
         // limitSwerveSpeedButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.limitSpeed = true;}));
         // limitSwerveSpeedButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.limitSpeed = false;}));
+
+        balanceButton.toggleOnTrue(new BalanceCommand(m_swerve, true));
 
         resetGyroButton.toggleOnTrue(new InstantCommand(() -> {m_swerve.resetRobotAngle();}));
 
@@ -286,7 +291,7 @@ public class RobotContainer {
 
     void configureArmAndIntake() {
 
-        tiltUp.toggleOnTrue(new Arm.ArmChangeTiltCommand(m_arm, 1));
+        tiltUp.toggleOnTrue(new Intake.IntakeChangeTiltCommand(m_intake, 1));
         tiltDown.toggleOnTrue(new Arm.ArmChangeTiltCommand(m_arm, -1));
         cubeButton.toggleOnTrue( 
             new SequentialCommandGroup(

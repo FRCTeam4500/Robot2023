@@ -104,5 +104,50 @@ public class ExtendedMath {
         var y = end.getY() - start.getY();
         return Math.sqrt(x*x + y*y);
     }
+
+    /**
+     * Uses bigsad Euler Angles math to get the overall angle of the robot.
+     * @param yaw the yaw angle in radians - Rotation about the Z axis
+     * @param pitch the pitch angle in radians - Rotation about the X axis
+     * @param roll the roll angle in radians - Rotation about the Y axis
+     * @return the overall angle of the robot in radians
+     */
+    public static double getOverallAngle(double yaw, double pitch, double roll){
+
+        // Set the ground plane normal vector
+        double[] n1 = {0.0, 0.0, 1.0};
+
+        // Calculate the rotation matrices
+        double[][] Rx = {{1.0, 0.0, 0.0},
+                {0.0, Math.cos(pitch), -Math.sin(pitch)},
+                {0.0, Math.sin(pitch), Math.cos(pitch)}};
+
+        double[][] Ry = {{Math.cos(roll), 0.0, Math.sin(roll)},
+                {0.0, 1.0, 0.0},
+                {-Math.sin(roll), 0.0, Math.cos(roll)}};
+
+        double[][] Rz = {{Math.cos(yaw), -Math.sin(yaw), 0.0},
+                {Math.sin(yaw), Math.cos(yaw), 0.0},
+                {0.0, 0.0, 1.0}};
+
+        // Calculate the normal vector of the rotated plane
+        double[] n2 = new double[3];
+        for (int i = 0; i < 3; i++) {
+            n2[i] = 0.0;
+            for (int j = 0; j < 3; j++) {
+                n2[i] += Rz[i][j] * Ry[j][i] * Rx[j][i] * n1[j];
+            }
+        }
+
+        // Calculate the dot product of the two normal vectors
+        double dotProduct = 0.0;
+        for (int i = 0; i < 3; i++) {
+            dotProduct += n1[i] * n2[i];
+        }
+
+        // Calculate the overall tilt angle in degrees
+        return Math.acos(dotProduct);
+
+    }
 }
 

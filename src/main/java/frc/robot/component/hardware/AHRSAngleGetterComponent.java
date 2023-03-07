@@ -13,6 +13,7 @@ import frc.robot.component.GyroComponent;
 
 /**
  * An {@link GyroComponent} wrapper for {@link AHRS}.
+ * All getters return radians.
  */
 public class AHRSAngleGetterComponent extends AHRS implements GyroComponent {
 

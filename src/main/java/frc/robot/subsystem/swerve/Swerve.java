@@ -7,6 +7,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.component.hardware.AHRSAngleGetterComponent;
 
 public interface Swerve extends Subsystem, Sendable {
     void moveRobotCentric( double ySpeed, double xSpeed, double wSpeed );
@@ -23,4 +24,5 @@ public interface Swerve extends Subsystem, Sendable {
     void driveByStates(SwerveModuleState
     [] states);
     SwerveDriveKinematics getKinematics();
+    AHRSAngleGetterComponent getGyro();
 }

@@ -21,7 +21,7 @@ import static frc.robot.RobotContainer.isBottomCone;
 
 public class Intake extends SubsystemBase {
     private SparkMaxComponent intakeMotor;
-    private SparkMaxComponent intakeTiltMotor;
+    public SparkMaxComponent intakeTiltMotor;
     private double targetTiltAngle;
     private double targetIntakeOutput;
     private SparkMaxPIDController tiltPIDController;
@@ -148,6 +148,20 @@ public class Intake extends SubsystemBase {
             intake.setAngleOutput(output);
         }
 
+    }
+
+    public static class IntakeChangeTiltCommand extends InstantCommand {
+        private Intake intake;
+        private double addition;
+
+        public IntakeChangeTiltCommand(Intake intake, double addition){
+            this.intake = intake;
+            this.addition = addition;
+        }
+
+        public void initialize(){
+            intake.setAngle(intake.intakeTiltMotor.getEncoder().getPosition() + addition);
+        }
     }
 
     public static Intake makeIntake() {

@@ -228,8 +228,9 @@ public class RobotContainer {
 
     void configureArmAndIntake() {
 
-        tiltUp.toggleOnTrue(new Arm.ArmChangeTiltCommand(m_arm, 1));
+        tiltUp.toggleOnTrue(new Intake.IntakeChangeTiltCommand(m_intake, 1));
         tiltDown.toggleOnTrue(new Arm.ArmChangeTiltCommand(m_arm, -1));
+
         cubeButton.toggleOnTrue( // Intakes cones
             new SequentialCommandGroup(
                 new InstantCommand(() -> isCone = false),

@@ -112,7 +112,7 @@ public class ExtendedMath {
      * @param roll the roll angle in radians - Rotation about the Y axis
      * @return the overall angle of the robot in radians
      */
-    public static double getOverallAngle(double yaw, double pitch, double roll){
+    public static double getOverallAngle(double yaw, double pitch, double roll) {
 
         // Set the ground plane normal vector
         double[] n1 = {0.0, 0.0, 1.0};

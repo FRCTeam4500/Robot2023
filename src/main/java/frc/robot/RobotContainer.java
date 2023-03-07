@@ -79,6 +79,7 @@ public class RobotContainer {
     private final JoystickButton tiltDown = new JoystickButton(controlStick, 2);
     private final DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
     private TriModeSwerveCommand swerveCommand;
+    private BalanceCommand balanceCommand;
     public static boolean isCone = true; // Changes with coneButton/cubeButton
     public static boolean isBottomCone = true; // Changes with Orientation buttons
 
@@ -115,6 +116,7 @@ public class RobotContainer {
     
     void configureSwerve() {
         swerveCommand = new TriModeSwerveCommand(m_swerve, driveStick, info, messages);
+        balanceCommand = new BalanceCommand(m_swerve, true);
         m_swerve.setDefaultCommand(swerveCommand);
 
         lockSwerveRotationButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.lockRotation = true;}));
@@ -136,7 +138,7 @@ public class RobotContainer {
         // limitSwerveSpeedButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.limitSpeed = true;}));
         // limitSwerveSpeedButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.limitSpeed = false;}));
 
-        balanceButton.toggleOnTrue(new BalanceCommand(m_swerve, true));
+        balanceButton.toggleOnTrue(balanceCommand);
 
         resetGyroButton.toggleOnTrue(new InstantCommand(() -> {m_swerve.resetRobotAngle();}));
 

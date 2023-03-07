@@ -69,17 +69,22 @@ public class Intake extends SubsystemBase {
 
     public static class IntakeSetAngleCommand extends InstantCommand {
         private Intake intake;
-        private boolean launching;
-        private boolean zeroing;
-        private boolean placing;
-        private boolean substation;
+        private double angle;
 
-        public IntakeSetAngleCommand(Intake intake, boolean placing, boolean launching, boolean zeroing, boolean substation) {
+        
+
+        public IntakeSetAngleCommand(Intake intake, double angle){
             this.intake = intake;
-            this.launching = launching;
-            this.zeroing = zeroing;
-            this.placing = placing;
-            this.substation = substation;
+            this.angle = angle;
+        }
+
+        public IntakeSetAngleCommand(Intake intake){
+            this.intake = intake;
+            if(isBottomCone){
+                this.angle = IntakeConstants.INTAKE_BOT_CONE_PLACE_ANGLE;
+            } else {
+                this.angle = IntakeConstants.INTAKE_TOP_CONE_PLACE_ANGLE;
+            }
         }
 
         
@@ -87,50 +92,31 @@ public class Intake extends SubsystemBase {
 
         @Override
         public void initialize() {
-            if(substation){
-                intake.setAngle(IntakeConstants.INTAKE_TRAY_PICKUP_ANGLE);
-            } else if (launching) {
-                intake.setAngle(IntakeConstants.INTAKE_LAUNCHING_ANGLE);
-            } else if(zeroing){
-                intake.setAngle(IntakeConstants.INTAKE_ZERO_ANGLE);
-            }else if(!placing) {
-                intake.setAngle(IntakeConstants.INTAKE_BOT_ANGLE);
-            }else if(isBottomCone) {
-                intake.setAngle(IntakeConstants.INTAKE_BOT_CONE_PLACE_ANGLE);
-            }else {
-                intake.setAngle(IntakeConstants.INTAKE_TOP_CONE_PLACE_ANGLE);
-            }
+            intake.setAngle(angle);
         }
     }
 
     public static class IntakeSetOutputCommand extends InstantCommand {
         private Intake intake;
-        private boolean placing;
-        private boolean zeroing;
+        private double speed;
 
-        public IntakeSetOutputCommand(Intake intake, boolean zeroing, boolean placing) {
+        public IntakeSetOutputCommand(Intake intake) {
             this.intake = intake;
-            this.placing = placing;
-            this.zeroing = zeroing;
+            if(isCone){
+                    this.speed = IntakeConstants.INTAKE_CUBE_SPEED;
+            } else {
+                    this.speed = IntakeConstants.INTAKE_CONE_SPEED;
+            }
+        }
+
+        public IntakeSetOutputCommand(Intake intake, double speed){
+            this.intake = intake;
+            this.speed = speed;
         }
 
         @Override
         public void initialize() {
-            if(zeroing) {
-                intake.setIntake(0);
-            } else if(placing) {
-                if(isCone) {
-                    intake.setIntake(IntakeConstants.INTAKE_CUBE_SPEED);
-                } else {
-                    intake.setIntake(IntakeConstants.INTAKE_CONE_SPEED);
-                }
-            } else {
-                if(isCone) {
-                    intake.setIntake(IntakeConstants.INTAKE_CONE_SPEED);
-                } else {
-                    intake.setIntake(IntakeConstants.INTAKE_CUBE_SPEED);
-                }
-            }
+            intake.setIntake(speed);
         }
     }
 

@@ -70,7 +70,7 @@ public class Constants {
         public static final int WINCH_MOTOR_ID = 15; //TODO: fix
         public static final MotorType WINCH_MOTOR_TYPE = MotorType.kBrushless; 
 
-        public static final double ARM_SUBSTATION_ANGLE = -6.5;
+        public static final double ARM_SUBSTATION_ANGLE = -6;
         public static final double ARM_PLACE_ANGLE = -6; //-6.71; // ARM_PLACE_ANGLE is the angle for all heights TODO: change value later
         public static final double ARM_LAUNCH_ANGLE = 1;
         public static final double ARM_GROUND_ANGLE = -40; // ARM_PICKUP_ANGLE is the angle to pickup from ground TODO: change value later

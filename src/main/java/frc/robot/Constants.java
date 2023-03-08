@@ -71,7 +71,7 @@ public class Constants {
         public static final int WINCH_MOTOR_ID = 15;  
 
         /** The angle the arm must be at to pickup game pieces from the high substation <p> Units are whatever shuffleboard says*/
-        public static final double ARM_HIGH_SUBSTATION_ANGLE = -6;
+        public static final double ARM_HIGH_SUBSTATION_ANGLE = -3;
         /** The angle the arm must be at to place at the middle level <p> Units are whatever shuffleboard says*/
         public static final double ARM_PLACE_ANGLE = -6; 
         /** The angle the arm must be at to launch a cone onto the top node <p> Units are whatever shuffleboard says */
@@ -144,13 +144,18 @@ public class Constants {
     public static class AutoConstants { //Everything in this class must be in meters
         
         /** The maximum velocity the robot will travel at during auto <p> Units are meters per second*/
-        public static final double AUTO_MAX_SPEED = 4.0;
+        public static final double AUTO_MAX_SPEED = 1.5;
         /** The maximum acceleration the robot will travel at during auto <p> Units are meters per second*/
-        public static final double AUTO_MAX_ACCEL = 3.0;
+        public static final double AUTO_MAX_ACCEL = 2.0;
 
         public static final List<PathPlannerTrajectory> BotPlaceAndMoveAuto = PathPlanner.loadPathGroup(
-        "BotPlaceAndMove", AUTO_MAX_SPEED, AUTO_MAX_ACCEL);
+        "BotPlaceAndDock", AUTO_MAX_SPEED, AUTO_MAX_ACCEL);
 
+        public static final List<PathPlannerTrajectory> Bot2Piece = PathPlanner.loadPathGroup(
+        "Bot2Piece", AUTO_MAX_SPEED, AUTO_MAX_ACCEL);
+
+        public static final List<PathPlannerTrajectory> PlaceAndBalance = PathPlanner.loadPathGroup(
+        "MidPlaceAndDock", AUTO_MAX_SPEED, AUTO_MAX_ACCEL);
         // Add Auto Paths here, like the above
     }
 

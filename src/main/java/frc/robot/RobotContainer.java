@@ -89,7 +89,7 @@ public class RobotContainer {
     private final Vision m_vision = HardwareVisionFactory.makeVision();
 
     /**Both PID constants need to be tested */
-    private final SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(m_swerve::getCurrentPose, m_swerve::resetPose, new PIDConstants(5, 0, 0), new PIDConstants(.5, 0, 0), m_swerve::moveRobotCentric, commandMap, m_swerve);    
+    private final SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(m_swerve::getCurrentPose, m_swerve::resetPose, new PIDConstants(5, 0, 0), new PIDConstants(4, 0, 0), m_swerve::moveRobotCentric, commandMap, m_swerve);    
     private final SendableChooser<Command> autonChooser = new SendableChooser<Command>();
     
 
@@ -129,21 +129,11 @@ public class RobotContainer {
         noForwardButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.RobotCentric; swerveCommand.noForward = true;}));
         noForwardButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.FieldCentric; swerveCommand.noForward = false;}));
 
-        // alignSwerveToAngleButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.AlignToAngle; swerveCommand.targetAngle = 0;}));
-        // alignSwerveToAngleButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.FieldCentric;}));
-
-        // alignSwerveReverseButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.AlignToAngle; swerveCommand.targetAngle = Math.PI;}));
-        // alignSwerveReverseButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.FieldCentric;}));
-
-        // limitSwerveSpeedButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.limitSpeed = true;}));
-        // limitSwerveSpeedButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.limitSpeed = false;}));
-
-        balanceButton.toggleOnTrue(balanceCommand);
-
         resetGyroButton.toggleOnTrue(new InstantCommand(() -> {m_swerve.resetRobotAngle();}));
 
         Shuffleboard.getTab("Swerve").add("Swerve", m_swerve);
         Shuffleboard.getTab("Swerve").add("Swerve Command", swerveCommand);
+        Shuffleboard.getTab("Swerve").add("Balance Command", balanceCommand);
     }
 
     void configureCommands() {
@@ -289,6 +279,13 @@ public class RobotContainer {
                 new Intake.IntakeSetOutputCommand(m_intake, IntakeConstants.INTAKE_CONE_SPEED)
             )
         );
+
+        commandMap.put(
+            "backwardsBalance",
+            new SequentialCommandGroup(
+                new BalanceCommand(m_swerve, false)
+            )
+        );
     }
 
     void configureArmAndIntake() {
@@ -379,10 +376,12 @@ public class RobotContainer {
         );
        
         placeButton.toggleOnTrue(
-            new Intake.IntakeSetOutputCommand(m_intake)
+            new Intake.IntakeSetOutputCommand(m_intake, IntakeConstants.INTAKE_CONE_SPEED)
         );
         placeButton.toggleOnFalse(
             new SequentialCommandGroup(
+                new Intake.IntakeSetOutputCommand((m_intake), IntakeConstants.INTAKE_CUBE_SPEED),
+                new WaitCommand(.5),
                 new Intake.IntakeSetOutputCommand(m_intake, 0),
                 new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_ZERO_ANGLE),
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
@@ -398,6 +397,8 @@ public class RobotContainer {
 
     void configureAuto() {
         autonChooser.setDefaultOption("Bottom: Place and Move", autoBuilder.fullAuto(AutoConstants.BotPlaceAndMoveAuto));
+        autonChooser.addOption("Bot 2 Piece", autoBuilder.fullAuto(AutoConstants.Bot2Piece));
+        autonChooser.addOption("Middle: Place and Balance", autoBuilder.fullAuto(AutoConstants.PlaceAndBalance));
         Shuffleboard.getTab("Auto").add("Auto Routes", autonChooser);
     }
 

@@ -99,12 +99,14 @@ public class Intake extends SubsystemBase {
     public static class IntakeSetOutputCommand extends InstantCommand {
         private Intake intake;
         private double speed;
+        private boolean cone = isCone;
 
         public IntakeSetOutputCommand(Intake intake) {
             this.intake = intake;
             if(isCone){
                     this.speed = IntakeConstants.INTAKE_CUBE_SPEED;
-            } else {
+            } 
+            if(!isCone) {
                     this.speed = IntakeConstants.INTAKE_CONE_SPEED;
             }
         }
@@ -158,7 +160,7 @@ public class Intake extends SubsystemBase {
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("Target Intake Tilt position", () -> targetTiltAngle, (value) -> {setAngle((double) value);});
         builder.addDoubleProperty("Target Intake Wheel output", () -> targetIntakeOutput, (value) -> {setIntake((double) value);});
-        builder.addBooleanProperty("IS CONE?!?!?", () -> isCone2, null);
+        builder.addBooleanProperty("IS CONE?!?!?", () -> isCone, null);
         builder.addDoubleProperty("Intake Angle", () -> intakeTiltMotor.getEncoder().getPosition(), null);
     }
 }

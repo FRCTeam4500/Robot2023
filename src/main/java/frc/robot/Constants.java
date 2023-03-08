@@ -148,20 +148,20 @@ public class Constants {
         /** The maximum acceleration the robot will travel at during auto <p> Units are meters per second*/
         public static final double AUTO_MAX_ACCEL = 2.0;
 
-        public static final List<PathPlannerTrajectory> BotPlaceAndDockAuto = PathPlanner.loadPathGroup(
-        "BotPlaceAndDock", AUTO_MAX_SPEED, AUTO_MAX_ACCEL);
+        public static final List<PathPlannerTrajectory> BlueBotPlaceAndDockAuto = PathPlanner.loadPathGroup(
+        "BlueBotPlaceAndDock", AUTO_MAX_SPEED, AUTO_MAX_ACCEL);
 
-        public static final List<PathPlannerTrajectory> Bot2Piece = PathPlanner.loadPathGroup(
-        "Bot2PieceV2", AUTO_MAX_SPEED, AUTO_MAX_ACCEL);
+        public static final List<PathPlannerTrajectory> BlueBot2Piece = PathPlanner.loadPathGroup(
+        "BlueBot2PieceV2", AUTO_MAX_SPEED, AUTO_MAX_ACCEL);
 
-        public static final List<PathPlannerTrajectory> MidPlaceAndDockAuto = PathPlanner.loadPathGroup(
-        "MidPlaceAndDock", AUTO_MAX_SPEED, AUTO_MAX_ACCEL);
+        public static final List<PathPlannerTrajectory> BlueMidPlaceAndDockAuto = PathPlanner.loadPathGroup(
+        "BlueMidPlaceAndDock", AUTO_MAX_SPEED, AUTO_MAX_ACCEL);
 
-        public static final List<PathPlannerTrajectory> TopPlaceAndDockAuto = PathPlanner.loadPathGroup(
-        "TopPlaceAndDock", AUTO_MAX_SPEED, AUTO_MAX_ACCEL);
+        public static final List<PathPlannerTrajectory> BlueTopPlaceAndDockAuto = PathPlanner.loadPathGroup(
+        "BlueTopPlaceAndDock", AUTO_MAX_SPEED, AUTO_MAX_ACCEL);
 
-        public static final List<PathPlannerTrajectory> Top2PieceAuto = PathPlanner.loadPathGroup(
-        "Top2Piece", AUTO_MAX_SPEED, AUTO_MAX_ACCEL);
+        public static final List<PathPlannerTrajectory> BlueTop2PieceAuto = PathPlanner.loadPathGroup(
+        "BlueTop2Piece", AUTO_MAX_SPEED, AUTO_MAX_ACCEL);
         // Add Auto Paths here, like the above
     }
 

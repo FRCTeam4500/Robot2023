@@ -222,6 +222,8 @@ public class RobotContainer {
         commandMap.put("waitHalf", new WaitCommand(.5));
         commandMap.put("waitOne", new WaitCommand(1));
 
+        commandMap.put("Reset Gyro", new InstantCommand(() -> {m_swerve.resetRobotAngle();}));
+        commandMap.put("Reverse Gyro", new InstantCommand(() -> {m_swerve.resetRobotAngle(180);}));
         commandMap.put(
             "autoPlaceConeTop",
             new SequentialCommandGroup(
@@ -396,11 +398,11 @@ public class RobotContainer {
     }
 
     void configureAuto() {
-        autonChooser.setDefaultOption("Bottom: Place and Dock", autoBuilder.fullAuto(AutoConstants.BotPlaceAndDockAuto));
-        autonChooser.addOption("Bot 2 Piece", autoBuilder.fullAuto(AutoConstants.Bot2Piece));
-        autonChooser.addOption("Middle: Place and Dock", autoBuilder.fullAuto(AutoConstants.MidPlaceAndDockAuto));
-        autonChooser.addOption("Top: Place And Dock", autoBuilder.fullAuto(AutoConstants.TopPlaceAndDockAuto));
-        autonChooser.addOption("Top: 2 Piece", autoBuilder.fullAuto(AutoConstants.Top2PieceAuto));
+        autonChooser.setDefaultOption("Blue Bottom: Place and Dock", autoBuilder.fullAuto(AutoConstants.BlueBotPlaceAndDockAuto));
+        autonChooser.addOption("Blue Bottom: 2 Piece", autoBuilder.fullAuto(AutoConstants.BlueBot2Piece));
+        autonChooser.addOption("Blue Middle: Place and Dock", autoBuilder.fullAuto(AutoConstants.BlueMidPlaceAndDockAuto));
+        autonChooser.addOption("Blue Top: Place And Dock", autoBuilder.fullAuto(AutoConstants.BlueTopPlaceAndDockAuto));
+        autonChooser.addOption("Blue Top: 2 Piece", autoBuilder.fullAuto(AutoConstants.BlueTop2PieceAuto));
         Shuffleboard.getTab("Auto").add("Auto Routes", autonChooser);
     }
 

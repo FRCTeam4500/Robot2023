@@ -396,9 +396,10 @@ public class RobotContainer {
     }
 
     void configureAuto() {
-        autonChooser.setDefaultOption("Bottom: Place and Move", autoBuilder.fullAuto(AutoConstants.BotPlaceAndMoveAuto));
+        autonChooser.setDefaultOption("Bottom: Place and Dock", autoBuilder.fullAuto(AutoConstants.BotPlaceAndDockAuto));
         autonChooser.addOption("Bot 2 Piece", autoBuilder.fullAuto(AutoConstants.Bot2Piece));
-        autonChooser.addOption("Middle: Place and Balance", autoBuilder.fullAuto(AutoConstants.PlaceAndBalance));
+        autonChooser.addOption("Middle: Place and Dock", autoBuilder.fullAuto(AutoConstants.MidPlaceAndDockAuto));
+        autonChooser.addOption("Top: Place And Dock", autoBuilder.fullAuto(AutoConstants.TopPlaceAndDockAuto));
         Shuffleboard.getTab("Auto").add("Auto Routes", autonChooser);
     }
 

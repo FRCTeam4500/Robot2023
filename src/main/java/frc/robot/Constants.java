@@ -144,18 +144,21 @@ public class Constants {
     public static class AutoConstants { //Everything in this class must be in meters
         
         /** The maximum velocity the robot will travel at during auto <p> Units are meters per second*/
-        public static final double AUTO_MAX_SPEED = 1.5;
+        public static final double AUTO_MAX_SPEED = 2;
         /** The maximum acceleration the robot will travel at during auto <p> Units are meters per second*/
         public static final double AUTO_MAX_ACCEL = 2.0;
 
-        public static final List<PathPlannerTrajectory> BotPlaceAndMoveAuto = PathPlanner.loadPathGroup(
+        public static final List<PathPlannerTrajectory> BotPlaceAndDockAuto = PathPlanner.loadPathGroup(
         "BotPlaceAndDock", AUTO_MAX_SPEED, AUTO_MAX_ACCEL);
 
         public static final List<PathPlannerTrajectory> Bot2Piece = PathPlanner.loadPathGroup(
-        "Bot2Piece", AUTO_MAX_SPEED, AUTO_MAX_ACCEL);
+        "Bot2PieceV2", AUTO_MAX_SPEED, AUTO_MAX_ACCEL);
 
-        public static final List<PathPlannerTrajectory> PlaceAndBalance = PathPlanner.loadPathGroup(
+        public static final List<PathPlannerTrajectory> MidPlaceAndDockAuto = PathPlanner.loadPathGroup(
         "MidPlaceAndDock", AUTO_MAX_SPEED, AUTO_MAX_ACCEL);
+
+        public static final List<PathPlannerTrajectory> TopPlaceAndDockAuto = PathPlanner.loadPathGroup(
+        "TopPlaceAndDock", AUTO_MAX_SPEED, AUTO_MAX_ACCEL);
         // Add Auto Paths here, like the above
     }
 

@@ -77,7 +77,7 @@ public class Constants {
         /** The angle the arm must be at to launch a cone onto the top node <p> Units are whatever shuffleboard says */
         public static final double ARM_LAUNCH_ANGLE = 1;
         /** The angle the arm must be at to pickup game pieces from the ground <p> Units are whatever shuffleboard says */
-        public static final double ARM_GROUND_ANGLE = -40; 
+        public static final double ARM_GROUND_ANGLE = -43; 
         /** The angle the arm will go to while traveling <p> Units are whatever shuffleboard says */
         public static final double ARM_ZERO_ANGLE = -10; 
 
@@ -97,9 +97,9 @@ public class Constants {
 
     public static class IntakeConstants { 
         /** The speed of the intake while it is intaking cones and placing cubes <p> Units are percentage of full power */
-        public static final double INTAKE_CONE_SPEED = .9d;
+        public static final double INTAKE_CONE_SPEED = .8;
         /** The speed of the intake while it is intaking cubes and placing cones <p> Units are percentage of full power */
-        public static final double INTAKE_CUBE_SPEED = -INTAKE_CONE_SPEED; 
+        public static final double INTAKE_CUBE_SPEED = -.9; 
         
         /** The CAN ID of the intake run motor */
         public static final int INTAKE_MOTOR_ID = 13;
@@ -111,7 +111,7 @@ public class Constants {
         public static final MotorType ANGLE_MOTOR_TYPE = MotorType.kBrushless;
 
         /** The angle the intake must be at to pickup game pieces from the ground <p> Units are whatever shuffleboard says */
-        public static final double INTAKE_BOT_ANGLE = -8;
+        public static final double INTAKE_BOT_ANGLE = -7;
         /** The angle the intake must be at to pickup games pieces from the high substation <p> Units are whatever shuffleboard says */
         public static final double INTAKE_HIGH_SUBSTATION_ANGLE = -24.64;
         /** The angle the intake must be at to place a top cone (as in we picked up an upright cone) on a node <p> Units are whatever shuffleboard says */
@@ -159,6 +159,9 @@ public class Constants {
 
         public static final List<PathPlannerTrajectory> TopPlaceAndDockAuto = PathPlanner.loadPathGroup(
         "TopPlaceAndDock", AUTO_MAX_SPEED, AUTO_MAX_ACCEL);
+
+        public static final List<PathPlannerTrajectory> Top2PieceAuto = PathPlanner.loadPathGroup(
+        "Top2Piece", AUTO_MAX_SPEED, AUTO_MAX_ACCEL);
         // Add Auto Paths here, like the above
     }
 

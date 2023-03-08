@@ -400,6 +400,7 @@ public class RobotContainer {
         autonChooser.addOption("Bot 2 Piece", autoBuilder.fullAuto(AutoConstants.Bot2Piece));
         autonChooser.addOption("Middle: Place and Dock", autoBuilder.fullAuto(AutoConstants.MidPlaceAndDockAuto));
         autonChooser.addOption("Top: Place And Dock", autoBuilder.fullAuto(AutoConstants.TopPlaceAndDockAuto));
+        autonChooser.addOption("Top: 2 Piece", autoBuilder.fullAuto(AutoConstants.Top2PieceAuto));
         Shuffleboard.getTab("Auto").add("Auto Routes", autonChooser);
     }
 

@@ -73,6 +73,11 @@ public class Swerve extends SubsystemBase {
         public WheelModule(TalonFXComponent driveMotor, TalonFXComponent angleMotor, Translation2d translationFromCenter, double maxSurfaceSpeed, double wheelDiameter, double angleRotsPerMotorRots, double driveRotsPerMotorRots) {
             this.driveMotor = driveMotor;
             this.angleMotor = angleMotor;
+            this.translationFromCenter = translationFromCenter;
+            this.maxSurfaceSpeed = maxSurfaceSpeed;
+            this.wheelDiameter = wheelDiameter;
+            this.driveRotsPerMotorRots = driveRotsPerMotorRots;
+            this.angleRotsPerMotorRots = angleRotsPerMotorRots;
         }
 
         /**

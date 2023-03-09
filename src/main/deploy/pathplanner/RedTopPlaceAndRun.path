@@ -2,45 +2,15 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 1.8858812003338294,
-        "y": 5.053104249065641
+        "x": 14.654631880692332,
+        "y": 5.081733734896042
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.8858812003338343,
-        "y": 5.053104249065641
+        "x": 13.654631880692332,
+        "y": 5.081733734896042
       },
-      "holonomicAngle": 180.0,
-      "isReversal": false,
-      "velOverride": null,
-      "isLocked": false,
-      "isStopPoint": false,
-      "stopEvent": {
-        "names": [
-          "zero",
-          "waitHalf",
-          "autoPlaceConeTop",
-          "zero"
-        ],
-        "executionBehavior": "sequential",
-        "waitBehavior": "none",
-        "waitTime": 0
-      }
-    },
-    {
-      "anchorPoint": {
-        "x": 4.118981095105047,
-        "y": 5.05
-      },
-      "prevControl": {
-        "x": 4.116082171607045,
-        "y": 5.048889772629474
-      },
-      "nextControl": {
-        "x": 4.767959247080807,
-        "y": 5.2985451263867525
-      },
-      "holonomicAngle": 180.0,
+      "holonomicAngle": 0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -54,22 +24,47 @@
     },
     {
       "anchorPoint": {
-        "x": 7.411371965601074,
-        "y": 6.312801625603251
+        "x": 12.435846728836315,
+        "y": 5.08
       },
       "prevControl": {
-        "x": 6.918206325413552,
-        "y": 6.123929448632662
+        "x": 12.437488998549036,
+        "y": 5.079444314045133
       },
-      "nextControl": null,
+      "nextControl": {
+        "x": 11.488602881770147,
+        "y": 5.400513797199568
+      },
       "holonomicAngle": 0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 9.129141115425087,
+        "y": 6.19828368228165
+      },
+      "prevControl": {
+        "x": 10.076384962491256,
+        "y": 5.877769885082082
+      },
+      "nextControl": null,
+      "holonomicAngle": 180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
         "names": [
-          "resetGyro"
+          "Reset Gyro"
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "none",
@@ -77,8 +72,5 @@
       }
     }
   ],
-  "maxVelocity": 1.5,
-  "maxAcceleration": 2.0,
-  "isReversed": null,
   "markers": []
 }

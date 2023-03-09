@@ -2,13 +2,13 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 1.8858812003338294,
-        "y": 5.053104249065641
+        "x": 1.8715664574186295,
+        "y": 5.0674189919808414
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.8858812003338343,
-        "y": 5.053104249065641
+        "x": 2.8715664574186306,
+        "y": 5.0674189919808414
       },
       "holonomicAngle": 180.0,
       "isReversal": false,
@@ -29,16 +29,16 @@
     },
     {
       "anchorPoint": {
-        "x": 4.118981095105047,
-        "y": 5.05
+        "x": 5.45,
+        "y": 5.07
       },
       "prevControl": {
-        "x": 4.116082171607045,
-        "y": 5.048889772629474
+        "x": 4.567928375712465,
+        "y": 5.07
       },
       "nextControl": {
-        "x": 4.767959247080807,
-        "y": 5.2985451263867525
+        "x": 5.452593299111912,
+        "y": 5.07
       },
       "holonomicAngle": 180.0,
       "isReversal": false,
@@ -54,22 +54,47 @@
     },
     {
       "anchorPoint": {
-        "x": 7.411371965601074,
-        "y": 6.312801625603251
+        "x": 5.45,
+        "y": 3.21
       },
       "prevControl": {
-        "x": 6.918206325413552,
-        "y": 6.123929448632662
+        "x": 5.468144042730026,
+        "y": 3.21
+      },
+      "nextControl": {
+        "x": 4.432746385173402,
+        "y": 3.21
+      },
+      "holonomicAngle": 180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 3.92,
+        "y": 3.21
+      },
+      "prevControl": {
+        "x": 4.748829783373853,
+        "y": 3.192187670089626
       },
       "nextControl": null,
-      "holonomicAngle": 0,
+      "holonomicAngle": 180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "resetGyro"
+          "Reverse Gyro"
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "none",

@@ -4,7 +4,6 @@ import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 
 import java.util.function.DoubleSupplier;
-import java.util.function.Supplier;
 
 public class DashboardNumberDisplay implements Sendable {
     DoubleSupplier number;

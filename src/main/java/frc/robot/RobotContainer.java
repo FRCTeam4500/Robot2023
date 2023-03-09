@@ -7,16 +7,8 @@ import static frc.robot.subsystem.Arm.makeArm;
 import static frc.robot.subsystem.Intake.makeIntake;
 import static frc.robot.Constants.RobotConstants.commandMap;
 
-import java.util.HashMap;
-
 import com.pathplanner.lib.auto.PIDConstants;
-import com.pathplanner.lib.auto.RamseteAutoBuilder;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
-import com.pathplanner.lib.commands.PPSwerveControllerCommand;
-import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMax.ControlType;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -25,29 +17,21 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import frc.robot.subsystem.Arm.Position;
 
 import frc.robot.subsystem.Arm;
 import frc.robot.subsystem.Intake;
-
+import frc.robot.subsystem.Swerve.BalanceCommand;
+import frc.robot.subsystem.Swerve.SwerveCommand;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.JoystickConstants;
-import frc.robot.component.hardware.SparkMaxComponent;
-import frc.robot.subsystem.swerve.command.BalanceCommand;
-import frc.robot.subsystem.swerve.command.TriModeSwerveCommand;
-import frc.robot.subsystem.swerve.pathfollowingswerve.HardwareSwerveFactory;
-import frc.robot.subsystem.swerve.pathfollowingswerve.OdometricSwerve;
-import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
+import frc.robot.subsystem.Swerve;
+import frc.robot.subsystem.Swerve.SwerveCommand.ControlMode;
 import frc.robot.subsystem.vision.HardwareVisionFactory;
 import frc.robot.subsystem.vision.Vision;
-import frc.robot.subsystem.swerve.command.TriModeSwerveCommand.ControlMode;
 
 
 public class RobotContainer {
@@ -58,13 +42,13 @@ public class RobotContainer {
 
     private final JoystickButton lockSwerveRotationButton = new JoystickButton(driveStick, JoystickConstants.LOCK_SWERVE_ROTATION);
     private final JoystickButton switchDriveModeRobotCentricButton = new JoystickButton(driveStick, JoystickConstants.SWITCH_DRIVE_MODE_ROBOT_CENTRIC);
-    private final JoystickButton alignSwerveToAngleButton = new JoystickButton(driveStick, JoystickConstants.ALIGN_SWERVE_TO_ANGLE);
-    private final JoystickButton alignSwerveReverseButton = new JoystickButton(driveStick, JoystickConstants.ALIGN_SWERVE_REVERSE);
+    // private final JoystickButton alignSwerveToAngleButton = new JoystickButton(driveStick, JoystickConstants.ALIGN_SWERVE_TO_ANGLE);
+    // private final JoystickButton alignSwerveReverseButton = new JoystickButton(driveStick, JoystickConstants.ALIGN_SWERVE_REVERSE);
     private final JoystickButton resetGyroButton = new JoystickButton(driveStick, JoystickConstants.RESET_GYRO);
-    private final JoystickButton limitSwerveSpeedButton = new JoystickButton(driveStick, JoystickConstants.LIMIT_SWERVE_SPEED);
+    // private final JoystickButton limitSwerveSpeedButton = new JoystickButton(driveStick, JoystickConstants.LIMIT_SWERVE_SPEED);
     private final JoystickButton noForwardButton = new JoystickButton(driveStick, JoystickConstants.NO_FORWARD);
 
-    private final JoystickButton balanceButton = new JoystickButton(controlStick, 5);
+    // private final JoystickButton balanceButton = new JoystickButton(controlStick, 5);
 
     private final JoystickButton cubeButton = new JoystickButton(controlStick, JoystickConstants.CUBE_INTAKE);
     private final JoystickButton placeButton = new JoystickButton(controlStick, JoystickConstants.PLACE);
@@ -78,12 +62,12 @@ public class RobotContainer {
     private final JoystickButton tiltUp = new JoystickButton(controlStick, 4);
     private final JoystickButton tiltDown = new JoystickButton(controlStick, 2);
     private final DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
-    private TriModeSwerveCommand swerveCommand;
+    private SwerveCommand swerveCommand;
     private BalanceCommand balanceCommand;
     public static boolean isCone = true; // Changes with coneButton/cubeButton
     public static boolean isBottomCone = true; // Changes with Orientation buttons
 
-    private final PathFollowingSwerve m_swerve = HardwareSwerveFactory.makeSwerve();
+    private final Swerve m_swerve = Swerve.makeSwerve();
     private final Arm m_arm = makeArm();
     private final Intake m_intake = makeIntake();
     private final Vision m_vision = HardwareVisionFactory.makeVision();
@@ -115,8 +99,8 @@ public class RobotContainer {
     
     
     void configureSwerve() {
-        swerveCommand = new TriModeSwerveCommand(m_swerve, driveStick, info, messages);
-        balanceCommand = new BalanceCommand(m_swerve, true);
+        swerveCommand = new SwerveCommand(m_swerve, driveStick, info);
+        balanceCommand = new BalanceCommand(m_swerve);
         m_swerve.setDefaultCommand(swerveCommand);
 
         lockSwerveRotationButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.lockRotation = true;}));
@@ -285,7 +269,7 @@ public class RobotContainer {
         commandMap.put(
             "backwardsBalance",
             new SequentialCommandGroup(
-                new BalanceCommand(m_swerve, false)
+                new BalanceCommand(m_swerve)
             )
         );
     }

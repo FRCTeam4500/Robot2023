@@ -177,7 +177,5 @@ public class KinematicSwerve extends SubsystemBase implements Swerve, Sendable {
     public SwerveDriveKinematics getKinematics(){
         return kinematics;
     }
-
-
 }
 

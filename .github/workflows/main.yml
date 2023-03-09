@@ -6,7 +6,7 @@ name: CI
 # events but only for the main branch.
 on:
   push:
-    branches: [ main, beta-(Vimal) ]
+    branches: [ main, beta-(Vimal), autoTesting, testing ]
   pull_request:
     branches: [ main, beta-(Vimal) ]
 

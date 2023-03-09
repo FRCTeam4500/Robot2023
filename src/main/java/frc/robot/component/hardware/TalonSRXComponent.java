@@ -20,6 +20,7 @@ public class TalonSRXComponent extends TalonSRX
 
     public static final double TICKS_PER_DEGREE = 4096 / 360.0;
     public static final double TICKS_PER_RADIAN = 4096 / Math.PI / 2.0;
+    public static final double TICKS_PER_REVOLUTION = 4096;
 
     /**
      * @see TalonSRX#TalonSRX(int)
@@ -35,12 +36,12 @@ public class TalonSRXComponent extends TalonSRX
 
     @Override
     public void setAngle(double angle) {
-        set(ControlMode.Position, angle * TICKS_PER_RADIAN);
+        set(ControlMode.Position, angle);
     }
 
     @Override
     public double getAngle() {
-        return getSelectedSensorPosition() / TICKS_PER_RADIAN;
+        return getSelectedSensorPosition();
     }
 
     @Override

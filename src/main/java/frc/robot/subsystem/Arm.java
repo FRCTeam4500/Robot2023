@@ -1,17 +1,30 @@
 package frc.robot.subsystem;
 import frc.robot.component.hardware.SparkMaxComponent;
+import frc.robot.component.hardware.TalonSRXComponent;
 import frc.robot.Constants.ArmConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.SparkMaxRelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
+
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
+import static frc.robot.RobotContainer.isCone;
+import static frc.robot.RobotContainer.isBottomCone;
+
 public class Arm extends SubsystemBase {
-    private SparkMaxComponent tiltMotor;
-    private SparkMaxComponent winchMotor;
+    SparkMaxComponent tiltMotor;
+    private TalonSRXComponent winchMotor;
+    private SparkMaxPIDController tiltPIDController;
     private double targetTiltAngle;
-    private double targetWinchOutput;
+    private double targetWinchPosition;
     Position position;
 
     /**
@@ -19,7 +32,27 @@ public class Arm extends SubsystemBase {
      */
     public Arm() {
         this.tiltMotor = new SparkMaxComponent(ArmConstants.TILT_MOTOR_ID, ArmConstants.TILT_MOTOR_TYPE);
-        this.winchMotor = new SparkMaxComponent(ArmConstants.WINCH_MOTOR_ID, ArmConstants.WINCH_MOTOR_TYPE);
+        this.winchMotor = new TalonSRXComponent(ArmConstants.WINCH_MOTOR_ID);
+
+        this.tiltMotor.setInverted(true);
+        
+        this.tiltPIDController = this.tiltMotor.getPIDController();
+        this.tiltPIDController.setP(0.04);
+        this.tiltPIDController.setI(0);
+        this.tiltPIDController.setD(0);
+
+        this.winchMotor.config_kP(0, .4);
+        this.winchMotor.config_kI(0, 0);
+        this.winchMotor.config_kD(0, 0);
+
+        this.tiltPIDController.setOutputRange(-.5, .5);
+
+        this.winchMotor.configAllowableClosedloopError(0, 400);
+        this.winchMotor.configForwardSoftLimitEnable(true);
+        this.winchMotor.configForwardSoftLimitThreshold(10000);
+        this.winchMotor.configPeakOutputForward(.6);
+        this.winchMotor.configPeakOutputReverse(-0.3);
+
     }
     
     /**
@@ -27,13 +60,17 @@ public class Arm extends SubsystemBase {
      * @param tiltMotor
      * @param winchMotor
      */
-    public Arm(SparkMaxComponent tiltMotor, SparkMaxComponent winchMotor) {
+    public Arm(SparkMaxComponent tiltMotor, TalonSRXComponent winchMotor) {
         this.tiltMotor = tiltMotor;
         this.winchMotor = winchMotor;
     }
 
     /**
-     * Sets the position of the tilt motor
+     * Sets the position of the tilt motor.
+     * 
+     * Depending on if we are going up or down, it will set the motor to go up or down,
+     * The "? :" is a ternary operator, it is the same as "if else".
+     * 
      * @param position
      */
     public void setTilt(double position) {
@@ -42,51 +79,67 @@ public class Arm extends SubsystemBase {
     }
 
     /**
-     * Sets the position of the winch motor. "Output" is not speed, it is angle
-     * @param output is the angle that it has to turn
+     * Sets the position of the winch motor. "position" is not speed, it is motor rotations
+     * @param position is the angle that it has to turn
      */
-    public void setWinch(double output) {
-        targetWinchOutput = output;
-        winchMotor.set(output);
+    public void setWinch(double position) {
+        targetWinchPosition = position;
+        winchMotor.setAngle(position);
     }
 
+    public void setOutput(double output) {
+        tiltMotor.setOutput(output);
+    }
+
+    public void zero(){
+        tiltMotor.getEncoder().setPosition(0);
+    }
     /**
      * Command for setting the position of the tilt motor
      */
     public static class ArmSetTiltAngleCommand extends InstantCommand {
         private Arm arm;
         private double position;
+        private boolean isLaunching;
 
         public ArmSetTiltAngleCommand(Arm arm, double position) {
             this.arm = arm;
             this.position = position;
             addRequirements(arm);
         }
+
+        public ArmSetTiltAngleCommand(Arm arm, boolean isLaunching) {
+            this.arm = arm;
+            this.isLaunching = isLaunching;
+        }
     
         public void initialize() {
-            arm.setTilt(position);
+            if (isLaunching) {
+                arm.setTilt(ArmConstants.ARM_LAUNCH_ANGLE);
+            } else {
+                arm.setTilt(position);
+            }
         }
     }
+    
 
     public static class ArmSetWinchOutputCommand extends InstantCommand {
         private Arm arm;
         private double output;
-        private boolean isBottomCone;
 
-        public ArmSetWinchOutputCommand(Arm arm, double output, boolean isBottomCone) {
+        public ArmSetWinchOutputCommand(Arm arm, double output) {
             this.arm = arm;
             this.output = output;
-            this.isBottomCone = isBottomCone;
             addRequirements(arm);
         }
 
         public void initialize() {
-                if(isBottomCone && output!=ArmConstants.ARM_RETRACT){
-                    arm.setWinch(output + ArmConstants.ARM_BOT_CONE_ADDITION);
-                } else {
-                    arm.setWinch(output);
-                }
+                arm.setWinch(output);
         }
+    }
+
+    public double getWinchPosition() {
+        return winchMotor.getSelectedSensorPosition() / 4096;
     }
 
     /** 
@@ -96,12 +149,43 @@ public class Arm extends SubsystemBase {
         Bottom,
         Middle,
         Top,
-        Retracted,
-        Ground
+        Retracted
+    }
+
+    public static class ArmChangeTiltCommand extends InstantCommand {
+        private Arm arm;
+        private double addition;
+
+        public ArmChangeTiltCommand(Arm arm, double addition){
+            this.arm = arm;
+            this.addition = addition;
+        }
+
+        public void initialize(){
+            arm.setTilt(arm.tiltMotor.getEncoder().getPosition() + addition);
+        }
+    }
+
+    public static class ArmSetActualOutputCommand extends InstantCommand {
+        private Arm arm;
+        private double output;
+
+        public ArmSetActualOutputCommand(Arm arm, double output) {
+            this.arm = arm;
+            this.output = output;
+        }
+
+        public void initialize() {
+            arm.setOutput(output);
+        }
     }
 
     public Position getPosition() {
         return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
     public static Arm makeArm() {
@@ -110,7 +194,24 @@ public class Arm extends SubsystemBase {
 
     @Override
     public void initSendable(SendableBuilder builder) {
-        builder.addDoubleProperty("Target tilt position", () -> targetTiltAngle, (value) -> {setTilt((double) value);});
-        builder.addDoubleProperty("Target winch output", () -> targetWinchOutput, (value) -> {setWinch((double) value);});
+        builder.addDoubleProperty("Target tilt position", () -> targetTiltAngle, null);
+        builder.addDoubleProperty("Target winch output", () -> targetWinchPosition, null);
+    
+        builder.addDoubleProperty("Current Encoder Tilt Position", () -> tiltMotor.getEncoder().getPosition(), null);
+        builder.addDoubleProperty("Current Winch Encoder Position", () -> winchMotor.getSelectedSensorPosition(), null);
+        // builder.addStringProperty("Position", () -> {
+        //     switch (position) {
+        //         case Bottom:
+        //             return "Bottom";
+        //         case Middle:
+        //             return "Middle";
+        //         case Top:
+        //             return "Top";
+        //         case Retracted:
+        //             return "Retracted";
+        //         default:
+        //             return "Unknown";
+        //     }
+        // }, null);
     }
 }

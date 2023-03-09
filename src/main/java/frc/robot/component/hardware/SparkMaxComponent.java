@@ -16,12 +16,12 @@ public class SparkMaxComponent extends CANSparkMax implements SmartMotorComponen
 
     
     public double getAngle() {
-        return getEncoder().getPosition()*Math.PI * 2;
+        return getEncoder().getPosition();
     }
 
     
-    public void setAngle(double angle) {
-        getPIDController().setReference(angle/2/Math.PI, ControlType.kPosition);
+    public void setAngle(double position) {
+        getPIDController().setReference(position, ControlType.kPosition);
 
     }
 

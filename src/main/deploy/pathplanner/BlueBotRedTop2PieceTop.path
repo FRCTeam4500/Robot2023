@@ -76,21 +76,21 @@
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "minimum",
-        "waitTime": 1.0
+        "waitTime": 0.5
       }
     },
     {
       "anchorPoint": {
         "x": 7.0,
-        "y": 0.9304582894880083
+        "y": 1.31
       },
       "prevControl": {
         "x": 7.1932490293552025,
-        "y": 0.9089861751152082
+        "y": 1.2885278856271998
       },
       "nextControl": {
         "x": 6.8067509706447975,
-        "y": 0.9519304038608085
+        "y": 1.3314721143728003
       },
       "holonomicAngle": 0,
       "isReversal": false,

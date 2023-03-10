@@ -248,7 +248,7 @@ public class RobotContainer {
                 new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_ZERO_ANGLE),
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
                 new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE),
-                new WaitCommand(1)
+                new WaitCommand(.5)
             )
         );
 
@@ -266,7 +266,7 @@ public class RobotContainer {
                 new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_ZERO_ANGLE),
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
                 new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE),
-                new WaitCommand(1)
+                new WaitCommand(.5)
             )
         );
 
@@ -284,7 +284,7 @@ public class RobotContainer {
                 new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_ZERO_ANGLE),
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
                 new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE),
-                new WaitCommand(1)
+                new WaitCommand(.5)
             )
         );
 
@@ -302,7 +302,7 @@ public class RobotContainer {
                 new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_ZERO_ANGLE),
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
                 new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE),
-                new WaitCommand(1)
+                new WaitCommand(.5)
             )
         );
 

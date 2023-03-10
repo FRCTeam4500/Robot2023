@@ -113,7 +113,7 @@ public class Constants {
         /** The angle the intake must be at to pickup game pieces from the ground <p> Units are whatever shuffleboard says */
         public static final double INTAKE_BOT_ANGLE = -7;
         /** The angle the intake must be at to pickup games pieces from the high substation <p> Units are whatever shuffleboard says */
-        public static final double INTAKE_HIGH_SUBSTATION_ANGLE = -24.64;
+        public static final double INTAKE_HIGH_SUBSTATION_ANGLE = -25;
         /** The angle the intake must be at to place a top cone (as in we picked up an upright cone) on a node <p> Units are whatever shuffleboard says */
         public static final double INTAKE_TOP_CONE_PLACE_ANGLE = -18.4;
         /** The angle the intake must be at to place a bottom cone (as in we picked up a sideways cone) on a node <p><strong> This value needs to be updated</strong><p> Units are whatever shuffleboard says */

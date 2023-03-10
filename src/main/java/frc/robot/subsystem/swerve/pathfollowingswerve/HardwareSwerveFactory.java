@@ -77,10 +77,11 @@ public class HardwareSwerveFactory {
         angleMotor.configMotionCruiseVelocity(10000);
         angleMotor.configMotionAcceleration(10000);
         angleMotor.configAllowableClosedloopError(0, 0);
+        angleMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 25, 26, 0.1));
         angleMotor.configClearPositionOnQuadIdx(true, 10);
 
         TalonFXComponent driveMotor = new TalonFXComponent(driveId);
-        driveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 41, 0.1));
+        driveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 35, 36, 0.1));
         driveMotor.config_kP(0, .1);
         driveMotor.config_kI(0, 0);
         driveMotor.config_kD(0,0);

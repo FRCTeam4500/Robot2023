@@ -218,6 +218,16 @@ public class RobotContainer {
             )
         );
 
+        commandMap.put(
+            "start",
+            new SequentialCommandGroup(
+                new Intake.IntakeSetOutputCommand(m_intake, 0),
+                new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_ZERO_ANGLE),
+                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
+                new Arm.ArmSetTiltAngleCommand(m_arm, 0)
+            )
+        );
+
         commandMap.put("waitQuarter", new WaitCommand(.25));
         commandMap.put("waitHalf", new WaitCommand(.5));
         commandMap.put("waitOne", new WaitCommand(1));
@@ -243,12 +253,48 @@ public class RobotContainer {
         );
 
         commandMap.put(
+            "autoPlaceConeMid",
+            new SequentialCommandGroup(
+                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
+                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE),
+                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_MID),
+                new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_TOP_CONE_PLACE_ANGLE),
+                new WaitCommand(1),
+                new Intake.IntakeSetOutputCommand(m_intake, IntakeConstants.INTAKE_CUBE_SPEED),
+                new WaitCommand(1),
+                new Intake.IntakeSetOutputCommand(m_intake, 0),
+                new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_ZERO_ANGLE),
+                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
+                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE),
+                new WaitCommand(1)
+            )
+        );
+
+        commandMap.put(
             "autoPlaceCubeTop",
             new SequentialCommandGroup(
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
                 new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_LAUNCH_ANGLE),
                 new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_TOP),
                 new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_LAUNCHING_ANGLE),
+                new WaitCommand(1),
+                new Intake.IntakeSetOutputCommand(m_intake, IntakeConstants.INTAKE_CONE_SPEED),
+                new WaitCommand(1),
+                new Intake.IntakeSetOutputCommand(m_intake, 0),
+                new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_ZERO_ANGLE),
+                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
+                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE),
+                new WaitCommand(1)
+            )
+        );
+
+        commandMap.put(
+            "autoPlaceCubeMid",
+            new SequentialCommandGroup(
+                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
+                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_PLACE_ANGLE),
+                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_PLACE_MID),
+                new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_TOP_CONE_PLACE_ANGLE),
                 new WaitCommand(1),
                 new Intake.IntakeSetOutputCommand(m_intake, IntakeConstants.INTAKE_CONE_SPEED),
                 new WaitCommand(1),
@@ -398,11 +444,18 @@ public class RobotContainer {
     }
 
     void configureAuto() {
-        autonChooser.setDefaultOption("Blue Bottom: Place and Dock", autoBuilder.fullAuto(AutoConstants.BlueBotPlaceAndDockAuto));
-        autonChooser.addOption("Blue Bottom: 2 Piece", autoBuilder.fullAuto(AutoConstants.BlueBot2Piece));
-        autonChooser.addOption("Blue Middle: Place and Dock", autoBuilder.fullAuto(AutoConstants.BlueMidPlaceAndDockAuto));
-        autonChooser.addOption("Blue Top: Place And Dock", autoBuilder.fullAuto(AutoConstants.BlueTopPlaceAndDockAuto));
-        autonChooser.addOption("Blue Top: 2 Piece", autoBuilder.fullAuto(AutoConstants.BlueTop2PieceAuto));
+        autonChooser.setDefaultOption("Blue Bottom: 2 Piece Top", autoBuilder.fullAuto(AutoConstants.BlueBotRedTop2PieceTopAuto));
+        autonChooser.addOption("Red Top: 2 Piece Top", autoBuilder.fullAuto(AutoConstants.BlueBotRedTop2PieceTopAuto));
+        autonChooser.addOption("Blue Top: 2 Piece Top", autoBuilder.fullAuto(AutoConstants.BlueTopRedBot2PieceTopAuto));
+        autonChooser.addOption("Red Bottom: 2 Piece Top", autoBuilder.fullAuto(AutoConstants.BlueTopRedBot2PieceTopAuto));
+        autonChooser.addOption("Blue Bottom: 2 Piece Mid", autoBuilder.fullAuto(AutoConstants.BlueBotRedTop2PieceMidAuto));
+        autonChooser.addOption("Red Top: 2 Piece Mid", autoBuilder.fullAuto(AutoConstants.BlueBotRedTop2PieceMidAuto));
+        autonChooser.addOption("Blue Top: 2 Piece Mid", autoBuilder.fullAuto(AutoConstants.BlueTopRedBot2PieceMidAuto));
+        autonChooser.addOption("Red Bottom: 2 Piece Mid", autoBuilder.fullAuto(AutoConstants.BlueTopRedBot2PieceMidAuto));
+        autonChooser.addOption("Both Middle: Place, Mobility, and Dock", autoBuilder.fullAuto(AutoConstants.MidPlaceAndDockAuto));
+        autonChooser.addOption("Both Side: Place 1 and Mobility", autoBuilder.fullAuto(AutoConstants.PlaceAndMoveAuto));
+        autonChooser.addOption("Red Top: Place and Face Substation", autoBuilder.fullAuto(AutoConstants.RedTopPlaceAndRunAuto));
+        autonChooser.addOption("Blue Top: Place and Face Substation", autoBuilder.fullAuto(AutoConstants.BlueTopPlaceAndRunAuto));
         Shuffleboard.getTab("Auto").add("Auto Routes", autonChooser);
     }
 

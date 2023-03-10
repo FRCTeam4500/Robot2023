@@ -38,8 +38,8 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
     private PIDController angleAdjustmentController;
     public ControlMode controlMode;
 
-    public SlewRateLimiter xLimiter = new SlewRateLimiter(.7);
-    public SlewRateLimiter yLimiter = new SlewRateLimiter(.7);
+    public SlewRateLimiter xLimiter = new SlewRateLimiter(1);
+    public SlewRateLimiter yLimiter = new SlewRateLimiter(1);
     public SlewRateLimiter zLimiter = new SlewRateLimiter(1);
 
     public boolean lockRotation = false;

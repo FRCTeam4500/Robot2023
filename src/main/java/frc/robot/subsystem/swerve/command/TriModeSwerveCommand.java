@@ -40,7 +40,7 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
 
     public SlewRateLimiter xLimiter = new SlewRateLimiter(1);
     public SlewRateLimiter yLimiter = new SlewRateLimiter(1);
-    public SlewRateLimiter zLimiter = new SlewRateLimiter(1);
+    public SlewRateLimiter zLimiter = new SlewRateLimiter(1.4);
 
     public boolean lockRotation = false;
     public boolean limitSpeed = false;

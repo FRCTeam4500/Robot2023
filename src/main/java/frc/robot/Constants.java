@@ -169,7 +169,7 @@ public class Constants {
         "BlueTopRedBotPlaceAndDock", AUTO_MAX_SPEED, AUTO_MAX_ACCEL);
 
         public static final List<PathPlannerTrajectory> MidPlaceAndDockAuto = PathPlanner.loadPathGroup(
-        "MidPlaceAndDock", AUTO_MAX_SPEED, AUTO_MAX_ACCEL);
+        "MidPlaceAndDock", 1, 1);
 
         public static final List<PathPlannerTrajectory> PlaceAndMoveAuto = PathPlanner.loadPathGroup(
         "PlaceAndMove", AUTO_MAX_SPEED, AUTO_MAX_ACCEL);

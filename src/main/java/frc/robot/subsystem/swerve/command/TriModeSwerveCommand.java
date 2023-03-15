@@ -5,7 +5,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.dashboard.DashboardMessageDisplay;
 import frc.robot.subsystem.swerve.Swerve;
@@ -31,7 +31,7 @@ import edu.wpi.first.util.sendable.Sendable;
  */
 public class TriModeSwerveCommand extends CommandBase implements Sendable {
     private Swerve swerve;
-    private Joystick joystick;
+    private CommandXboxController controller;
     private ControllerInfo info;
     private DashboardMessageDisplay messageDisplay;
 
@@ -50,9 +50,9 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
     private double limitedSpeed = .2;  // was .75
 
 
-    public TriModeSwerveCommand(Swerve swerve, Joystick joystick, ControllerInfo controllerInfo, DashboardMessageDisplay messageDisplay){
+    public TriModeSwerveCommand(Swerve swerve, CommandXboxController controller, ControllerInfo controllerInfo, DashboardMessageDisplay messageDisplay){
         this.swerve = swerve;
-        this.joystick = joystick;
+        this.controller = controller;
         info = controllerInfo;
         this.messageDisplay = messageDisplay;
         controlMode = ControlMode.FieldCentric; //default control mode is field-centric
@@ -66,9 +66,9 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
 
     @Override
     public void execute(){
-        double xSpeed = -xLimiter.calculate(joystick.getX()) * info.xSensitivity;
-        double ySpeed = -yLimiter.calculate(joystick.getY()) * info.ySensitivity;
-        double zSpeed = -zLimiter.calculate(joystick.getZ()) * info.zSensitivity;
+        double xSpeed = -xLimiter.calculate(controller.getLeftX()) * info.xSensitivity;
+        double ySpeed = -yLimiter.calculate(controller.getLeftY()) * info.ySensitivity;
+        double zSpeed = -zLimiter.calculate(controller.getRightX()) * info.zSensitivity;
         if (limitSpeed){
             xSpeed = limitedSpeed * xSpeed; //ceiling(xSpeed, limitedSpeed);
             ySpeed = limitedSpeed * ySpeed; //ceiling(ySpeed, limitedSpeed);
@@ -140,9 +140,9 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
             }
             return "";
         }, null);
-        builder.addDoubleProperty("controller x", joystick::getX, null);
-        builder.addDoubleProperty("controller y", joystick::getY, null);
-        builder.addDoubleProperty("controller z", joystick::getZ, null);
+        //builder.addDoubleProperty("controller x", controller::getLeftX(), null);
+        //builder.addDoubleProperty("controller y", controller::getLeftY(), null);
+        //builder.addDoubleProperty("controller z", controller::getRightX(), null);
         builder.addBooleanProperty("Limit Speed", () -> {return limitSpeed;}, null);
         
     }

@@ -18,8 +18,11 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.dashboard.DashboardMessageDisplay;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -52,17 +55,14 @@ import frc.robot.subsystem.swerve.command.TriModeSwerveCommand.ControlMode;
 
 public class RobotContainer {
     /* Setting Joystick Buttons */
-    private final Joystick driveStick = new Joystick(0);
+    private final CommandXboxController driveStick = new CommandXboxController(2);
     private final Joystick controlStick = new Joystick(1);
     private final ControllerInfo info = new ControllerInfo();
 
-    private final JoystickButton lockSwerveRotationButton = new JoystickButton(driveStick, JoystickConstants.LOCK_SWERVE_ROTATION);
-    private final JoystickButton switchDriveModeRobotCentricButton = new JoystickButton(driveStick, JoystickConstants.SWITCH_DRIVE_MODE_ROBOT_CENTRIC);
-    private final JoystickButton alignSwerveToAngleButton = new JoystickButton(driveStick, JoystickConstants.ALIGN_SWERVE_TO_ANGLE);
-    private final JoystickButton alignSwerveReverseButton = new JoystickButton(driveStick, JoystickConstants.ALIGN_SWERVE_REVERSE);
-    private final JoystickButton resetGyroButton = new JoystickButton(driveStick, JoystickConstants.RESET_GYRO);
-    private final JoystickButton limitSwerveSpeedButton = new JoystickButton(driveStick, JoystickConstants.LIMIT_SWERVE_SPEED);
-    private final JoystickButton noForwardButton = new JoystickButton(driveStick, JoystickConstants.NO_FORWARD);
+    private final Trigger lockSwerveRotationButton = driveStick.rightStick();
+    private final Trigger switchDriveModeRobotCentricButton = driveStick.rightBumper();
+    private final Trigger resetGyroButton = driveStick.a();
+    private final Trigger noForwardButton = driveStick.leftBumper();
 
     private final JoystickButton balanceButton = new JoystickButton(controlStick, 5);
 

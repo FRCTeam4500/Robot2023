@@ -59,10 +59,8 @@ public class RobotContainer {
     private final Joystick controlStick = new Joystick(1);
     private final ControllerInfo info = new ControllerInfo();
 
-    private final Trigger lockSwerveRotationButton = driveStick.rightStick();
-    private final Trigger switchDriveModeRobotCentricButton = driveStick.rightBumper();
+    private final Trigger switchDriveModeRobotCentricButton = driveStick.x();
     private final Trigger resetGyroButton = driveStick.a();
-    private final Trigger noForwardButton = driveStick.leftBumper();
 
     private final JoystickButton balanceButton = new JoystickButton(controlStick, 5);
 
@@ -119,16 +117,8 @@ public class RobotContainer {
         balanceCommand = new BalanceCommand(m_swerve, true);
         m_swerve.setDefaultCommand(swerveCommand);
 
-        lockSwerveRotationButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.lockRotation = true;}));
-        lockSwerveRotationButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.lockRotation = false;}));
-
-        switchDriveModeRobotCentricButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.RobotCentric;}));
-        switchDriveModeRobotCentricButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.FieldCentric;}));
-
-        /* Slow Side to Side movement */
-        noForwardButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.RobotCentric; swerveCommand.noForward = true;}));
-        noForwardButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.controlMode = ControlMode.FieldCentric; swerveCommand.noForward = false;}));
-
+        switchDriveModeRobotCentricButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.switchControlMode();}));
+        
         resetGyroButton.toggleOnTrue(new InstantCommand(() -> {m_swerve.resetRobotAngle();}));
 
         Shuffleboard.getTab("Swerve").add("Swerve", m_swerve);

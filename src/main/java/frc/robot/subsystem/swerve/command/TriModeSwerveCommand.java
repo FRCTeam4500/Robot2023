@@ -119,6 +119,17 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
         AlignToAngle
     }
 
+    /**
+     * Switches between RobotCentric and FieldCentric
+     */
+    public void switchControlMode() {
+        if (controlMode == ControlMode.RobotCentric){
+            controlMode = ControlMode.FieldCentric;
+        } else {
+            controlMode = ControlMode.RobotCentric;
+        }
+    }
+
     private double ceiling(double value, double maximum){
         if (Math.abs(value) > maximum){
             return maximum * Math.signum(value);
@@ -140,9 +151,9 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
             }
             return "";
         }, null);
-        //builder.addDoubleProperty("controller x", controller::getLeftX(), null);
-        //builder.addDoubleProperty("controller y", controller::getLeftY(), null);
-        //builder.addDoubleProperty("controller z", controller::getRightX(), null);
+        // builder.addDoubleProperty("controller x", controller::getLeftX(), null);
+        // builder.addDoubleProperty("controller y", controller::getLeftY(), null);
+        // builder.addDoubleProperty("controller z", controller::getRightX(), null);
         builder.addBooleanProperty("Limit Speed", () -> {return limitSpeed;}, null);
         
     }

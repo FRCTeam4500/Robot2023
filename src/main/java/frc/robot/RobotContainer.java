@@ -44,6 +44,7 @@ import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.JoystickConstants;
 import frc.robot.component.hardware.SparkMaxComponent;
 import frc.robot.subsystem.swerve.command.BalanceCommand;
+import frc.robot.subsystem.swerve.command.BiModeSwerveCommand;
 import frc.robot.subsystem.swerve.command.TriModeSwerveCommand;
 import frc.robot.subsystem.swerve.pathfollowingswerve.HardwareSwerveFactory;
 import frc.robot.subsystem.swerve.pathfollowingswerve.OdometricSwerve;
@@ -61,8 +62,8 @@ public class RobotContainer {
 
     private final Trigger switchDriveModeRobotCentricButton = driveStick.x();
     private final Trigger resetGyroButton = driveStick.a();
-
-    private final JoystickButton balanceButton = new JoystickButton(controlStick, 5);
+    private final Trigger fastModeButton = driveStick.rightBumper();
+    private final Trigger slowModeButton = driveStick.leftBumper();
 
     private final JoystickButton cubeButton = new JoystickButton(controlStick, JoystickConstants.CUBE_INTAKE);
     private final JoystickButton placeButton = new JoystickButton(controlStick, JoystickConstants.PLACE);
@@ -76,7 +77,7 @@ public class RobotContainer {
     private final JoystickButton tiltUp = new JoystickButton(controlStick, 4);
     private final JoystickButton tiltDown = new JoystickButton(controlStick, 2);
     private final DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
-    private TriModeSwerveCommand swerveCommand;
+    private BiModeSwerveCommand swerveCommand;
     private BalanceCommand balanceCommand;
     public static boolean isCone = true; // Changes with coneButton/cubeButton
     public static boolean isBottomCone = true; // Changes with Orientation buttons
@@ -92,34 +93,24 @@ public class RobotContainer {
     
 
     public RobotContainer() {
-        configureControls();
         configureCommands();
         configureSwerve();
         configureAuto();
         configureArmAndIntake();
     }
-
-    void configureControls() {
-        info.xSensitivity = 4;
-        info.ySensitivity = 4;
-        info.zSensitivity = 3.5;
-        info.xDeadzone = 0.2;
-        info.yDeadzone = 0.2;
-        info.zDeadzone = 0.2;
-        Shuffleboard.getTab("Driver Controls").add("Driver Controls", info);
-        Shuffleboard.getTab("Driver Controls").add("Messages", messages);
-    }
-
-    
     
     void configureSwerve() {
-        swerveCommand = new TriModeSwerveCommand(m_swerve, driveStick, info, messages);
+        swerveCommand = new BiModeSwerveCommand(m_swerve, driveStick);
         balanceCommand = new BalanceCommand(m_swerve, true);
         m_swerve.setDefaultCommand(swerveCommand);
 
         switchDriveModeRobotCentricButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.switchControlMode();}));
-        
         resetGyroButton.toggleOnTrue(new InstantCommand(() -> {m_swerve.resetRobotAngle();}));
+        fastModeButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.fastSpeed();}));
+        fastModeButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.midSpeed();}));
+        slowModeButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.slowSpeed();}));
+        slowModeButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.midSpeed();}));
+
 
         Shuffleboard.getTab("Swerve").add("Swerve", m_swerve);
         Shuffleboard.getTab("Swerve").add("Swerve Command", swerveCommand);

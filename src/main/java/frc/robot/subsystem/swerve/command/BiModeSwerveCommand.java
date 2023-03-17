@@ -47,7 +47,7 @@ public class BiModeSwerveCommand extends CommandBase {
     public void execute(){
         double xSpeed = -xLimiter.calculate(controller.getLeftX()) * xSens;
         double ySpeed = -yLimiter.calculate(controller.getLeftY()) * ySens;
-        double zSpeed = -zLimiter.calculate(controller.getRightX()) * zSens;    
+        double zSpeed = -zLimiter.calculate(controller.getRightX()) * zSens;
         switch (controlMode){
             case FieldCentric:
                 moveFieldCentric(xSpeed, ySpeed, zSpeed);

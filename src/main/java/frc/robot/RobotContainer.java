@@ -64,6 +64,7 @@ public class RobotContainer {
     private final Trigger resetGyroButton = driveStick.a();
     private final Trigger fastModeButton = driveStick.rightBumper();
     private final Trigger slowModeButton = driveStick.leftBumper();
+    private final Trigger driverPlaceButton = driveStick.b();
 
     private final JoystickButton cubeButton = new JoystickButton(controlStick, JoystickConstants.CUBE_INTAKE);
     private final JoystickButton placeButton = new JoystickButton(controlStick, JoystickConstants.PLACE);
@@ -110,7 +111,20 @@ public class RobotContainer {
         fastModeButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.midSpeed();}));
         slowModeButton.toggleOnTrue(new InstantCommand(() -> {swerveCommand.slowSpeed();}));
         slowModeButton.toggleOnFalse(new InstantCommand(() -> {swerveCommand.midSpeed();}));
-
+        driverPlaceButton.toggleOnTrue(
+            new Intake.IntakeSetOutputCommand(m_intake, IntakeConstants.INTAKE_CONE_SPEED)
+        );
+        driverPlaceButton.toggleOnFalse(
+            new SequentialCommandGroup(
+                new Intake.IntakeSetOutputCommand((m_intake), IntakeConstants.INTAKE_CUBE_SPEED),
+                new WaitCommand(.5),
+                new Intake.IntakeSetOutputCommand(m_intake, 0),
+                new Intake.IntakeSetAngleCommand(m_intake, IntakeConstants.INTAKE_ZERO_ANGLE),
+                new Arm.ArmSetWinchOutputCommand(m_arm, ArmConstants.ARM_RETRACT),
+                new Arm.ArmSetTiltAngleCommand(m_arm, ArmConstants.ARM_ZERO_ANGLE)
+            )
+        );
+        
 
         Shuffleboard.getTab("Swerve").add("Swerve", m_swerve);
         Shuffleboard.getTab("Swerve").add("Swerve Command", swerveCommand);

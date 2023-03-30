@@ -149,5 +149,17 @@ public class ExtendedMath {
         return Math.acos(dotProduct);
 
     }
+
+    /**
+     * Returns the given value, unless it is greater than the max, in which case the max is returned, with the sign of the input being kept.
+     * @param input the number being tested
+     * @param max the max value
+     */
+    public static double ceiling(double input, double max) {
+        if (Math.abs(input) > Math.abs(max)){
+            return max * Math.signum(input);
+        }
+        return input;
+    }
 }
 

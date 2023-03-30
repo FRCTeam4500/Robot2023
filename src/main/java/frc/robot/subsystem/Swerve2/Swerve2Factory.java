@@ -1,5 +1,7 @@
 package frc.robot.subsystem.Swerve2;
 
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.I2C;
 import frc.robot.Constants.SwerveConstants;
@@ -43,7 +45,25 @@ public class Swerve2Factory {
         Translation2d translationFromCenter, 
         boolean invertSensorPhase, boolean invertAngle, boolean invertSpeed,
         double anglekP, double anglekF) {
-            
-        return new Swerve2Module();
+            TalonFXComponent angleMotor = new TalonFXComponent(angleID);
+            angleMotor.setSensorPhase(invertSensorPhase);
+            angleMotor.setInverted(invertAngle);
+            angleMotor.config_kP(0, anglekP);
+            angleMotor.config_kF(0,anglekF);
+            angleMotor.configMotionCruiseVelocity(10000);
+            angleMotor.configMotionAcceleration(10000);
+            angleMotor.configAllowableClosedloopError(0, 0);
+            angleMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 25, 26, 0.1));
+            angleMotor.configClearPositionOnQuadIdx(true, 10);
+
+            TalonFXComponent driveMotor = new TalonFXComponent(driveID);
+            driveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 35, 36, 0.1));
+            driveMotor.config_kP(0, .1);
+            driveMotor.config_kI(0, 0);
+            driveMotor.config_kD(0,0);
+            driveMotor.config_kF(0, 0.047);
+            driveMotor.config_IntegralZone(0, 0);
+            driveMotor.setInverted(invertSpeed);
+        return new Swerve2Module(angleMotor, driveMotor, translationFromCenter);
     }
 }

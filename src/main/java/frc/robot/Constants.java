@@ -35,9 +35,9 @@ public class Constants {
     }
 
     public static class SwerveConstants { 
-        public final static double MAX_LINEAR_SPEED = ((1276*9.42)/60)/12; // 1276 is rpm, 9.42 is wheel circumference (in.), final units are ft/s 
+        public final static double MAX_LINEAR_SPEED = 5.0884328; // This is an ideal value in m/s 
         public final static double MAX_LINEAR_ACCELERATION = 4; //Test
-        public final static double MAX_ROTATIONAL_SPEED = MAX_LINEAR_SPEED / (4d/3); // 4/3 is (about) the radius from the center of the robot to the swerve drive wheels.
+        public final static double MAX_ROTATIONAL_SPEED = MAX_LINEAR_SPEED / 15.62885799; // 4/3 is (about) the radius from the center of the robot to the swerve drive wheels.
         public final static double MAX_ROTATIONAL_ACCELERATION = 4; // Linear Acceleration/radius
 
         public static final double DRIVE_RATIO = 1/5.; // drive rotations per motor rotation
@@ -184,5 +184,9 @@ public class Constants {
          * <p> Example: {@code commandMap.get("zero");} 
          */
         public static final HashMap<String, Command> commandMap = new HashMap<>();
+
+        
+        public static final double ROBOT_LENGTH_WITH_BUMPERS = 0.921; // Both in meters, length is front to back
+        public static final double ROBOT_WIDTH_WITH_BUMPERS = 0.768;
     }
 }

@@ -41,7 +41,8 @@ public class Constants {
         public final static double MAX_ROTATIONAL_ACCELERATION = 4; // Linear Acceleration/radius
 
         public static final double DRIVE_RATIO = 1/5.; // drive rotations per motor rotation
-        public static final double ANGLE_RATIO = 1/6.75; // angle rotations per motor rotation
+        /** Wheel rotations per motor rotation */
+        public static final double ANGLE_RATIO = 1/6.75; 
 
         public static final int DBRPORT = 9; //drive back right port
         public static final int DBLPORT = 2; //drive back left port

@@ -20,48 +20,36 @@ public class Swerve2Module {
     }
 
     public void drive(double initialTargetAngle, double initialTargetVelocity) {
-        double workingTargetAngle = initialTargetAngle;
+        double targetAngle = initialTargetAngle;
+        double oppositeAngle = targetAngle + Math.PI;
+        double reverseTargetAngle = -Math.signum(targetAngle) * Math.abs(2*Math.PI - targetAngle);
+        double reverseOppositeAngle = -Math.signum(oppositeAngle) * Math.abs(2*Math.PI - oppositeAngle);
+        boolean reverseSpeed = Math.min(Math.abs(oppositeAngle), Math.abs(reverseOppositeAngle)) < Math.min(Math.abs(targetAngle), Math.abs(reverseTargetAngle));
         
-        // This line figures out what way the wheel should turn to get to the target angle fastest.
-        workingTargetAngle = getShortestRadianToTarget(angleMotor.getAngle() * SwerveConstants.ANGLE_RATIO, workingTargetAngle) + angleMotor.getAngle() * SwerveConstants.ANGLE_RATIO;
-        
-        // This if statement determines if it is faster to 
-        // turn to the opposite of the target angle and reverse the wheel speed
-        // rather than turning to the actual target angle
-        if(
-            Math.abs(getShortestRadianToTarget(angleMotor.getAngle() * SwerveConstants.ANGLE_RATIO, workingTargetAngle + Math.PI)) 
-            < Math.abs(getShortestRadianToTarget(angleMotor.getAngle() * SwerveConstants.ANGLE_RATIO, workingTargetAngle))
-        ) {
-            moduleTargetAngle = angleMotor.getAngle() * SwerveConstants.ANGLE_RATIO + getShortestRadianToTarget(angleMotor.getAngle() * SwerveConstants.ANGLE_RATIO, workingTargetAngle + Math.PI);
-            moduleTargetVelocity = -initialTargetVelocity;
-        } else {
-            moduleTargetAngle = angleMotor.getAngle() * SwerveConstants.ANGLE_RATIO + getShortestRadianToTarget(angleMotor.getAngle() * SwerveConstants.ANGLE_RATIO, workingTargetAngle);
-            moduleTargetVelocity = initialTargetVelocity;
-        }
+        moduleTargetAngle = Math.min(targetAngle, Math.min(oppositeAngle, Math.min(reverseTargetAngle, reverseOppositeAngle)));
+        moduleTargetVelocity = reverseSpeed ? -initialTargetVelocity : initialTargetVelocity;
 
-        angleMotor.setAngle(moduleTargetAngle / SwerveConstants.ANGLE_RATIO);
+        setModuleAngle(moduleTargetAngle);
         driveMotor.setOutput(ceiling(moduleTargetVelocity / SwerveConstants.MAX_LINEAR_SPEED, 1) * 0.9); // I multiplied everything by 0.9 because I don't want the wheels going too fast
     }
 
-    public double getVelocity() {
-        return driveMotor.getAngularVelocity();
+
+    public void setModuleAngle(double targetAngle) {
+        angleMotor.setAngle(targetAngle / SwerveConstants.ANGLE_RATIO);
     }
 
-    /**
-     * Sets the velocity of a swerve module. Not recommened to use directly. 
-     * @param targetVelocity The speed
-     */
-    public void setVelocity(double targetVelocity) {
-        driveMotor.setOutput(ceiling(targetVelocity / SwerveConstants.MAX_LINEAR_SPEED, 1) * 0.9);
+    public double getModuleAngle() {
+        return angleMotor.getAngle() * SwerveConstants.ANGLE_RATIO;
     }
 
-    public double getAngle() {
-        return angleMotor.getAngle();
+    public void setModuleVelocity() {
+
     }
 
-    public void coast() {
-        driveMotor.setOutput(0);
+    public double getModuleVelocity() {
+
     }
+
 
 
     public Translation2d getTranslationFromCenter() {

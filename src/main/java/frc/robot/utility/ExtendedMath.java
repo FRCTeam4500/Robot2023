@@ -161,5 +161,15 @@ public class ExtendedMath {
         }
         return input;
     }
+
+    public static double closestToZero(double... values) {
+        int closestIndex = 0;
+        for (int i = 0; i < values.length; ++i) {
+            if (Math.abs(values[i]) < Math.abs(values[closestIndex])) {
+                closestIndex = i;
+            }
+        }
+        return values[closestIndex];
+    }
 }
 

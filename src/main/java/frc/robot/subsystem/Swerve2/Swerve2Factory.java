@@ -16,9 +16,6 @@ public class Swerve2Factory {
     private static Swerve2Module backLeftModule;
     private static Swerve2Module backRightModule;
 
-    private static TalonFXComponent angleMotor;
-    private static TalonFXComponent driveMotor;
-
     public static Swerve2 makeSwerve2() {
         frontLeftModule = makeSwerve2Module(
             SwerveConstants.AFLPORT, SwerveConstants.DFLPORT, 

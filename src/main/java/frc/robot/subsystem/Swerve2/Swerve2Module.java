@@ -1,10 +1,12 @@
 package frc.robot.subsystem.Swerve2;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.component.hardware.TalonFXComponent;
 import static frc.robot.utility.ExtendedMath.ceiling;
-import static frc.robot.utility.ExtendedMath.getShortestRadianToTarget;
+import static frc.robot.utility.ExtendedMath.closestToZero;
 
 public class Swerve2Module {
     private TalonFXComponent angleMotor;
@@ -20,19 +22,27 @@ public class Swerve2Module {
     }
 
     public void drive(double initialTargetAngle, double initialTargetVelocity) {
-        double targetAngle = initialTargetAngle;
+        // Optimizes angle so that the wheel turns as little distance as possible
+        double currentAngle = getModuleAngle();
+        double targetAngle = initialTargetAngle - currentAngle;
         double oppositeAngle = targetAngle + Math.PI;
         double reverseTargetAngle = -Math.signum(targetAngle) * Math.abs(2*Math.PI - targetAngle);
         double reverseOppositeAngle = -Math.signum(oppositeAngle) * Math.abs(2*Math.PI - oppositeAngle);
         boolean reverseSpeed = Math.min(Math.abs(oppositeAngle), Math.abs(reverseOppositeAngle)) < Math.min(Math.abs(targetAngle), Math.abs(reverseTargetAngle));
-        
-        moduleTargetAngle = Math.min(targetAngle, Math.min(oppositeAngle, Math.min(reverseTargetAngle, reverseOppositeAngle)));
+        moduleTargetAngle = closestToZero(targetAngle, oppositeAngle, reverseTargetAngle, reverseTargetAngle) + currentAngle;
         moduleTargetVelocity = reverseSpeed ? -initialTargetVelocity : initialTargetVelocity;
 
         setModuleAngle(moduleTargetAngle);
-        driveMotor.setOutput(ceiling(moduleTargetVelocity / SwerveConstants.MAX_LINEAR_SPEED, 1) * 0.9); // I multiplied everything by 0.9 because I don't want the wheels going too fast
+        setModuleVelocity(moduleTargetVelocity);    
     }
 
+    public double getModuleTargetAngle() {
+        return moduleTargetAngle;
+    }
+
+    public double getModuleTargetVelocity() {
+        return moduleTargetVelocity;
+    }
 
     public void setModuleAngle(double targetAngle) {
         angleMotor.setAngle(targetAngle / SwerveConstants.ANGLE_RATIO);
@@ -42,15 +52,17 @@ public class Swerve2Module {
         return angleMotor.getAngle() * SwerveConstants.ANGLE_RATIO;
     }
 
-    public void setModuleVelocity() {
-
+    public void setModuleVelocity(double targetVelocity) {
+        driveMotor.setOutput(ceiling(targetVelocity / SwerveConstants.MAX_LINEAR_SPEED, 1));
     }
 
     public double getModuleVelocity() {
-
+        return driveMotor.getOutput() * SwerveConstants.MAX_LINEAR_SPEED;
     }
 
-
+    public SwerveModulePosition getModulePosition() {
+        return new SwerveModulePosition(driveMotor.getPoseMeters(), new Rotation2d(getModuleAngle()));
+    }
 
     public Translation2d getTranslationFromCenter() {
         return translationFromCenter;

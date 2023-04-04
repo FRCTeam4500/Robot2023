@@ -10,6 +10,7 @@ package frc.robot.component.hardware;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+import frc.robot.Constants.SwerveConstants;
 import frc.robot.component.SmartMotorComponent;
 
 /**
@@ -23,6 +24,10 @@ public class TalonFXComponent extends TalonFX implements SmartMotorComponent {
 
     public TalonFXComponent(int deviceNumber) {
         super(deviceNumber);
+    }
+
+    public double getPoseMeters() {
+        return getSelectedSensorPosition() / TICKS_PER_REVOLUTION * SwerveConstants.WHEEL_DIAMETER * Math.PI;
     }
     
     /**

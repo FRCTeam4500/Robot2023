@@ -21,7 +21,7 @@ public class Swerve2Module {
         this.translationFromCenter = translationFromCenter;
     }
 
-    public void drive(double initialTargetAngle, double initialTargetVelocity) {
+    public void driveByVelocity(double initialTargetAngle, double initialTargetVelocity) {
         // Optimizes angle so that the wheel turns as little distance as possible
         double currentAngle = getModuleAngle();
         double targetAngle = initialTargetAngle - currentAngle;
@@ -34,6 +34,21 @@ public class Swerve2Module {
 
         setModuleAngle(moduleTargetAngle);
         setModuleVelocity(moduleTargetVelocity);    
+    }
+
+    public void driveByOutput(double initialTargetAngle, double initialTargetOutput) {
+        // Optimizes angle so that the wheel turns as little distance as possible
+        double currentAngle = getModuleAngle();
+        double targetAngle = initialTargetAngle - currentAngle;
+        double oppositeAngle = targetAngle + Math.PI;
+        double reverseTargetAngle = -Math.signum(targetAngle) * Math.abs(2*Math.PI - targetAngle);
+        double reverseOppositeAngle = -Math.signum(oppositeAngle) * Math.abs(2*Math.PI - oppositeAngle);
+        boolean reverseSpeed = Math.min(Math.abs(oppositeAngle), Math.abs(reverseOppositeAngle)) < Math.min(Math.abs(targetAngle), Math.abs(reverseTargetAngle));
+        double targetOutput = reverseSpeed ? -initialTargetOutput : initialTargetOutput;
+        moduleTargetAngle = closestToZero(targetAngle, oppositeAngle, reverseTargetAngle, reverseTargetAngle) + currentAngle;
+
+        setModuleAngle(moduleTargetAngle);
+        driveMotor.setOutput(targetOutput);    
     }
 
     public double getModuleTargetAngle() {

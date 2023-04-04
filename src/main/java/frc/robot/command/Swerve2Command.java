@@ -1,4 +1,4 @@
-package frc.robot.subsystem.Swerve2;
+package frc.robot.command;
 
 public class Swerve2Command {
     

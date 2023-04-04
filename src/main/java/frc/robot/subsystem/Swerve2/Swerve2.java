@@ -1,5 +1,6 @@
 package frc.robot.subsystem.Swerve2;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -20,12 +21,21 @@ public class Swerve2 extends SubsystemBase{
         modules = swerve2Modules; 
         this.gyro = gyro;
         kinematics = new SwerveDriveKinematics(getModuleTranslations());
-        odometry = new SwerveDriveOdometry(kinematics, new Rotation2d(Math.toRadians(gyro.getAngle())), getModulePositions());
+        odometry = new SwerveDriveOdometry(kinematics, getGyroAngle(), getModulePositions());
     }
 
     @Override
     public void periodic() {
+        odometry.update(gyro.getRotation2d(), getModulePositions());
         
+    }
+
+    public void resetPose(Pose2d newPose) {
+        odometry.resetPosition(getGyroAngle(), getModulePositions(), newPose);
+    }
+
+    public Rotation2d getGyroAngle() {
+        return new Rotation2d(Math.toRadians(gyro.getAngle()));
     }
 
     public Translation2d[] getModuleTranslations() {

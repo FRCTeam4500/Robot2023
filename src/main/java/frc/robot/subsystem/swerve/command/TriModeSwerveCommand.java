@@ -56,7 +56,10 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
         info = controllerInfo;
         this.messageDisplay = messageDisplay;
         controlMode = ControlMode.FieldCentric; //default control mode is field-centric
-        angleAdjustmentController = new PIDController(1,0,0);
+        angleAdjustmentController = new PIDController(.9,0,0);
+        xLimiter = new SlewRateLimiter(.7);
+        yLimiter = new SlewRateLimiter(.7);
+        zLimiter = new SlewRateLimiter(.7);
         angleAdjustmentController.enableContinuousInput(-Math.PI, Math.PI);
 
         
@@ -66,13 +69,15 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
 
     @Override
     public void execute(){
+
         double xSpeed = -xLimiter.calculate(joystick.getX()) * info.xSensitivity;
         double ySpeed = -yLimiter.calculate(joystick.getY()) * info.ySensitivity;
         double zSpeed = -zLimiter.calculate(joystick.getZ()) * info.zSensitivity;
+        
         if (limitSpeed){
-            xSpeed = limitedSpeed * xSpeed; //ceiling(xSpeed, limitedSpeed);
-            ySpeed = limitedSpeed * ySpeed; //ceiling(ySpeed, limitedSpeed);
-            zSpeed = limitedSpeed * zSpeed; //ceiling(zSpeed, limitedSpeed);
+            xSpeed = limitedSpeed * joystick.getX() * info.xSensitivity; //ceiling(xSpeed, limitedSpeed);
+            ySpeed = limitedSpeed * joystick.getY() * info.ySensitivity; //ceiling(ySpeed, limitedSpeed);
+            zSpeed = limitedSpeed * joystick.getZ() * info.zSensitivity; //ceiling(zSpeed, limitedSpeed);
         }
         if (lockRotation) {
             zSpeed = 0;
@@ -80,7 +85,7 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
         if (noForward) {
             ySpeed = 0;
             zSpeed = 0;
-            xSpeed = ceiling(xSpeed, limitedSpeed);
+            xSpeed = limitedSpeed * (-withDeadzone(joystick.getX(), info.xDeadzone) * info.xSensitivity);
         }        
         switch (controlMode){
             case FieldCentric:

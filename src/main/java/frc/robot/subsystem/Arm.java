@@ -53,6 +53,7 @@ public class Arm extends SubsystemBase {
         this.winchMotor.configPeakOutputForward(.6);
         this.winchMotor.configPeakOutputReverse(-0.3);
 
+
     }
     
     /**

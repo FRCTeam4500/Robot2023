@@ -73,6 +73,7 @@ public class Intake extends SubsystemBase {
 
         
 
+
         public IntakeSetAngleCommand(Intake intake, double angle){
             this.intake = intake;
             this.angle = angle;
@@ -93,6 +94,7 @@ public class Intake extends SubsystemBase {
         @Override
         public void initialize() {
             intake.setAngle(angle);
+
         }
     }
 

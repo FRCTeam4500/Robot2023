@@ -18,7 +18,9 @@ public class Constants {
         public final static int RESET_GYRO = 10;
         public final static int LIMIT_SWERVE_SPEED = 2;
         public final static int NO_FORWARD = 9;
+
         public final static int BALANCE = 5;
+
         
         // Control stick map
         public final static int PLACE = 1;
@@ -67,6 +69,7 @@ public class Constants {
         public static final int TILT_MOTOR_ID = 10; 
         /** The motor type of the tilt motor */
         public static final MotorType TILT_MOTOR_TYPE = MotorType.kBrushless; 
+
         /** The CAN ID of the arm winch motor */
         public static final int WINCH_MOTOR_ID = 15;  
 
@@ -95,11 +98,12 @@ public class Constants {
 
     }
 
+
     public static class IntakeConstants { 
         /** The speed of the intake while it is intaking cones and placing cubes <p> Units are percentage of full power */
         public static final double INTAKE_CONE_SPEED = .8;
         /** The speed of the intake while it is intaking cubes and placing cones <p> Units are percentage of full power */
-        public static final double INTAKE_CUBE_SPEED = -.9; 
+        public static final double INTAKE_CUBE_SPEED = -.9;
         
         /** The CAN ID of the intake run motor */
         public static final int INTAKE_MOTOR_ID = 13;

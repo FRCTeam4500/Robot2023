@@ -3,6 +3,7 @@ package frc.robot.subsystem.Swerve2;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.component.hardware.TalonFXComponent;
 import static frc.robot.utility.ExtendedMath.ceiling;
@@ -21,7 +22,10 @@ public class Swerve2Module {
         this.translationFromCenter = translationFromCenter;
     }
 
-    public void driveByVelocity(double initialTargetAngle, double initialTargetVelocity) {
+    public void driveByState(SwerveModuleState targetState) {
+        double initialTargetAngle = targetState.angle.getRadians();
+        double initialTargetVelocity = targetState.speedMetersPerSecond;
+        
         // Optimizes angle so that the wheel turns as little distance as possible
         double currentAngle = getModuleAngle();
         double targetAngle = initialTargetAngle - currentAngle;
@@ -34,21 +38,6 @@ public class Swerve2Module {
 
         setModuleAngle(moduleTargetAngle);
         setModuleVelocity(moduleTargetVelocity);    
-    }
-
-    public void driveByOutput(double initialTargetAngle, double initialTargetOutput) {
-        // Optimizes angle so that the wheel turns as little distance as possible
-        double currentAngle = getModuleAngle();
-        double targetAngle = initialTargetAngle - currentAngle;
-        double oppositeAngle = targetAngle + Math.PI;
-        double reverseTargetAngle = -Math.signum(targetAngle) * Math.abs(2*Math.PI - targetAngle);
-        double reverseOppositeAngle = -Math.signum(oppositeAngle) * Math.abs(2*Math.PI - oppositeAngle);
-        boolean reverseSpeed = Math.min(Math.abs(oppositeAngle), Math.abs(reverseOppositeAngle)) < Math.min(Math.abs(targetAngle), Math.abs(reverseTargetAngle));
-        double targetOutput = reverseSpeed ? -initialTargetOutput : initialTargetOutput;
-        moduleTargetAngle = closestToZero(targetAngle, oppositeAngle, reverseTargetAngle, reverseTargetAngle) + currentAngle;
-
-        setModuleAngle(moduleTargetAngle);
-        driveMotor.setOutput(targetOutput);    
     }
 
     public double getModuleTargetAngle() {

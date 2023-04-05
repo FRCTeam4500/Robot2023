@@ -27,6 +27,9 @@ public class AHRSAngleGetterComponent extends AHRS implements GyroComponent {
         super(kmxp);
     }
 
+    /** Returns the gyro's current angle in radians 
+    * @return angle in radians 
+    */
     @Override
     public double getAngle() {
         return -Math.toRadians(super.getAngle());

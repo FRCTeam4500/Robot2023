@@ -60,6 +60,8 @@ public class Constants {
         public static final double DRIVE_X_LEFT_TRANSLATION = 0.2413; 
         public static final double DRIVE_Y_FRONT_TRANSLATION = 0.3175; 
         public static final double DRIVE_Y_BACK_TRANSLATION = -0.3175; 
+        public static final double DRIVE_X_TRANSLATION = 0.2413;
+        public static final double DRIVE_Y_TRANSLATION = 0.3175;
     }
     
 

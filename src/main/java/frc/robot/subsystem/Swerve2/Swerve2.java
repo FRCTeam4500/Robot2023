@@ -19,8 +19,11 @@ public class Swerve2 extends SubsystemBase{
     private SwerveModulePosition[] positions;
     private AHRSAngleGetterComponent gyro;
     private Translation2d[] translations;
+    private SwerveModuleState[] states;
     private SwerveDriveOdometry odometry;
     private double currentGyroZero = 0.0;
+    private ChassisSpeeds currentChassisSpeeds;
+    private ChassisSpeeds targetChassisSpeeds;
 
     public Swerve2(AHRSAngleGetterComponent gyro, Swerve2Module... swerve2Modules) {
         modules = swerve2Modules; 
@@ -32,10 +35,11 @@ public class Swerve2 extends SubsystemBase{
     @Override
     public void periodic() {
         odometry.update(getGyroAngle(), getModulePositions());
+        currentChassisSpeeds = kinematics.toChassisSpeeds(getModuleStates());
     }
 
     public void driveFieldCentric(double forwardSpeed, double sidewaysSpeed, double turningSpeed) {
-        driveRobotCentric(ChassisSpeeds.fromFieldRelativeSpeeds(forwardSpeed, sidewaysSpeed, turningSpeed, new Rotation2d(getGyroAngle().getRadians() - currentGyroZero)));
+        driveRobotCentric(ChassisSpeeds.fromFieldRelativeSpeeds(forwardSpeed, sidewaysSpeed, turningSpeed, getFieldCentricGyroAngle()));
     }
 
     public void driveRobotCentric(double forwardSpeed, double sidewaysSpeed, double turningSpeed) {
@@ -43,6 +47,7 @@ public class Swerve2 extends SubsystemBase{
     }
 
     public void driveRobotCentric(ChassisSpeeds targetChassisSpeeds) {
+        this.targetChassisSpeeds = targetChassisSpeeds;
         driveModules(kinematics.toSwerveModuleStates(targetChassisSpeeds));
     }
 
@@ -53,8 +58,6 @@ public class Swerve2 extends SubsystemBase{
             modules[i].driveByState(targetStates[i]);
         }
     }
-
-
 
     public void resetPose(Pose2d newPose) {
         resetRobotAngle();
@@ -77,6 +80,10 @@ public class Swerve2 extends SubsystemBase{
         return new Rotation2d(gyro.getAngle());
     }
 
+    public Rotation2d getFieldCentricGyroAngle() {
+        return new Rotation2d(getGyroAngle().getRadians() - currentGyroZero);
+    }
+
     public Translation2d[] getModuleTranslations() {
         for(int i = 0; i < modules.length; i++) {
             translations[i] = modules[i].getTranslationFromCenter();
@@ -91,7 +98,24 @@ public class Swerve2 extends SubsystemBase{
         return positions;
     }
 
+    public SwerveModuleState[] getModuleStates() {
+        for(int i = 0; i < modules.length; i++) {
+            states[i] = modules[i].getModuleState();
+        }
+        return states;
+    }
+
     public void initSendable(SendableBuilder builder) {
-        
+        builder.addDoubleProperty("Field Centric Gyro Angle: ", () -> (getFieldCentricGyroAngle().getRadians()), null);
+        builder.addDoubleProperty("Robot Centric Gyro Angle: ", () -> (getGyroAngle().getRadians()), null);
+        builder.addDoubleProperty("Target X Velocity: ", () -> (targetChassisSpeeds.vxMetersPerSecond), null);
+        builder.addDoubleProperty("Target Y Velocity: ", () -> (targetChassisSpeeds.vyMetersPerSecond), null);
+        builder.addDoubleProperty("Target W Velocity: ", () -> (targetChassisSpeeds.omegaRadiansPerSecond), null);
+        builder.addDoubleProperty("Current X Velocity: ", () -> (currentChassisSpeeds.vxMetersPerSecond), null);
+        builder.addDoubleProperty("Current Y Velocity: ", () -> (currentChassisSpeeds.vyMetersPerSecond), null);
+        builder.addDoubleProperty("Current W Velocity: ", () -> (currentChassisSpeeds.omegaRadiansPerSecond), null);
+        builder.addDoubleProperty("Odometric rotation: ", () -> getCurrentPose().getRotation().getRadians(), null);
+        builder.addDoubleProperty("Odometric X: ", () -> getCurrentPose().getX(), null);
+        builder.addDoubleProperty("Odometric Y: ", () -> getCurrentPose().getY(), null);
     }
 }

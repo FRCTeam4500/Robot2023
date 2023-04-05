@@ -40,6 +40,10 @@ public class Swerve2Module {
         setModuleVelocity(moduleTargetVelocity);    
     }
 
+    public SwerveModuleState getModuleState() {
+        return new SwerveModuleState(getModuleVelocity(), new Rotation2d(getModuleAngle()));
+    }
+
     public double getModuleTargetAngle() {
         return moduleTargetAngle;
     }

@@ -6,6 +6,9 @@ import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class Constants {
@@ -187,9 +190,13 @@ public class Constants {
          * <p> Example: {@code commandMap.get("zero");} 
          */
         public static final HashMap<String, Command> commandMap = new HashMap<>();
-
         
         public static final double ROBOT_LENGTH_WITH_BUMPERS = 0.921; // Both in meters, length is front to back
         public static final double ROBOT_WIDTH_WITH_BUMPERS = 0.768;
+
+        public static final Pose3d[] APRILTAG_POSE_MAP = new Pose3d[]{
+            null, // There is no April Tag with ID 0, so arrary position 0 doesn't have a value
+
+            new Pose3d(new Translation3d(ROBOT_LENGTH_WITH_BUMPERS, ROBOT_WIDTH_WITH_BUMPERS, ROBOT_LENGTH_WITH_BUMPERS), new Rotation3d(ROBOT_LENGTH_WITH_BUMPERS, ROBOT_WIDTH_WITH_BUMPERS, ROBOT_LENGTH_WITH_BUMPERS))};
     }
 }

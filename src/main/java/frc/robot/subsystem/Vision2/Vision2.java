@@ -1,4 +1,4 @@
-package frc.robot.subsystem;
+package frc.robot.subsystem.Vision2;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;

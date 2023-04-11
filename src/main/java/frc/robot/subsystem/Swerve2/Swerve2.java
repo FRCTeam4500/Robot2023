@@ -48,14 +48,8 @@ public class Swerve2 extends SubsystemBase{
 
     public void driveRobotCentric(ChassisSpeeds targetChassisSpeeds) {
         this.targetChassisSpeeds = targetChassisSpeeds;
-        driveModules(kinematics.toSwerveModuleStates(targetChassisSpeeds));
-    }
-
-    public void driveModules(SwerveModuleState[] targetStates) {
-        SwerveDriveKinematics.desaturateWheelSpeeds(targetStates, SwerveConstants.MAX_LINEAR_SPEED);
-
-        for (int i = 0; i < modules.length; i++) {
-            modules[i].driveByState(targetStates[i]);
+        for(int i = 0; i < modules.length; i++) {
+            modules[i].driveByChassisSpeeds(targetChassisSpeeds);
         }
     }
 

@@ -2,6 +2,7 @@ package frc.robot.subsystem.Swerve2;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.Constants.SwerveConstants;
@@ -22,11 +23,20 @@ public class Swerve2Module {
         this.translationFromCenter = translationFromCenter;
     }
 
-    public void driveByState(SwerveModuleState targetState) {
-        double initialTargetAngle = targetState.angle.getRadians();
-        double initialTargetVelocity = targetState.speedMetersPerSecond;
-        
-        // Optimizes angle so that the wheel turns as little distance as possible
+    public void driveByChassisSpeeds(ChassisSpeeds targetChassisSpeeds) {
+        double targetForwardVelocity = targetChassisSpeeds.vxMetersPerSecond;
+        double targetSidewaysVelocity = targetChassisSpeeds.vyMetersPerSecond;
+        double targetRotationalVelocity = targetChassisSpeeds.omegaRadiansPerSecond;
+
+        double xVector = targetForwardVelocity - targetRotationalVelocity * translationFromCenter.getY();
+        double yVector = targetSidewaysVelocity + targetRotationalVelocity * translationFromCenter.getX();
+        double rawVelocity = Math.sqrt(Math.pow(xVector, 2) + Math.pow(yVector, 2));
+        double rawAngle = Math.atan2(yVector, xVector);
+
+        driveOptimized(rawAngle, rawVelocity);
+    }
+
+    public void driveOptimized(double initialTargetAngle, double initialTargetVelocity) {
         double currentAngle = getModuleAngle();
         double targetAngle = initialTargetAngle - currentAngle;
         double oppositeAngle = targetAngle + Math.PI;
@@ -37,7 +47,7 @@ public class Swerve2Module {
         moduleTargetVelocity = reverseSpeed ? -initialTargetVelocity : initialTargetVelocity;
 
         setModuleAngle(moduleTargetAngle);
-        setModuleVelocity(moduleTargetVelocity);    
+        setModuleVelocity(moduleTargetVelocity); 
     }
 
     public SwerveModuleState getModuleState() {
@@ -61,11 +71,11 @@ public class Swerve2Module {
     }
 
     public void setModuleVelocity(double targetVelocity) {
-        driveMotor.setOutput(ceiling(targetVelocity / SwerveConstants.MAX_LINEAR_SPEED, 1));
+        driveMotor.setVelocity(ceiling(targetVelocity, SwerveConstants.MAX_LINEAR_SPEED));
     }
 
     public double getModuleVelocity() {
-        return driveMotor.getOutput() * SwerveConstants.MAX_LINEAR_SPEED;
+        return driveMotor.getVelocity();
     }
 
     public SwerveModulePosition getModulePosition() {

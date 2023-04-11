@@ -7,8 +7,11 @@
 
 package frc.robot.component.hardware;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.component.TransformSupplier;
@@ -30,9 +33,9 @@ public class LimelightVisionComponent implements VisionComponent, TransformSuppl
         table = NetworkTableInstance.getDefault().getTable("limelight");
     }
 
-    public Pose3d getRobotPose() {
+    public Pose2d getRobotPose() {
         double[] poseAsDouble = table.getEntry("botpose").getDoubleArray(new double[6]);
-        return new Pose3d(poseAsDouble[0], poseAsDouble[1], poseAsDouble[2], new Rotation3d(poseAsDouble[3], poseAsDouble[4], poseAsDouble[5]));
+        return new Pose2d(poseAsDouble[0], poseAsDouble[1], new Rotation2d(poseAsDouble[5]));
     }
 
     @Override

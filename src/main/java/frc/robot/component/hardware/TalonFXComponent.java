@@ -63,5 +63,20 @@ public class TalonFXComponent extends TalonFX implements SmartMotorComponent {
     public void setAngularVelocity(double velocity) {
         set(TalonFXControlMode.Velocity, velocity * TICKS_PER_RADIAN/10.0);
     }
+
+    /**
+     * Gets the velocity of the Talon in m/s
+     * @return the velocity of Talon in m/s
+     */
+    public double getVelocity() {
+        return getSelectedSensorVelocity() / TICKS_PER_REVOLUTION * SwerveConstants.WHEEL_DIAMETER * Math.PI  * 10; // math is to convert ticks/100ms to m/s
+    }
+    /**
+     * Sets the velocity of the Talon in m/s
+     * @param velocity target velocity in m/s
+     */
+    public void setVelocity(double velocity) {
+        set(TalonFXControlMode.Velocity, velocity / 10 / (SwerveConstants.WHEEL_DIAMETER * Math.PI) * TICKS_PER_REVOLUTION); // math is to convert m/s to ticks/100ms
+    }
 }
 
